@@ -288,7 +288,7 @@
 
                 <!-- Gestão de Membros (Promover a Admin ou Autorizar Aluno) -->
                 <div class="admin-box" style="background: #f0f4f8; border-color: #0d1117;">
-                    <h3 style="margin-top: 0; color: #0d1117; font-size: 16px;">⚙️️ Gestão de Acessos (Estilo Grupo)</h3>
+                    <h3 style="margin-top: 0; color: #0d1117; font-size: 16px;">⚙ Gestão de Acessos (Estilo Grupo)</h3>
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                         <input type="email" id="novo-admin-email" class="form-input" placeholder="Gmail do novo Administrador..." style="background: white;">
                         <button type="button" id="adicionar-admin-btn" class="btn-submit" style="margin-top: 0; width: 180px; background: #0d1117;">Tornar Admin</button>
@@ -353,7 +353,6 @@
 
         const MASTER_ADMIN = "lucasdaacruztr@gmail.com";
 
-        // Guardar utilizador logado no navegador localmente para simplicidade
         window.addEventListener("DOMContentLoaded", () => {
             const savedEmail = localStorage.getItem("capacita_user");
             if (savedEmail) {
@@ -361,12 +360,10 @@
             }
         });
 
-        // Entrar apenas com o Gmail
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             loginError.classList.add("hidden");
             const email = loginEmail.value.trim().toLowerCase();
-
             await verificarEEntrar(email);
         });
 
@@ -381,7 +378,6 @@
                 autorizado = alunoDoc.exists();
             }
 
-            // Se for o master e ainda não existir no banco, garante que entra e grava
             if (isMaster) {
                 await setDoc(doc(db, "admins", email), { email: email }, { merge: true });
                 autorizado = true;
@@ -392,7 +388,6 @@
                 return;
             }
 
-            // Salva na sessão do navegador
             localStorage.setItem("capacita_user", email);
             userEmailDisplay.innerText = email;
 
@@ -410,13 +405,11 @@
             carregarAulas(isAdmin);
         }
 
-        // Sair da conta
         logoutBtn.addEventListener("click", () => {
             localStorage.removeItem("capacita_user");
             location.reload();
         });
 
-        // Adicionar novo Administrador
         adicionarAdminBtn.addEventListener("click", async () => {
             const email = novoAdminEmail.value.trim().toLowerCase();
             if (!email) return;
@@ -425,7 +418,6 @@
             novoAdminEmail.value = "";
         });
 
-        // Autorizar Aluno
         adicionarAlunoBtn.addEventListener("click", async () => {
             const email = novoAlunoEmail.value.trim().toLowerCase();
             if (!email) return;
@@ -434,7 +426,6 @@
             novoAlunoEmail.value = "";
         });
 
-        // Publicar Aula
         publicarAulaBtn.addEventListener("click", async () => {
             const titulo = aulaTitulo.value.trim();
             const texto = aulaTexto.value.trim();
@@ -465,14 +456,12 @@
             }
         });
 
-        // Eliminar Aula
         window.apagarAula = async function(id) {
             if (confirm("Deseja remover esta aula permanentemente?")) {
                 await deleteDoc(doc(db, "aulas", id));
             }
         }
 
-        // Listar Aulas
         function carregarAulas(isAdmin) {
             onSnapshot(collection(db, "aulas"), (snapshot) => {
                 listaAulasDiv.innerHTML = "";
