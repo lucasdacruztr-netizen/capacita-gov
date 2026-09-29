@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAPACITA GOV</title>
+<style>
+:root{
+ --bg:#0d1624;--bg2:#111c2c;--panel:#172438;--panel2:#1d2b40;--line:#2a3b53;
+ --text:#edf3fa;--muted:#9aabc0;--primary:#62b5ff;--primary2:#3d8fe0;
+ --success:#72d6b0;--warning:#f5c76a;--danger:#f07d8a;--radius:18px;
+}
+*{box-sizing:border-box} body{margin:0;background:linear-gradient(145deg,#0b1421,#101b2b 55%,#0c1624);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
+button,input,select,textarea{font:inherit} button{cursor:pointer}
+.hidden{display:none!important}.app{min-height:100vh}.login{min-height:100vh;display:grid;place-items:center;padding:24px}
+.login-card{width:min(430px,100%);background:rgba(23,36,56,.96);border:1px solid var(--line);border-radius:24px;padding:34px;box-shadow:0 25px 80px #0005}
+.brand{font-size:24px;font-weight:900;letter-spacing:.5px}.brand span{color:var(--primary)}
+.subtitle{color:var(--muted);font-size:13px;margin-top:5px}.login h1{font-size:24px;margin:28px 0 7px}
+.field{margin:14px 0}.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}
+input,select,textarea{width:100%;background:#0e1827;color:var(--text);border:1px solid var(--line);border-radius:11px;padding:11px 12px;outline:none}
+textarea{min-height:130px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px #62b5ff18}
+.btn{border:0;border-radius:11px;padding:11px 17px;font-weight:800;background:var(--primary);color:#071321;transition:.15s}
+.btn:hover{filter:brightness(1.07);transform:translateY(-1px)}.btn.secondary{background:#223249;color:var(--text);border:1px solid var(--line)}
+.btn.danger{background:#472630;color:#ffb0ba;border:1px solid #713641}.btn.success{background:var(--success);color:#082019}
+.login .btn{width:100%;margin-top:8px}.demo{margin-top:18px;padding:12px;border-radius:12px;background:#111d2d;border:1px solid var(--line);font-size:12px;color:var(--muted)}
+.layout{display:flex;min-height:100vh}.sidebar{width:255px;position:fixed;left:0;top:0;bottom:0;background:#101a29;border-right:1px solid var(--line);padding:22px 14px;display:flex;flex-direction:column;z-index:20}
+.logo{padding:0 10px 4px;font-size:20px;font-weight:900}.logo span{color:var(--primary)}.tagline{padding:0 10px 22px;color:var(--muted);font-size:11px}
+.nav{display:flex;align-items:center;gap:11px;width:100%;border:0;background:transparent;color:var(--muted);padding:11px 12px;border-radius:11px;text-align:left;font-weight:700;margin:2px 0}
+.nav:hover{background:var(--panel2);color:var(--text)}.nav.active{background:#18304b;color:var(--primary);box-shadow:inset 3px 0 var(--primary)}
+.userbox{margin-top:auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center}
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#4c9de5,#70d5ba);color:#081421;display:grid;place-items:center;font-weight:900;flex:none}
+.content{margin-left:255px;width:calc(100% - 255px);padding:30px;max-width:1450px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.topbar h1{margin:0;font-size:27px}.topbar p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.page{display:none}.page.active{display:block}
+.card{background:linear-gradient(145deg,#172438,#142033);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 12px 30px #0002}
+.hero{display:grid;grid-template-columns:1.45fr .8fr;gap:18px}.hero-main{min-height:255px;background:radial-gradient(circle at 90% 15%,#27547e55,transparent 35%),linear-gradient(135deg,#1b334e,#17293d)}
+.kicker{color:var(--primary);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px}
+.hero h2{font-size:27px;max-width:650px;margin:9px 0}.muted{color:var(--muted)}.progress{height:8px;background:#0c1623;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--success));border-radius:99px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px}.stat{background:#1c2a3e;border:1px solid #2a3b53;border-radius:14px;padding:15px}.stat b{display:block;font-size:24px;color:var(--primary)}.stat span{font-size:11px;color:var(--muted)}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:28px 0 13px}.section-head h2{font-size:18px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px}.course{display:flex;flex-direction:column;gap:10px;min-height:225px}.course h3{font-size:16px;margin:3px 0;line-height:1.3}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{font-size:11px;border:1px solid var(--line);background:#1b2a3e;color:var(--muted);padding:5px 9px;border-radius:99px}.chip.primary{color:var(--primary);border-color:#35648e;background:#16304a}.course .bottom{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.filters{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:10px;margin-bottom:16px}.table{display:grid;gap:9px}.table-row{display:grid;grid-template-columns:1.4fr 1fr .7fr .7fr auto;gap:12px;align-items:center;background:#142134;border:1px solid var(--line);border-radius:13px;padding:13px;font-size:13px}.table-head{color:var(--muted);font-size:11px;text-transform:uppercase}
+.notice{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;background:#16283d;border:1px solid #294b6d;border-radius:14px;padding:15px;margin-bottom:10px}.notice h3{margin:0 0 5px;font-size:15px}.notice p{margin:0;color:var(--muted);font-size:13px}.notice .date{font-size:11px;color:#8ea4bb;white-space:nowrap}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}
+.modal{position:fixed;inset:0;background:#050b14cc;display:none;place-items:center;padding:20px;z-index:50}.modal.open{display:grid}.modal-card{width:min(650px,100%);max-height:90vh;overflow:auto;background:#172438;border:1px solid var(--line);border-radius:20px;padding:22px}
+.empty{text-align:center;color:var(--muted);padding:40px 20px;border:1px dashed #354861;border-radius:15px}
+.toast{position:fixed;right:22px;bottom:22px;background:var(--success);color:#082019;padding:12px 16px;border-radius:11px;font-weight:800;display:none;z-index:80}.toast.show{display:block}
+.mobile-menu{display:none}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:none}.content{margin-left:0;width:100%;padding:70px 16px 35px}.mobile-menu{display:block;position:fixed;top:14px;left:14px;z-index:30;background:#172438;border:1px solid var(--line);color:#fff;border-radius:10px;padding:9px 12px}.hero{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.table-row{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}}
+@media(max-width:520px){.filters{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.topbar h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div id="login" class="login">
+  <div class="login-card">
+    <div class="brand">CAPACITA <span>GOV</span></div>
+    <div class="subtitle">Capacitação pública para transformar resultados.</div>
+    <h1>Acessar plataforma</h1>
+    <p class="muted" style="font-size:13px">Entre como administrador ou aluno.</p>
+    <div class="field"><label>E-mail</label><input id="email" type="email" placeholder="seu@email.com"></div>
+    <div class="field"><label>Senha</label><input id="password" type="password" placeholder="••••••••"></div>
+    <button class="btn" onclick="login()">Entrar</button>
+    <div class="demo"><b>Contas demonstrativas</b><br>Administrador: admin@capacitagov.com / admin123<br>Aluno: aluno@capacitagov.com / aluno123</div>
+  </div>
+</div>
+
+<div id="platform" class="layout hidden">
+  <button class="mobile-menu" onclick="toggleSide()">☰ Menu</button>
+  <aside id="sidebar" class="sidebar"></aside>
+  <main class="content">
+    <header class="topbar"><div><h1 id="pageTitle">Início</h1><p id="pageSubtitle">Capacitação pública para transformar resultados.</p></div><div id="topAvatar" class="avatar">A</div></header>
+    <div id="pages"></div>
+  </main>
+</div>
+
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div id="modalCard" class="modal-card"></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const demoCourses=[
+ {id:1,title:"Introdução à Administração Pública",inst:"Escola de Governo",hours:20,level:"Básico",area:"Administração Pública",desc:"Curso demonstrativo sobre fundamentos da administração pública.",mods:["O Estado e a administração","Princípios da gestão pública","Servidores e carreiras","Controle e transparência"]},
+ {id:2,title:"Gestão de Projetos no Setor Público",inst:"Instituição pública — exemplo",hours:30,level:"Intermediário",area:"Gestão",desc:"Curso demonstrativo sobre planejamento e acompanhamento de projetos.",mods:["Iniciação","Planejamento","Execução","Monitoramento","Encerramento"]},
+ {id:3,title:"Governo Digital",inst:"Instituição pública — exemplo",hours:25,level:"Básico",area:"Tecnologia",desc:"Curso demonstrativo sobre transformação digital e serviços públicos.",mods:["Fundamentos","Serviços digitais","Dados públicos","Cultura digital"]},
+ {id:4,title:"Segurança da Informação",inst:"Instituição pública — exemplo",hours:40,level:"Intermediário",area:"Segurança",desc:"Curso demonstrativo sobre proteção de dados e sistemas.",mods:["Conceitos básicos","Ameaças e riscos","Controles","Resposta a incidentes"]},
+ {id:5,title:"Excel para Administração Pública",inst:"Escola de Governo — exemplo",hours:20,level:"Básico",area:"Tecnologia",desc:"Curso demonstrativo de planilhas aplicadas à rotina administrativa.",mods:["Fundamentos","Fórmulas","Tabelas e gráficos","Relatórios"]},
+ {id:6,title:"Ética no Serviço Público",inst:"Escola de Governo — exemplo",hours:15,level:"Básico",area:"Administração Pública",desc:"Curso demonstrativo sobre ética, conduta e responsabilidade.",mods:["Ética e moralidade","Conduta","Responsabilidade"]}
+];
+let subjects=JSON.parse(localStorage.getItem("cg_subjects")||"[]");
+let courses=JSON.parse(localStorage.getItem("cg_courses")||"null")||demoCourses;
+let progress=JSON.parse(localStorage.getItem("cg_progress")||"{}");
+let user=null,currentPage="home";
+
+function save(){localStorage.setItem("cg_subjects",JSON.stringify(subjects));localStorage.setItem("cg_courses",JSON.stringify(courses));localStorage.setItem("cg_progress",JSON.stringify(progress))}
+function login(){
+ const e=document.getElementById("email").value.trim().toLowerCase(),p=document.getElementById("password").value;
+ if(e==="admin@capacitagov.com"&&p==="admin123") user={role:"admin",name:"Administrador"};
+ else if(e==="aluno@capacitagov.com"&&p==="aluno123") user={role:"student",name:"Aluno"};
+ else return toast("E-mail ou senha incorretos.");
+ document.getElementById("login").classList.add("hidden");document.getElementById("platform").classList.remove("hidden");currentPage="home";render();
+}
+function logout(){user=null;document.getElementById("platform").classList.add("hidden");document.getElementById("login").classList.remove("hidden");document.getElementById("password").value=""}
+function toggleSide(){document.getElementById("sidebar").classList.toggle("open")}
+function nav(page){currentPage=page;document.getElementById("sidebar").classList.remove("open");render()}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.th);window.th=setTimeout(()=>t.classList.remove("show"),2500)}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function pct(c){let n=progress[c.id]||0;return Math.round(n/c.mods.length*100)}
+function courseCard(c){
+ return `<div class="card course"><div class="chips"><span class="chip primary">GRATUITO</span><span class="chip">EXEMPLO</span></div><h3>${esc(c.title)}</h3><div class="muted" style="font-size:12px">${esc(c.inst)}</div><div class="chips"><span class="chip">${c.hours}h</span><span class="chip">${esc(c.level)}</span><span class="chip">${esc(c.area)}</span></div>
+ ${user.role==="student"&&progress[c.id]?`<div class="progress"><i style="width:${pct(c)}%"></i></div><small class="muted">${pct(c)}% concluído</small>`:""}
+ <div class="bottom"><small class="muted">${c.mods.length} módulos</small><button class="btn secondary" onclick="openCourse(${c.id})">${user.role==="student"&&progress[c.id]?"Continuar":"Ver curso"}</button></div></div>`
+}
+function renderSidebar(){
+ const admin=[["home","⌂","Início"],["subjects","📢","Assuntos"],["coursesAdmin","📚","Cursos"],["students","👥","Alunos"],["performanceAdmin","📊","Desempenho"]];
+ const student=[["home","⌂","Início"],["subjectsStudent","📢","Assuntos"],["courses","📚","Cursos"],["progress","↗","Meu progresso"],["certs","🏆","Certificados"],["favorites","☆","Favoritos"],["profile","●","Perfil"]];
+ const nav=user.role==="admin"?admin:student;
+ document.getElementById("sidebar").innerHTML=`<div class="logo">CAPACITA <span>GOV</span></div><div class="tagline">Capacitação pública</div>${nav.map(n=>`<button class="nav ${currentPage===n[0]?'active':''}" onclick="nav('${n[0]}')"><span>${n[1]}</span>${n[2]}</button>`).join("")}<div style="flex:1"></div><div class="userbox"><div class="avatar">${user.name[0]}</div><div style="min-width:0"><b>${user.name}</b><div class="muted" style="font-size:10px">${user.role==="admin"?"Administrador":"Aluno"}</div></div></div><button class="nav" onclick="logout()">↪ Sair</button>`;
+ document.getElementById("topAvatar").textContent=user.name[0];
+}
+function home(){
+ if(user.role==="admin") return adminHome();
+ const enrolled=Object.keys(progress).filter(k=>progress[k]>0).map(k=>courses.find(c=>c.id==k)).filter(Boolean);
+ const current=enrolled.find(c=>pct(c)<100);
+ return `<div class="hero"><div class="card hero-main"><div class="kicker">Área do aluno</div><h2>${current?"Continue sua capacitação":"Comece sua capacitação"}</h2><p class="muted">${current?esc(current.title):"Escolha um curso demonstrativo e acompanhe seu progresso."}</p>${current?`<div class="progress"><i style="width:${pct(current)}%"></i></div><div class="muted" style="font-size:12px;margin-top:6px">${pct(current)}% concluído</div>`:""}<div class="actions"><button class="btn" onclick="nav('${current?'courses':'courses'}')">${current?"Continuar curso":"Explorar cursos"}</button></div></div><div class="card"><h3>Seu resumo</h3><div class="stats"><div class="stat"><b>${enrolled.length}</b><span>Cursos iniciados</span></div><div class="stat"><b>${enrolled.filter(c=>pct(c)===100).length}</b><span>Concluídos</span></div><div class="stat"><b>${enrolled.reduce((s,c)=>s+(progress[c.id]||0),0)}</b><span>Módulos concluídos</span></div><div class="stat"><b>${enrolled.reduce((s,c)=>s+c.hours*(progress[c.id]||0)/c.mods.length,0).toFixed(1).replace(".",",")}h</b><span>Horas estudadas</span></div></div></div></div>
+ <div class="section-head"><h2>Últimos assuntos</h2><button class="btn secondary" onclick="nav('subjectsStudent')">Ver todos</button></div>${subjects.slice(0,3).map(subjectCard).join("")||'<div class="empty">Nenhum assunto publicado ainda.</div>'}
+ <div class="section-head"><h2>Cursos em destaque</h2></div><div class="grid">${courses.slice(0,6).map(courseCard).join("")}</div>`
+}
+function adminHome(){
+ return `<div class="hero"><div class="card hero-main"><div class="kicker">Painel administrativo</div><h2>Olá, ${user.name} 👋</h2><p class="muted">Gerencie assuntos, cursos e acompanhe seus alunos em um só lugar.</p><div class="actions"><button class="btn" onclick="nav('subjects')">+ Novo assunto</button><button class="btn secondary" onclick="nav('coursesAdmin')">Gerenciar cursos</button></div></div><div class="card"><h3>Resumo da plataforma</h3><div class="stats"><div class="stat"><b>24</b><span>Alunos</span></div><div class="stat"><b>${courses.length}</b><span>Cursos</span></div><div class="stat"><b>${subjects.length}</b><span>Assuntos</span></div><div class="stat"><b>87%</b><span>Acesso médio</span></div></div></div></div>
+ <div class="section-head"><h2>Atividade recente</h2></div><div class="card">${subjects.slice(0,4).map(s=>`<div class="notice"><div><h3>📢 ${esc(s.title)}</h3><p>${esc(s.text).slice(0,130)}</p></div><span class="date">${esc(s.date)}</span></div>`).join("")||'<div class="empty">Nenhuma atividade registrada.</div>'}</div>`
+}
+function subjectCard(s,admin=false){
+ return `<div class="notice"><div><h3>${s.category==="Importante"?"⚠️":"📢"} ${esc(s.title)}</h3><p>${esc(s.text)}</p></div><div><div class="date">${esc(s.date)}</div>${admin?`<div class="actions"><button class="btn secondary" onclick="editSubject(${s.id})">Editar</button><button class="btn danger" onclick="deleteSubject(${s.id})">Excluir</button></div>`:`<button class="btn secondary" style="margin-top:8px" onclick="readSubject(${s.id})">Ler</button>`}</div></div>`
+}
+function subjectsPage(admin){
+ return `<div class="section-head"><h2>${admin?"Gerenciar assuntos":"Assuntos e comunicados"}</h2>${admin?'<button class="btn" onclick="newSubject()">+ Novo assunto</button>':""}</div>${subjects.length?subjects.map(s=>subjectCard(s,admin)).join(""):'<div class="empty">Nenhum assunto publicado.</div>'}`
+}
+function coursesPage(admin){
+ if(admin) return `<div class="section-head"><h2>Gerenciar cursos</h2><button class="btn" onclick="newCourse()">+ Novo curso</button></div><div class="grid">${courses.map(c=>`<div class="card course"><span class="chip primary" style="width:max-content">CURSO</span><h3>${esc(c.title)}</h3><div class="muted">${esc(c.inst)} • ${c.hours}h</div><div class="bottom"><button class="btn secondary" onclick="editCourse(${c.id})">Editar</button><button class="btn danger" onclick="deleteCourse(${c.id})">Excluir</button></div></div>`).join("")}</div>`;
+ return `<div class="section-head"><h2>Cursos disponíveis</h2><span class="muted">${courses.length} cursos</span></div><div class="filters"><input id="searchCourse" placeholder="Pesquisar curso..." oninput="filterCourses()"><select id="filterArea" onchange="filterCourses()"><option value="">Todas as áreas</option>${[...new Set(courses.map(c=>c.area))].map(a=>`<option>${esc(a)}</option>`).join("")}</select><select id="filterLevel" onchange="filterCourses()"><option value="">Todos os níveis</option><option>Básico</option><option>Intermediário</option></select></div><div id="courseGrid" class="grid">${courses.map(courseCard).join("")}</div>`
+}
+function studentsPage(){
+ return `<div class="section-head"><h2>Alunos</h2></div><div class="card"><div class="table"><div class="table-row table-head"><span>Aluno</span><span>E-mail</span><span>Cursos</span><span>Progresso</span><span>Status</span></div>${["João Silva","Maria Santos","Pedro Oliveira","Ana Souza"].map((n,i)=>`<div class="table-row"><b>${n}</b><span class="muted">${n.toLowerCase().replace(" ",".")}@aluno.gov.br</span><span>${2+i%2}</span><span>${[78,64,91,52][i]}%</span><span class="chip primary">Ativo</span></div>`).join("")}</div></div>`
+}
+function performanceAdmin(){return `<div class="section-head"><h2>Desempenho da plataforma</h2></div><div class="grid"><div class="card"><div class="kicker">Alunos ativos</div><h2 style="font-size:34px">24</h2><p class="muted">Alunos cadastrados no protótipo.</p></div><div class="card"><div class="kicker">Conclusão média</div><h2 style="font-size:34px">68%</h2><p class="muted">Progresso demonstrativo.</p></div><div class="card"><div class="kicker">Certificados</div><h2 style="font-size:34px">31</h2><p class="muted">Emissões demonstrativas.</p></div></div>`
+}
+function progressPage(){const list=courses.filter(c=>progress[c.id]>0);return `<div class="section-head"><h2>Meu progresso</h2></div>${list.length?list.map(c=>`<div class="card" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;gap:10px"><b>${esc(c.title)}</b><span>${pct(c)}%</span></div><div class="progress" style="margin:10px 0"><i style="width:${pct(c)}%"></i></div><button class="btn secondary" onclick="openCourse(${c.id})">Abrir curso</button></div>`).join(""):'<div class="empty">Você ainda não iniciou nenhum curso.</div>'}`
+}
+function certsPage(){const done=courses.filter(c=>pct(c)===100);return `<div class="section-head"><h2>Meus certificados</h2></div>${done.length?`<div class="grid">${done.map(c=>`<div class="card course"><div style="font-size:30px">🏆</div><h3>${esc(c.title)}</h3><div class="muted">${c.hours} horas</div><button class="btn" onclick="toast('Certificado demonstrativo aberto')">Visualizar certificado</button></div>`).join("")}</div>`:'<div class="empty">Conclua um curso para disponibilizar seu certificado.</div>'}`
+}
+function favorites(){return '<div class="section-head"><h2>Favoritos</h2></div><div class="empty">Sua área de favoritos está pronta para receber cursos.</div>'}
+function profile(){return `<div class="section-head"><h2>Meu perfil</h2></div><div class="card" style="max-width:550px"><div style="display:flex;gap:15px;align-items:center"><div class="avatar">${user.name[0]}</div><div><h2 style="margin:0">${user.name}</h2><div class="muted">Aluno • CAPACITA GOV</div></div></div></div>`}
+function openCourse(id){
+ const c=courses.find(x=>x.id===id);if(!c)return;
+ const n=progress[id]||0;
+ document.getElementById("modalCard").innerHTML=`<div class="section-head" style="margin-top:0"><h2>${esc(c.title)}</h2><button class="btn secondary" onclick="closeModal()">Fechar</button></div><p class="muted">${esc(c.desc)}</p><div class="chips"><span class="chip primary">${c.hours} horas</span><span class="chip">${esc(c.level)}</span><span class="chip">${esc(c.area)}</span><span class="chip">Certificado</span></div><h3 style="margin:22px 0 10px">Conteúdo programático</h3>${c.mods.map((m,i)=>`<div class="notice"><div><b>Módulo ${i+1}</b><p>${esc(m)}</p></div>${user.role==="student"&&i<n?"<span style='color:var(--success)'>✓</span>":""}</div>`).join("")}${user.role==="student"?`<div class="progress"><i style="width:${pct(c)}%"></i></div><p class="muted">${pct(c)}% concluído</p><button class="btn" onclick="advanceCourse(${id})">${n>=c.mods.length?"Curso concluído":"Concluir próximo módulo"}</button>`:""}`;
+ document.getElementById("modal").classList.add("open")
+}
+function advanceCourse(id){const c=courses.find(x=>x.id===id);let n=progress[id]||0;if(n<c.mods.length){progress[id]=n+1;save();toast(n+1===c.mods.length?"Curso concluído! 🎉":"Módulo concluído ✔");openCourse(id)}}
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+function newSubject(data=null){document.getElementById("modalCard").innerHTML=`<h2>${data?"Editar assunto":"Novo assunto"}</h2><div class="field"><label>Título</label><input id="sTitle" value="${data?esc(data.title):""}"></div><div class="field"><label>Categoria</label><select id="sCat"><option>Geral</option><option>Aviso</option><option>Curso</option><option>Importante</option></select></div><div class="field"><label>Conteúdo</label><textarea id="sText">${data?esc(data.text):""}</textarea></div><div class="actions"><button class="btn" onclick="saveSubject(${data?data.id:"null"})">${data?"Salvar alterações":"Publicar assunto"}</button><button class="btn secondary" onclick="closeModal()">Cancelar</button></div>`;document.getElementById("modal").classList.add("open")}
+function saveSubject(id){const title=document.getElementById("sTitle").value.trim(),text=document.getElementById("sText").value.trim(),category=document.getElementById("sCat").value;if(!title||!text)return toast("Preencha título e conteúdo.");if(id){const s=subjects.find(x=>x.id===id);Object.assign(s,{title,text,category})}else subjects.unshift({id:Date.now(),title,text,category,date:new Date().toLocaleDateString("pt-BR")});save();closeModal();toast(id?"Assunto atualizado.":"Assunto publicado.");render()}
+function editSubject(id){newSubject(subjects.find(s=>s.id===id))}
+function deleteSubject(id){if(confirm("Excluir este assunto?")){subjects=subjects.filter(s=>s.id!==id);save();render();toast("Assunto excluído.")}}
+function readSubject(id){const s=subjects.find(x=>x.id===id);document.getElementById("modalCard").innerHTML=`<div class="section-head" style="margin-top:0"><h2>${esc(s.title)}</h2><button class="btn secondary" onclick="closeModal()">Fechar</button></div><div class="chip primary">${esc(s.category)}</div><p class="muted" style="white-space:pre-wrap;margin-top:20px">${esc(s.text)}</p><small class="muted">${esc(s.date)}</small>`;document.getElementById("modal").classList.add("open")}
+function newCourse(data=null){document.getElementById("modalCard").innerHTML=`<h2>${data?"Editar curso":"Novo curso"}</h2><div class="form-grid"><div class="field"><label>Nome</label><input id="cTitle" value="${data?esc(data.title):""}"></div><div class="field"><label>Instituição</label><input id="cInst" value="${data?esc(data.inst):""}"></div><div class="field"><label>Carga horária</label><input id="cHours" type="number" value="${data?data.hours:20}"></div><div class="field"><label>Nível</label><select id="cLevel"><option>Básico</option><option>Intermediário</option></select></div><div class="field"><label>Área</label><input id="cArea" value="${data?esc(data.area):"Tecnologia"}"></div><div class="field"><label>Módulos (separados por |)</label><input id="cMods" value="${data?esc(data.mods.join("|")):"Introdução|Conteúdo principal|Prática|Conclusão"}"></div><div class="field full"><label>Descrição</label><textarea id="cDesc">${data?esc(data.desc):""}</textarea></div></div><div class="actions"><button class="btn" onclick="saveCourse(${data?data.id:"null"})">${data?"Salvar":"Cadastrar curso"}</button><button class="btn secondary" onclick="closeModal()">Cancelar</button></div>`;document.getElementById("modal").classList.add("open")}
+function saveCourse(id){const c={id:id||Date.now(),title:document.getElementById("cTitle").value.trim(),inst:document.getElementById("cInst").value.trim(),hours:Number(document.getElementById("cHours").value)||20,level:document.getElementById("cLevel").value,area:document.getElementById("cArea").value.trim(),mods:document.getElementById("cMods").value.split("|").map(x=>x.trim()).filter(Boolean),desc:document.getElementById("cDesc").value.trim()};if(!c.title||!c.inst||!c.mods.length)return toast("Preencha os campos principais.");if(id)courses=courses.map(x=>x.id===id?c:x);else courses.unshift(c);save();closeModal();toast(id?"Curso atualizado.":"Curso cadastrado.");render()}
+function editCourse(id){newCourse(courses.find(c=>c.id===id))}
+function deleteCourse(id){if(confirm("Excluir este curso?")){courses=courses.filter(c=>c.id!==id);save();render();toast("Curso excluído.")}}
+function filterCourses(){const q=(document.getElementById("searchCourse").value||"").toLowerCase(),a=document.getElementById("filterArea").value,l=document.getElementById("filterLevel").value;document.getElementById("courseGrid").innerHTML=courses.filter(c=>(!q||c.title.toLowerCase().includes(q))&&(!a||c.area===a)&&(!l||c.level===l)).map(courseCard).join("")||'<div class="empty">Nenhum curso encontrado.</div>'}
+function render(){
+ renderSidebar();
+ const titles={home:["Início","Visão geral"],subjects:["Assuntos","Gerencie comunicados para os alunos."],subjectsStudent:["Assuntos","Avisos e conteúdos publicados pela administração."],coursesAdmin:["Cursos","Crie e gerencie os cursos da plataforma."],courses:["Cursos","Explore as capacitações disponíveis."],students:["Alunos","Acompanhe os usuários da plataforma."],performanceAdmin:["Desempenho","Indicadores gerais da plataforma."],progress:["Meu progresso","Acompanhe sua evolução."],certs:["Certificados","Cursos concluídos e certificados."],favorites:["Favoritos","Cursos que você deseja guardar."],profile:["Perfil","Suas informações."]};
+ const t=titles[currentPage]||["Início",""];document.getElementById("pageTitle").textContent=t[0];document.getElementById("pageSubtitle").textContent=t[1];
+ let body="";if(currentPage==="home")body=home();else if(currentPage==="subjects")body=subjectsPage(true);else if(currentPage==="subjectsStudent")body=subjectsPage(false);else if(currentPage==="coursesAdmin")body=coursesPage(true);else if(currentPage==="courses")body=coursesPage(false);else if(currentPage==="students")body=studentsPage();else if(currentPage==="performanceAdmin")body=performanceAdmin();else if(currentPage==="progress")body=progressPage();else if(currentPage==="certs")body=certsPage();else if(currentPage==="favorites")body=favorites();else if(currentPage==="profile")body=profile();document.getElementById("pages").innerHTML=`<section class="page active">${body}</section>`
+}
+document.getElementById("password").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
+</script>
+</body>
+</html>
