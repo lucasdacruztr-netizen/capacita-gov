@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Controlo • CAPACITA GOV</title>
+    <title>Plataforma de Estudos • CAPACITA GOV</title>
     <style>
         :root {
             --cf-orange: #f38020;
@@ -217,18 +217,15 @@
             border: 1px solid var(--cf-orange);
             padding: 20px;
             border-radius: 8px;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
-        .course-card {
+        .lesson-card {
             background: var(--cf-gray-bg);
             border: 1px solid var(--cf-border);
-            padding: 16px;
+            padding: 20px;
             border-radius: 8px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 16px;
         }
 
         @media (max-width: 900px) {
@@ -240,23 +237,19 @@
 <body>
 
     <div class="layout-container">
-        <!-- Lado Esquerdo: Login -->
+        <!-- Lado Esquerdo: Login Apenas com E-mail -->
         <div id="auth-section" class="login-pane">
             <h1>CAPACITA GOV</h1>
-            <p class="subtitle">Aceda com o seu e-mail e senha</p>
+            <p class="subtitle">Aceda apenas informando o seu Gmail</p>
             
             <form id="login-form">
                 <div class="form-field">
-                    <label>E-mail</label>
+                    <label>Gmail</label>
                     <input type="email" id="login-email" class="form-input" placeholder="ex: seu.email@gmail.com" required>
                 </div>
-                <div class="form-field">
-                    <label>Senha</label>
-                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
-                </div>
                 
-                <button type="submit" class="btn-submit">Entrar no Sistema</button>
-                <div id="login-error" class="error-msg hidden">E-mail ou senha incorretos.</div>
+                <button type="submit" class="btn-submit">Entrar na Plataforma</button>
+                <div id="login-error" class="error-msg hidden">E-mail não autorizado no sistema.</div>
             </form>
         </div>
 
@@ -271,39 +264,55 @@
 
         <!-- Dashboard / Painel Interno -->
         <div id="app-section" class="dashboard-pane hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--cf-border); padding-bottom: 20px; margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--cf-border); padding-bottom: 20px; margin-bottom: 24px;">
                 <div>
-                    <h2 id="user-greeting" style="margin: 0; font-size: 24px; font-weight: 500;">Bem-vindo</h2>
+                    <h2 id="user-greeting" style="margin: 0; font-size: 24px; font-weight: 500;">Área de Estudos</h2>
                     <p id="user-email-display" style="margin: 4px 0 0 0; color: var(--cf-text-muted); font-size: 14px;"></p>
                 </div>
-                <button id="logout-btn" class="btn-danger">Terminar Sessão</button>
+                <button id="logout-btn" class="btn-danger">Sair</button>
             </div>
 
-            <!-- Painel Administrativo para Gestão de Cursos e Assuntos -->
-            <div id="admin-panel" class="hidden admin-box">
-                <h3 style="margin-top: 0; color: var(--cf-orange); font-size: 16px;">Painel de Controlo do Administrador</h3>
-                <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Adicionar novo curso ou assunto na plataforma:</p>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <input type="text" id="novo-curso-input" class="form-input" placeholder="Nome do Curso / Assunto..." style="background: white;">
-                    <textarea id="descricao-curso-input" class="form-input" placeholder="Detalhes ou descrição do assunto..." style="background: white; resize: vertical; height: 80px;"></textarea>
-                    <button type="button" id="criar-curso-btn" class="btn-submit" style="margin-top: 0;">Publicar Curso / Assunto</button>
+            <!-- Painel Administrativo (Exclusivo para Admins) -->
+            <div id="admin-panel" class="hidden">
+                <!-- Criar Aulas (Textos, Imagens e Vídeos) -->
+                <div class="admin-box">
+                    <h3 style="margin-top: 0; color: var(--cf-orange); font-size: 16px;">📚 Publicar Nova Aula ou Assunto</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <input type="text" id="aula-titulo" class="form-input" placeholder="Título do Assunto / Aula..." style="background: white;">
+                        <textarea id="aula-texto" class="form-input" placeholder="Texto explicativo..." style="background: white; height: 80px; resize: vertical;"></textarea>
+                        <input type="text" id="aula-imagem" class="form-input" placeholder="Link da Imagem (URL opcional)" style="background: white;">
+                        <input type="text" id="aula-video" class="form-input" placeholder="Link do Vídeo (YouTube ou MP4)" style="background: white;">
+                        <button type="button" id="publicar-aula-btn" class="btn-submit" style="margin-top: 0;">Publicar Aula</button>
+                    </div>
+                </div>
+
+                <!-- Gestão de Membros (Promover a Admin ou Autorizar Aluno) -->
+                <div class="admin-box" style="background: #f0f4f8; border-color: #0d1117;">
+                    <h3 style="margin-top: 0; color: #0d1117; font-size: 16px;">⚙️️ Gestão de Acessos (Estilo Grupo)</h3>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="email" id="novo-admin-email" class="form-input" placeholder="Gmail do novo Administrador..." style="background: white;">
+                        <button type="button" id="adicionar-admin-btn" class="btn-submit" style="margin-top: 0; width: 180px; background: #0d1117;">Tornar Admin</button>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="email" id="novo-aluno-email" class="form-input" placeholder="Gmail do Aluno para consumo..." style="background: white;">
+                        <button type="button" id="adicionar-aluno-btn" class="btn-submit" style="margin-top: 0; width: 180px; background: #28a745;">Autorizar Aluno</button>
+                    </div>
                 </div>
             </div>
 
             <div>
-                <h3 style="font-size: 18px; font-weight: 500; margin-bottom: 15px;">Cursos e Assuntos Disponíveis</h3>
-                <div id="lista-cursos">
-                    <!-- Os cursos aparecerão aqui -->
+                <h3 style="font-size: 18px; font-weight: 500; margin-bottom: 15px;">Aulas e Assuntos Disponíveis</h3>
+                <div id="lista-aulas">
+                    <!-- Aulas carregadas do banco de dados -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Script de Gestão de Sessão, Cursos e Administradores (Firebase) -->
+    <!-- Script de Gestão por Acesso Direto de Gmail -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAjStzMeS40DpIgFEH2Bi4Y80oy8Eel5tE",
@@ -316,12 +325,10 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
 
         const loginForm = document.getElementById("login-form");
         const loginEmail = document.getElementById("login-email");
-        const loginPassword = document.getElementById("login-password");
         const loginError = document.getElementById("login-error");
         const logoutBtn = document.getElementById("logout-btn");
 
@@ -332,125 +339,178 @@
         const userEmailDisplay = document.getElementById("user-email-display");
         const adminPanel = document.getElementById("admin-panel");
         
-        const criarCursoBtn = document.getElementById("criar-curso-btn");
-        const novoCursoInput = document.getElementById("novo-curso-input");
-        const descricaoCursoInput = document.getElementById("descricao-curso-input");
-        const listaCursosDiv = document.getElementById("lista-cursos");
+        const publicarAulaBtn = document.getElementById("publicar-aula-btn");
+        const aulaTitulo = document.getElementById("aula-titulo");
+        const aulaTexto = document.getElementById("aula-texto");
+        const aulaImagem = document.getElementById("aula-imagem");
+        const aulaVideo = document.getElementById("aula-video");
+        const listaAulasDiv = document.getElementById("lista-aulas");
 
-        // Lista de e-mails autorizados como administradores (incluindo o seu principal do Gmail)
-        const ADMINS_AUTORIZADOS = [
-            "lucasdaacruztr@gmail.com"
-            // Pode adicionar mais e-mails do Gmail aqui no futuro, separados por vírgula, ex: "outro@gmail.com"
-        ];
+        const adicionarAdminBtn = document.getElementById("adicionar-admin-btn");
+        const novoAdminEmail = document.getElementById("novo-admin-email");
+        const adicionarAlunoBtn = document.getElementById("adicionar-aluno-btn");
+        const novoAlunoEmail = document.getElementById("novo-aluno-email");
 
-        // Login por E-mail e Senha (cria a conta automaticamente se não existir para facilitar o primeiro acesso)
+        const MASTER_ADMIN = "lucasdaacruztr@gmail.com";
+
+        // Guardar utilizador logado no navegador localmente para simplicidade
+        window.addEventListener("DOMContentLoaded", () => {
+            const savedEmail = localStorage.getItem("capacita_user");
+            if (savedEmail) {
+                verificarEEntrar(savedEmail);
+            }
+        });
+
+        // Entrar apenas com o Gmail
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             loginError.classList.add("hidden");
-            const email = loginEmail.value.trim();
-            const senha = loginPassword.value;
+            const email = loginEmail.value.trim().toLowerCase();
 
-            try {
-                await signInWithEmailAndPassword(auth, email, senha);
-            } catch (error) {
-                try {
-                    await createUserWithEmailAndPassword(auth, email, senha);
-                    return;
-                } catch (errCreate) {
-                    console.error(errCreate);
-                    loginError.classList.remove("hidden");
-                }
-            }
+            await verificarEEntrar(email);
         });
 
-        logoutBtn.addEventListener("click", () => signOut(auth));
+        async function verificarEEntrar(email) {
+            const isMaster = (email === MASTER_ADMIN);
+            const adminDoc = await getDoc(doc(db, "admins", email));
+            const isAdmin = isMaster || adminDoc.exists();
 
-        // Verificar permissões de administrador e exibir painel
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                authSection.classList.add("hidden");
-                bannerSection.classList.add("hidden");
-                appSection.classList.remove("hidden");
-                userEmailDisplay.innerText = user.email;
+            let autorizado = isAdmin;
+            if (!autorizado) {
+                const alunoDoc = await getDoc(doc(db, "alunos", email));
+                autorizado = alunoDoc.exists();
+            }
 
-                const isAdmin = ADMINS_AUTORIZADOS.includes(user.email);
+            // Se for o master e ainda não existir no banco, garante que entra e grava
+            if (isMaster) {
+                await setDoc(doc(db, "admins", email), { email: email }, { merge: true });
+                autorizado = true;
+            }
 
-                if (isAdmin) {
-                    userGreeting.innerText = `Olá, Administrador`;
-                    adminPanel.classList.remove("hidden");
-                } else {
-                    userGreeting.innerText = `Olá, Utilizador`;
-                    adminPanel.classList.add("hidden");
-                }
+            if (!autorizado) {
+                loginError.classList.remove("hidden");
+                return;
+            }
 
-                carregarCursos(isAdmin);
+            // Salva na sessão do navegador
+            localStorage.setItem("capacita_user", email);
+            userEmailDisplay.innerText = email;
+
+            if (isAdmin) {
+                userGreeting.innerText = `Painel do Administrador`;
+                adminPanel.classList.remove("hidden");
             } else {
-                authSection.classList.remove("hidden");
-                bannerSection.classList.remove("hidden");
-                appSection.classList.add("hidden");
+                userGreeting.innerText = `Área de Estudos (Aluno)`;
+                adminPanel.classList.add("hidden");
             }
+
+            authSection.classList.add("hidden");
+            bannerSection.classList.add("hidden");
+            appSection.classList.remove("hidden");
+            carregarAulas(isAdmin);
+        }
+
+        // Sair da conta
+        logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("capacita_user");
+            location.reload();
         });
 
-        // Criar Curso / Assunto no Firestore (Apenas Administradores)
-        criarCursoBtn.addEventListener("click", async () => {
-            const titulo = novoCursoInput.value.trim();
-            const descricao = descricaoCursoInput.value.trim();
-            if (!titulo) return;
+        // Adicionar novo Administrador
+        adicionarAdminBtn.addEventListener("click", async () => {
+            const email = novoAdminEmail.value.trim().toLowerCase();
+            if (!email) return;
+            await setDoc(doc(db, "admins", email), { email: email });
+            alert(`O Gmail ${email} foi promovido a Administrador!`);
+            novoAdminEmail.value = "";
+        });
+
+        // Autorizar Aluno
+        adicionarAlunoBtn.addEventListener("click", async () => {
+            const email = novoAlunoEmail.value.trim().toLowerCase();
+            if (!email) return;
+            await setDoc(doc(db, "alunos", email), { email: email });
+            alert(`O aluno ${email} foi autorizado a estudar!`);
+            novoAlunoEmail.value = "";
+        });
+
+        // Publicar Aula
+        publicarAulaBtn.addEventListener("click", async () => {
+            const titulo = aulaTitulo.value.trim();
+            const texto = aulaTexto.value.trim();
+            const imagem = aulaImagem.value.trim();
+            const video = aulaVideo.value.trim();
+
+            if (!titulo) {
+                alert("Insira pelo menos o título da aula.");
+                return;
+            }
 
             try {
-                await addDoc(collection(db, "cursos"), {
-                    titulo: titulo,
-                    descricao: descricao || "Sem descrição detalhada.",
+                await addDoc(collection(db, "aulas"), {
+                    titulo,
+                    texto,
+                    imagem,
+                    video,
                     criadoEm: new Date()
                 });
-                novoCursoInput.value = "";
-                descricaoCursoInput.value = "";
-                alert("Curso / Assunto criado com sucesso!");
+                aulaTitulo.value = "";
+                aulaTexto.value = "";
+                aulaImagem.value = "";
+                aulaVideo.value = "";
+                alert("Aula publicada com sucesso!");
             } catch (err) {
-                console.error("Erro ao criar curso:", err);
-                alert("Erro ao criar curso no banco de dados.");
+                console.error(err);
+                alert("Erro ao publicar aula.");
             }
         });
 
-        // Apagar Curso / Assunto (Apenas Administradores)
-        window.apagarCurso = async function(id) {
-            if (confirm("Tem certeza que deseja remover este curso/assunto?")) {
-                try {
-                    await deleteDoc(doc(db, "cursos", id));
-                } catch (err) {
-                    console.error("Erro ao apagar:", err);
-                }
+        // Eliminar Aula
+        window.apagarAula = async function(id) {
+            if (confirm("Deseja remover esta aula permanentemente?")) {
+                await deleteDoc(doc(db, "aulas", id));
             }
         }
 
-        // Listar Cursos em tempo real
-        function carregarCursos(isAdmin) {
-            onSnapshot(collection(db, "cursos"), (snapshot) => {
-                listaCursosDiv.innerHTML = "";
+        // Listar Aulas
+        function carregarAulas(isAdmin) {
+            onSnapshot(collection(db, "aulas"), (snapshot) => {
+                listaAulasDiv.innerHTML = "";
                 if (snapshot.empty) {
-                    listaCursosDiv.innerHTML = `<div style="background: var(--cf-gray-bg); border: 1px solid var(--cf-border); padding: 16px; border-radius: 6px; color: var(--cf-text-muted); font-size: 14px;">Nenhum curso ou assunto registado no momento.</div>`;
+                    listaAulasDiv.innerHTML = `<div style="background: var(--cf-gray-bg); border: 1px solid var(--cf-border); padding: 16px; border-radius: 6px; color: var(--cf-text-muted);">Nenhuma aula publicada no momento.</div>`;
                     return;
                 }
 
                 snapshot.forEach((docSnap) => {
-                    const curso = docSnap.data();
+                    const aula = docSnap.data();
                     const id = docSnap.id;
                     const card = document.createElement("div");
-                    card.className = "course-card";
-                    
-                    let htmlConteudo = `
-                        <div>
-                            <div style="font-weight: 600; font-size: 15px; color: #111;">📚 ${curso.titulo}</div>
-                            <div style="font-size: 13px; color: var(--cf-text-muted); margin-top: 4px;">${curso.descricao}</div>
-                        </div>
-                    `;
+                    card.className = "lesson-card";
 
-                    if (isAdmin) {
-                        htmlConteudo += `<button onclick="apagarCurso('${id}')" class="btn-danger" style="padding: 6px 12px; font-size: 12px;">Eliminar</button>`;
+                    let html = `<h4 style="margin-top: 0; font-size: 18px; color: #111;">📚 ${aula.titulo}</h4>`;
+                    
+                    if (aula.texto) {
+                        html += `<p style="font-size: 14px; color: #444; line-height: 1.5; white-space: pre-line;">${aula.texto}</p>`;
+                    }
+                    
+                    if (aula.imagem) {
+                        html += `<div style="margin: 12px 0;"><img src="${aula.imagem}" alt="Imagem" style="max-width: 100%; max-height: 300px; border-radius: 6px; border: 1px solid var(--cf-border);"></div>`;
                     }
 
-                    card.innerHTML = htmlConteudo;
-                    listaCursosDiv.appendChild(card);
+                    if (aula.video) {
+                        let videoUrl = aula.video;
+                        if (videoUrl.includes("watch?v=")) {
+                            videoUrl = videoUrl.replace("watch?v=", "embed/");
+                        }
+                        html += `<div style="margin: 12px 0; position: relative; padding-bottom: 56.15%; height: 0; overflow: hidden;"><iframe src="${videoUrl}" style="position: absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius: 6px;" allowfullscreen></iframe></div>`;
+                    }
+
+                    if (isAdmin) {
+                        html += `<div style="margin-top: 15px; border-top: 1px solid var(--cf-border); padding-top: 10px;"><button onclick="apagarAula('${id}')" class="btn-danger">Eliminar Aula</button></div>`;
+                    }
+
+                    card.innerHTML = html;
+                    listaAulasDiv.appendChild(card);
                 });
             });
         }
