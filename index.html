@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de controlo do Cloudflare • CAPACITA GOV</title>
+    <title>Painel de Controlo • CAPACITA GOV</title>
     <style>
         :root {
             --cf-orange: #f38020;
@@ -30,14 +30,12 @@
 
         .hidden { display: none !important; }
 
-        /* Estrutura de Tela Dividida idêntica ao Cloudflare */
         .layout-container {
             display: flex;
             width: 100%;
             height: 100%;
         }
 
-        /* Lado Esquerdo: Área de Login */
         .login-pane {
             flex: 1;
             display: flex;
@@ -48,63 +46,22 @@
             background: #ffffff;
             z-index: 10;
             box-shadow: 10px 0 30px rgba(0,0,0,0.02);
+            overflow-y: auto;
         }
 
         .login-pane h1 {
             font-size: 28px;
             font-weight: 500;
-            margin-bottom: 24px;
+            margin-bottom: 8px;
             color: #111;
             letter-spacing: -0.5px;
         }
 
-        /* Grade de Provedores estilo Cloudflare */
-        .sso-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+        .login-pane p.subtitle {
+            font-size: 14px;
+            color: var(--cf-text-muted);
             margin-bottom: 24px;
         }
-
-        .sso-btn {
-            background: #ffffff;
-            border: 1px solid var(--cf-border);
-            border-radius: 6px;
-            padding: 12px 8px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--cf-dark);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .sso-btn:hover {
-            border-color: var(--cf-orange);
-            background-color: #fff9f5;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: var(--cf-text-muted);
-            font-size: 13px;
-            margin: 20px 0;
-        }
-
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid var(--cf-border);
-        }
-
-        .divider::before { margin-right: .75em; }
-        .divider::after { margin-left: .75em; }
 
         .form-field {
             margin-bottom: 16px;
@@ -151,15 +108,13 @@
             background-color: var(--cf-orange-hover);
         }
 
-        .footer-links {
-            margin-top: 24px;
+        .error-msg {
+            color: #dc3545;
             font-size: 13px;
-            text-align: left;
-            color: var(--cf-text-muted);
-            line-height: 1.5;
+            margin-top: 10px;
+            text-align: center;
         }
 
-        /* Lado Direito: Banner Tecnológico com Planeta / Conectividade Global (Estilo Cloudflare Connect) */
         .tech-banner {
             flex: 1.3;
             background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1f2937 100%);
@@ -172,7 +127,6 @@
             overflow: hidden;
         }
 
-        /* Elemento gráfico de Planeta / Radar Tecnológico em CSS Puro */
         .tech-banner::before {
             content: '';
             position: absolute;
@@ -238,15 +192,14 @@
             margin: 0;
         }
 
-        /* Dashboard Interno após Login */
         .dashboard-pane {
-            padding: 60px;
+            padding: 40px 60px;
             width: 100%;
-            max-width: 900px;
+            height: 100%;
             margin: auto;
             text-align: left;
             overflow-y: auto;
-            height: 100%;
+            background: #ffffff;
         }
 
         .btn-danger {
@@ -259,6 +212,25 @@
             cursor: pointer;
         }
 
+        .admin-box {
+            background: #fff8f3;
+            border: 1px solid var(--cf-orange);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .course-card {
+            background: var(--cf-gray-bg);
+            border: 1px solid var(--cf-border);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         @media (max-width: 900px) {
             .tech-banner { display: none; }
             .login-pane { max-width: 100%; padding: 30px; }
@@ -268,45 +240,27 @@
 <body>
 
     <div class="layout-container">
-        <!-- Lado Esquerdo: Formulário idêntico ao Cloudflare -->
+        <!-- Lado Esquerdo: Login -->
         <div id="auth-section" class="login-pane">
-            <h1>Faça login no CAPACITA GOV</h1>
+            <h1>CAPACITA GOV</h1>
+            <p class="subtitle">Aceda com o seu e-mail e senha</p>
             
-            <!-- Provedores SSO -->
-            <div class="sso-grid">
-                <button type="button" id="login-google-btn" class="sso-btn">
-                    <svg width="22" height="22" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.49h4.84c-.21 1.12-.86 2.07-1.82 2.71v2.25h2.94c1.72-1.58 2.78-3.9 2.78-6.61z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.94-2.25c-.81.54-1.85.86-3.02.86-2.34 0-4.32-1.58-5.03-3.71H.95v2.33C2.43 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.97 10.75c-.18-.54-.28-1.12-.28-1.75s.1-1.21.28-1.75V4.92H.95C.34 6.13 0 7.5 0 9s.34 2.87.95 4.08l3.02-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.59C13.47.89 11.43 0 9 0 5.48 0 2.43 2.02.95 4.92l3.02 2.33c.71-2.13 2.69-3.71 5.03-3.71z"/></svg>
-                    Google
-                </button>
-                <button type="button" class="sso-btn" style="opacity: 0.5; cursor: not-allowed;" title="Em breve">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#333"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.83 5.42c.62-.75 1.04-1.79.93-2.83-.92.04-2.03.62-2.69 1.37-.58.65-1.09 1.7-1 2.73 1.03.08 2.08-.51 2.76-1.27z"/></svg>
-                    Maçã
-                </button>
-                <button type="button" class="sso-btn" style="opacity: 0.5; cursor: not-allowed;" title="Em breve">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#333"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                    GitHub
-                </button>
-            </div>
-
-            <div class="divider">ou</div>
-
-            <div class="form-field">
-                <label>E-mail</label>
-                <input type="email" class="form-input" placeholder="ex: seu.email@gov.br" disabled>
-            </div>
-            <div class="form-field">
-                <label>Senha</label>
-                <input type="password" class="form-input" placeholder="••••••••" disabled>
-            </div>
-            
-            <button type="button" class="btn-submit" style="opacity: 0.5; cursor: not-allowed;">Entrar</button>
-            
-            <div class="footer-links">
-                <p>O acesso unificado estável é feito de forma segura através do botão <strong>Google</strong> (Conta Institucional).</p>
-            </div>
+            <form id="login-form">
+                <div class="form-field">
+                    <label>E-mail</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="ex: seu.email@gmail.com" required>
+                </div>
+                <div class="form-field">
+                    <label>Senha</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">Entrar no Sistema</button>
+                <div id="login-error" class="error-msg hidden">E-mail ou senha incorretos.</div>
+            </form>
         </div>
 
-        <!-- Lado Direito: Banner Tecnológico com o Planeta / Infraestrutura Global -->
+        <!-- Lado Direito: Banner Tecnológico -->
         <div id="banner-section" class="tech-banner">
             <div class="banner-content">
                 <span class="banner-tag">Infraestrutura Conectada</span>
@@ -315,36 +269,41 @@
             </div>
         </div>
 
-        <!-- Dashboard / Painel Interno (Oculto até autenticar) -->
+        <!-- Dashboard / Painel Interno -->
         <div id="app-section" class="dashboard-pane hidden">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--cf-border); padding-bottom: 20px; margin-bottom: 30px;">
                 <div>
                     <h2 id="user-greeting" style="margin: 0; font-size: 24px; font-weight: 500;">Bem-vindo</h2>
                     <p id="user-email-display" style="margin: 4px 0 0 0; color: var(--cf-text-muted); font-size: 14px;"></p>
                 </div>
-                <button id="logout-btn" class="btn-danger">Sair da Sessão</button>
+                <button id="logout-btn" class="btn-danger">Terminar Sessão</button>
             </div>
 
-            <!-- Painel Administrativo -->
-            <div id="admin-panel" class="hidden" style="background: #fff8f3; border: 1px dashed var(--cf-orange); padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <!-- Painel Administrativo para Gestão de Cursos e Assuntos -->
+            <div id="admin-panel" class="hidden admin-box">
                 <h3 style="margin-top: 0; color: var(--cf-orange); font-size: 16px;">Painel de Controlo do Administrador</h3>
-                <p style="margin: 6px 0 0 0; font-size: 14px; color: #555;">Você possui privilégios totais de gestão de utilizadores e módulos de curso.</p>
+                <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Adicionar novo curso ou assunto na plataforma:</p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <input type="text" id="novo-curso-input" class="form-input" placeholder="Nome do Curso / Assunto..." style="background: white;">
+                    <textarea id="descricao-curso-input" class="form-input" placeholder="Detalhes ou descrição do assunto..." style="background: white; resize: vertical; height: 80px;"></textarea>
+                    <button type="button" id="criar-curso-btn" class="btn-submit" style="margin-top: 0;">Publicar Curso / Assunto</button>
+                </div>
             </div>
 
             <div>
-                <h3 style="font-size: 18px; font-weight: 500; margin-bottom: 15px;">Cursos Disponíveis</h3>
-                <div id="lista-cursos" style="background: var(--cf-gray-bg); border: 1px solid var(--cf-border); border-radius: 8px; padding: 24px; color: var(--cf-text-muted); font-size: 14px;">
-                    A carregar dados do repositório...
+                <h3 style="font-size: 18px; font-weight: 500; margin-bottom: 15px;">Cursos e Assuntos Disponíveis</h3>
+                <div id="lista-cursos">
+                    <!-- Os cursos aparecerão aqui -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Script de Autenticação Firebase -->
+    <!-- Script de Gestão de Sessão, Cursos e Administradores (Firebase) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAjStzMeS40DpIgFEH2Bi4Y80oy8Eel5tE",
@@ -360,52 +319,141 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const loginGoogleBtn = document.getElementById("login-google-btn");
+        const loginForm = document.getElementById("login-form");
+        const loginEmail = document.getElementById("login-email");
+        const loginPassword = document.getElementById("login-password");
+        const loginError = document.getElementById("login-error");
         const logoutBtn = document.getElementById("logout-btn");
+
         const authSection = document.getElementById("auth-section");
         const bannerSection = document.getElementById("banner-section");
         const appSection = document.getElementById("app-section");
         const userGreeting = document.getElementById("user-greeting");
         const userEmailDisplay = document.getElementById("user-email-display");
         const adminPanel = document.getElementById("admin-panel");
-        const listaCursos = document.getElementById("lista-cursos");
+        
+        const criarCursoBtn = document.getElementById("criar-curso-btn");
+        const novoCursoInput = document.getElementById("novo-curso-input");
+        const descricaoCursoInput = document.getElementById("descricao-curso-input");
+        const listaCursosDiv = document.getElementById("lista-cursos");
 
-        const EMAIL_ADMIN = "lucasdaacruztr@gmail.com";
+        // Lista de e-mails autorizados como administradores (incluindo o seu principal do Gmail)
+        const ADMINS_AUTORIZADOS = [
+            "lucasdaacruztr@gmail.com"
+            // Pode adicionar mais e-mails do Gmail aqui no futuro, separados por vírgula, ex: "outro@gmail.com"
+        ];
 
-        if (loginGoogleBtn) {
-            loginGoogleBtn.addEventListener("click", () => {
-                const provider = new GoogleAuthProvider();
-                signInWithRedirect(auth, provider);
-            });
-        }
+        // Login por E-mail e Senha (cria a conta automaticamente se não existir para facilitar o primeiro acesso)
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            loginError.classList.add("hidden");
+            const email = loginEmail.value.trim();
+            const senha = loginPassword.value;
 
-        getRedirectResult(auth).catch((error) => {
-            console.error("Erro no login:", error);
-            alert("Erro ao tentar fazer login com o Google.");
+            try {
+                await signInWithEmailAndPassword(auth, email, senha);
+            } catch (error) {
+                try {
+                    await createUserWithEmailAndPassword(auth, email, senha);
+                    return;
+                } catch (errCreate) {
+                    console.error(errCreate);
+                    loginError.classList.remove("hidden");
+                }
+            }
         });
 
         logoutBtn.addEventListener("click", () => signOut(auth));
 
+        // Verificar permissões de administrador e exibir painel
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 authSection.classList.add("hidden");
                 bannerSection.classList.add("hidden");
                 appSection.classList.remove("hidden");
-                userGreeting.innerText = `Olá, ${user.displayName || 'Utilizador'}`;
                 userEmailDisplay.innerText = user.email;
 
-                if (user.email === EMAIL_ADMIN) {
+                const isAdmin = ADMINS_AUTORIZADOS.includes(user.email);
+
+                if (isAdmin) {
+                    userGreeting.innerText = `Olá, Administrador`;
                     adminPanel.classList.remove("hidden");
                 } else {
+                    userGreeting.innerText = `Olá, Utilizador`;
                     adminPanel.classList.add("hidden");
                 }
-                listaCursos.innerHTML = "Nenhum curso cadastrado no Firestore ainda. (Próxima etapa ativa!)";
+
+                carregarCursos(isAdmin);
             } else {
                 authSection.classList.remove("hidden");
                 bannerSection.classList.remove("hidden");
                 appSection.classList.add("hidden");
             }
         });
+
+        // Criar Curso / Assunto no Firestore (Apenas Administradores)
+        criarCursoBtn.addEventListener("click", async () => {
+            const titulo = novoCursoInput.value.trim();
+            const descricao = descricaoCursoInput.value.trim();
+            if (!titulo) return;
+
+            try {
+                await addDoc(collection(db, "cursos"), {
+                    titulo: titulo,
+                    descricao: descricao || "Sem descrição detalhada.",
+                    criadoEm: new Date()
+                });
+                novoCursoInput.value = "";
+                descricaoCursoInput.value = "";
+                alert("Curso / Assunto criado com sucesso!");
+            } catch (err) {
+                console.error("Erro ao criar curso:", err);
+                alert("Erro ao criar curso no banco de dados.");
+            }
+        });
+
+        // Apagar Curso / Assunto (Apenas Administradores)
+        window.apagarCurso = async function(id) {
+            if (confirm("Tem certeza que deseja remover este curso/assunto?")) {
+                try {
+                    await deleteDoc(doc(db, "cursos", id));
+                } catch (err) {
+                    console.error("Erro ao apagar:", err);
+                }
+            }
+        }
+
+        // Listar Cursos em tempo real
+        function carregarCursos(isAdmin) {
+            onSnapshot(collection(db, "cursos"), (snapshot) => {
+                listaCursosDiv.innerHTML = "";
+                if (snapshot.empty) {
+                    listaCursosDiv.innerHTML = `<div style="background: var(--cf-gray-bg); border: 1px solid var(--cf-border); padding: 16px; border-radius: 6px; color: var(--cf-text-muted); font-size: 14px;">Nenhum curso ou assunto registado no momento.</div>`;
+                    return;
+                }
+
+                snapshot.forEach((docSnap) => {
+                    const curso = docSnap.data();
+                    const id = docSnap.id;
+                    const card = document.createElement("div");
+                    card.className = "course-card";
+                    
+                    let htmlConteudo = `
+                        <div>
+                            <div style="font-weight: 600; font-size: 15px; color: #111;">📚 ${curso.titulo}</div>
+                            <div style="font-size: 13px; color: var(--cf-text-muted); margin-top: 4px;">${curso.descricao}</div>
+                        </div>
+                    `;
+
+                    if (isAdmin) {
+                        htmlConteudo += `<button onclick="apagarCurso('${id}')" class="btn-danger" style="padding: 6px 12px; font-size: 12px;">Eliminar</button>`;
+                    }
+
+                    card.innerHTML = htmlConteudo;
+                    listaCursosDiv.appendChild(card);
+                });
+            });
+        }
     </script>
 </body>
 </html>
