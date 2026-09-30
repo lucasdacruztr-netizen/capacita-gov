@@ -543,28 +543,28 @@
     </div>
 
     <!-- FIREBASE E SCRIPTS DA APLICAÇÃO -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAjStzMeS48DpJgFEH2Bi4Y80oy8Eel5tE",
-            authDomain: "capacita-gov.firebaseapp.com",
-            projectId: "capacita-gov",
-            storageBucket: "capacita-gov.appspot.com",
-            messagingSenderId: "861908221423",
-            appId: "1:861908221423:web:bce9171a84dc3c60bb4a1a",
-            measurementId: "G-ZEJMMGVHDT"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyAjStzMeS48DpJgFEH2Bi4Y80oy8Eel5tE",
+        authDomain: "capacita-gov.firebaseapp.com",
+        projectId: "capacita-gov",
+        storageBucket: "capacita-gov.appspot.com",
+        messagingSenderId: "861908221423",
+        appId: "1:861908221423:web:bce9171a84dc3c60bb4a1a",
+        measurementId: "G-ZEJMMGVHDT"
+    };
 
-        const firebaseApp = initializeApp(firebaseConfig);
-        const db = getFirestore(firebaseApp);
-        window.db = db;
-        window.firebaseDoc = doc;
-        window.firebaseGetDoc = getDoc;
-        window.firebaseSetDoc = setDoc;
-    </script>
-
+    const firebaseApp = initializeApp(firebaseConfig);
+    const db = getFirestore(firebaseApp);
+    
+    window.db = db;
+    window.firebaseDoc = (dbInstance, col, docId) => doc(dbInstance, col, docId);
+    window.firebaseGetDoc = (docRef) => getDoc(docRef);
+    window.firebaseSetDoc = (docRef, data, options) => setDoc(docRef, data, options);
+</script>
     <script>
         function app() {
             return {
