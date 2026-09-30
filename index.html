@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAjStZhes40dPigFEH2Bi4Y80oy8EeL5tE",
+        authDomain: "capacita-gov.firebaseapp.com",
+        projectId: "capacita-gov",
+        storageBucket: "capacita-gov.appspot.com",
+        messagingSenderId: "861908221423",
+        appId: "1:861908221423:web:bce9171a84dc3c60bb4a1a",
+        measurementId: "G-ZEJMMGVHDT"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      window.db = db;
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academia Pro - Plataforma de Cursos</title>
