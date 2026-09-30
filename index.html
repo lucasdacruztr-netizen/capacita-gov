@@ -76,10 +76,8 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="max-w-7xl mx-auto px-4 py-6">
 
-        <!-- ==================== ÁREA DO ALUNO ==================== -->
+        <!-- ÁREA DO ALUNO -->
         <div x-show="currentView === 'home'">
-            
-            <!-- BANNER MODERNO E CHAMATIVO -->
             <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 rounded-3xl p-8 md:p-12 text-white mb-8 shadow-xl relative overflow-hidden">
                 <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl pointer-events-none">
                     <i class="fa-solid fa-graduation-cap"></i>
@@ -88,7 +86,7 @@
                     <div class="relative z-10 max-w-2xl">
                         <span class="bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block">Plataforma de Excelência</span>
                         <h2 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">Bem-vindo à Academia Pro!</h2>
-                        <p class="text-blue-100 mb-8 text-base md:text-lg leading-relaxed font-medium">Transforme seu futuro com cursos de alto nível. Um espaço exclusivo para alunos dedicados que buscam conhecimento prático e avanço profissional. Faça seu login e comece agora mesmo.</p>
+                        <p class="text-blue-100 mb-8 text-base md:text-lg leading-relaxed font-medium">Transforme seu futuro com cursos de alto nível. Um espaço exclusivo para alunos dedicados. Faça seu login e comece agora mesmo.</p>
                         <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-8 py-3.5 rounded-2xl font-extrabold text-sm transition shadow-lg shadow-black/10 flex items-center gap-2">
                             <i class="fa-solid fa-arrow-right-to-bracket"></i> Acessar com meu E-mail
                         </button>
@@ -97,7 +95,7 @@
                 <template x-if="currentUser">
                     <div class="relative z-10">
                         <h2 class="text-3xl md:text-4xl font-extrabold mb-2" x-text="'Olá, ' + currentUser.name + '!'"></h2>
-                        <p class="text-blue-100 mb-6 text-base md:text-lg">Seu acesso está liberado. Explore os cursos disponíveis abaixo e continue sua jornada de aprendizado.</p>
+                        <p class="text-blue-100 mb-6 text-base md:text-lg">Seu acesso está liberado. Explore os cursos disponíveis abaixo.</p>
                     </div>
                 </template>
                 
@@ -161,7 +159,7 @@
             </div>
         </div>
 
-        <!-- VIEW: DETALHE DO CURSO, VÍDEO E QUIZ -->
+        <!-- DETALHE DO CURSO -->
         <div x-show="currentView === 'course-detail'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-10">
             <button @click="currentView = 'home'; quizFinished = false;" class="text-sm text-blue-600 hover:underline mb-6 inline-flex items-center gap-1.5 font-bold">
                 <i class="fa-solid fa-arrow-left"></i> Voltar aos cursos
@@ -191,7 +189,7 @@
 
                     <hr class="my-8 border-gray-100">
 
-                    <!-- SEÇÃO DO QUIZ -->
+                    <!-- QUIZ -->
                     <div x-show="!quizFinished">
                         <h3 class="text-xl font-bold mb-2 text-gray-900 flex items-center gap-2"><i class="fa-solid fa-clipboard-question text-blue-600"></i> Quiz de Avaliação</h3>
                         <p class="text-xs text-gray-500 mb-6 font-medium">Responda com atenção. Cada alternativa é fixada permanentemente após o clique.</p>
@@ -232,13 +230,13 @@
                         </div>
                     </div>
 
-                    <!-- PLACAR FINAL -->
+                    <!-- PLACAR -->
                     <div x-show="quizFinished" class="bg-gradient-to-br from-gray-900 to-indigo-950 text-white rounded-3xl p-8 md:p-12 text-center shadow-2xl">
                         <div class="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-xl">
                             <i class="fa-solid fa-trophy text-yellow-300"></i>
                         </div>
                         <h3 class="text-3xl font-extrabold mb-2">Resultado Final do Quiz</h3>
-                        <p class="text-gray-300 text-sm mb-8 font-medium">Parabéns por concluir a avaliação deste módulo com dedicação!</p>
+                        <p class="text-gray-300 text-sm mb-8 font-medium">Parabéns por concluir a avaliação deste módulo!</p>
                         
                         <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-10 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10">
                             <div>
@@ -263,12 +261,12 @@
             </template>
         </div>
 
-        <!-- ==================== ÁREA DO ADMINISTRADOR ==================== -->
+        <!-- ÁREA DO ADMINISTRADOR -->
         <div x-show="currentView === 'admin'" class="space-y-6">
             <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border flex justify-between items-center">
                 <div>
                     <h2 class="text-2xl font-extrabold text-gray-900">Área do Administrador Supremo</h2>
-                    <p class="text-sm text-gray-500 font-medium">Gerenciamento completo de cursos, permissões e liberação automática de alunos.</p>
+                    <p class="text-sm text-gray-500 font-medium">Gerenciamento completo sincronizado direto na nuvem Firebase.</p>
                 </div>
                 <button @click="currentView = 'home'" class="bg-blue-50 hover:bg-blue-100 text-blue-700 px-5 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-2">
                     <i class="fa-solid fa-house"></i> Ir para Área do Aluno
@@ -319,7 +317,7 @@
                     </div>
 
                     <button @click="createCourse()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
-                        Publicar Curso
+                        Publicar Curso na Nuvem
                     </button>
                 </div>
 
@@ -333,12 +331,8 @@
                                 <div class="flex justify-between items-center">
                                     <h4 class="font-bold text-sm text-blue-900" x-text="course.title + ' (' + course.category + ')'"></h4>
                                     <div class="flex items-center gap-2">
-                                        <button @click="startEditCourse(course)" class="bg-amber-100 hover:bg-amber-200 text-amber-800 px-3.5 py-2 rounded-xl text-xs font-bold transition">
-                                            Editar
-                                        </button>
-                                        <button @click="deleteCourse(course.id)" class="bg-red-100 hover:bg-red-200 text-red-600 px-3.5 py-2 rounded-xl text-xs font-bold transition">
-                                            Excluir
-                                        </button>
+                                        <button @click="startEditCourse(course)" class="bg-amber-100 hover:bg-amber-200 text-amber-800 px-3.5 py-2 rounded-xl text-xs font-bold transition">Editar</button>
+                                        <button @click="deleteCourse(course.id)" class="bg-red-100 hover:bg-red-200 text-red-600 px-3.5 py-2 rounded-xl text-xs font-bold transition">Excluir</button>
                                     </div>
                                 </div>
 
@@ -348,7 +342,7 @@
                                         <template x-for="(lnk, lIdx) in course.urls">
                                             <div class="flex justify-between items-center text-xs bg-gray-50 p-2.5 rounded-xl border">
                                                 <span class="font-medium" x-text="lnk.title"></span>
-                                                <button @click="course.urls.splice(lIdx, 1); saveToStorage()" class="text-red-500 font-bold ml-2">Remover</button>
+                                                <button @click="course.urls.splice(lIdx, 1); saveDataToFirebase()" class="text-red-500 font-bold ml-2">Remover</button>
                                             </div>
                                         </template>
                                     </div>
@@ -360,7 +354,7 @@
 
                                     <hr class="my-3 border-gray-100">
 
-                                    <span class="text-xs font-bold text-gray-700 block mb-1">Adicionar Questão ao Quiz (<span x-text="course.questions.length"></span> atuais):</span>
+                                    <span class="text-xs font-bold text-gray-700 block mb-1">Adicionar Questão ao Quiz (<span x-text="course.questions ? course.questions.length : 0"></span> atuais):</span>
                                     <input type="text" x-model="newQuestionText[course.id]" placeholder="Texto da pergunta..." class="w-full border p-3 rounded-xl text-xs outline-none mb-2">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
                                         <input type="text" x-model="qOpt0[course.id]" placeholder="Opção A" class="border p-2.5 rounded-xl text-xs outline-none">
@@ -382,15 +376,15 @@
                 </div>
             </div>
 
-            <!-- ABA 2: CADASTRAR ALUNOS AUTORIZADOS -->
+            <!-- ABA 2: CADASTRAR ALUNOS -->
             <div x-show="adminTab === 'students'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8 space-y-6">
                 <div>
                     <h3 class="font-bold text-lg mb-2 text-gray-900">Adicionar Novo E-mail Permitido</h3>
-                    <p class="text-xs text-gray-500 mb-5 leading-relaxed">Insira apenas o e-mail do aluno. A <strong>Academia Pro</strong> enviará automaticamente o aviso de liberação para ele.</p>
+                    <p class="text-xs text-gray-500 mb-5 leading-relaxed">Insira apenas o e-mail do aluno. A <strong>Academia Pro</strong> enviará automaticamente o aviso de liberação.</p>
                     <div class="flex flex-col sm:flex-row gap-3 mb-4">
                         <input type="email" x-model="newStudentEmail" placeholder="E-mail do Aluno (ex: aluno@gmail.com)" class="border p-3.5 rounded-2xl text-sm flex-1 outline-none focus:border-blue-500">
                         <button @click="registerStudent()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
-                            Liberar Acesso por E-mail
+                            Liberar Acesso
                         </button>
                     </div>
                 </div>
@@ -404,7 +398,7 @@
                             <div class="p-4 border rounded-2xl bg-gray-50/60 flex justify-between items-center">
                                 <div>
                                     <h4 class="font-bold text-sm text-gray-900" x-text="student.email"></h4>
-                                    <p class="text-[11px] text-gray-400">Aluno Autorizado</p>
+                                    <p class="text-[11px] text-gray-400">Aluno Autorizado na Nuvem</p>
                                 </div>
                                 <button @click="removeStudent(sIdx)" class="text-red-500 hover:text-red-700 text-sm p-2" title="Remover Aluno">
                                     <i class="fa-solid fa-trash"></i>
@@ -415,10 +409,10 @@
                 </div>
             </div>
 
-            <!-- ABA 3: PERMISSÕES DE ACESSO -->
+            <!-- ABA 3: PERMISSÕES -->
             <div x-show="adminTab === 'permissions'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8">
                 <h3 class="font-bold text-lg mb-2 text-gray-900">Controle de Acesso por E-mail</h3>
-                <p class="text-xs text-gray-500 mb-6 font-medium">Defina quais cursos cada e-mail cadastrado pode visualizar e acessar na plataforma.</p>
+                <p class="text-xs text-gray-500 mb-6 font-medium">Defina quais cursos cada e-mail cadastrado pode visualizar.</p>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -449,7 +443,7 @@
                 </div>
             </div>
 
-            <!-- ABA 4: ADMINISTRADORES JÚNIOR -->
+            <!-- ABA 4: ADMINS JÚNIOR -->
             <div x-show="adminTab === 'admins'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8">
                 <h3 class="font-bold text-lg mb-4 text-gray-900">Gerenciar Administradores Júnior</h3>
                 <div class="flex flex-col sm:flex-row gap-3 mb-6">
@@ -506,23 +500,22 @@
 
     <!-- MODAL DE NOTIFICAÇÃO -->
     <div x-show="notificationModal.open" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs transition">
-        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center relative border border-gray-100 transform transition-all">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center relative border border-gray-100">
             <div :class="notificationModal.isSuccess ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'" 
                  class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner">
                 <i :class="notificationModal.isSuccess ? 'fa-solid fa-circle-check' : 'fa-solid fa-triangle-exclamation'"></i>
             </div>
             <h3 class="text-lg font-bold text-gray-900 mb-1" x-text="notificationModal.title"></h3>
             <p class="text-xs text-gray-500 mb-6 leading-relaxed" x-text="notificationModal.message"></p>
-            
             <button @click="notificationModal.open = false" 
-                    :class="notificationModal.isSuccess ? 'bg-green-600 hover:bg-green-700 shadow-green-500/25' : 'bg-gray-900 hover:bg-black shadow-gray-900/25'"
+                    :class="notificationModal.isSuccess ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-900 hover:bg-black'"
                     class="w-full text-white py-3 rounded-2xl font-bold text-sm transition shadow-lg">
                 Entendido
             </button>
         </div>
     </div>
 
-    <!-- MODAL DE EDIÇÃO DE CURSO -->
+    <!-- MODAL DE EDIÇÃO -->
     <div x-show="openEditModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-gray-100" @click.away="openEditModal = false">
             <button @click="openEditModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
@@ -549,7 +542,29 @@
         </div>
     </div>
 
-    <!-- SCRIPT DA APLICAÇÃO -->
+    <!-- FIREBASE E SCRIPTS DA APLICAÇÃO -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjStzMeS48DpJgFEH2Bi4Y80oy8Eel5tE",
+            authDomain: "capacita-gov.firebaseapp.com",
+            projectId: "capacita-gov",
+            storageBucket: "capacita-gov.appspot.com",
+            messagingSenderId: "861908221423",
+            appId: "1:861908221423:web:bce9171a84dc3c60bb4a1a",
+            measurementId: "G-ZEJMMGVHDT"
+        };
+
+        const firebaseApp = initializeApp(firebaseConfig);
+        const db = getFirestore(firebaseApp);
+        window.db = db;
+        window.firebaseDoc = doc;
+        window.firebaseGetDoc = getDoc;
+        window.firebaseSetDoc = setDoc;
+    </script>
+
     <script>
         function app() {
             return {
@@ -561,7 +576,6 @@
                 openLoginModal: false,
                 openEditModal: false,
                 editingCourse: null,
-                
                 loginEmail: '',
 
                 notificationModal: {
@@ -609,7 +623,6 @@
                 accessMatrix: {}, 
                 juniorAdmins: [],
                 newAdminEmail: '',
-
                 newStudentEmail: '',
 
                 newCourse: { title: '', category: '', description: '', urls: [], questions: [] },
@@ -644,32 +657,40 @@
                     });
                 },
 
-                initApp() {
-                    const savedCourses = localStorage.getItem('academia_courses');
-                    if (savedCourses) { try { this.courses = JSON.parse(savedCourses); } catch(e){} }
+                async initApp() {
+                    // Carrega dados diretamente do Firestore do Firebase
+                    try {
+                        const docRef = window.firebaseDoc(window.db, "academia_pro", "dados_gerais");
+                        const docSnap = await window.firebaseGetDoc(docRef);
+                        if (docSnap.exists()) {
+                            const data = docSnap.data();
+                            if(data.courses) this.courses = data.courses;
+                            if(data.studentsList) this.studentsList = data.studentsList;
+                            if(data.accessMatrix) this.accessMatrix = data.accessMatrix;
+                            if(data.juniorAdmins) this.juniorAdmins = data.juniorAdmins;
+                        }
+                    } catch(e) {
+                        console.log("Erro ao carregar do Firebase, usando padrão:", e);
+                    }
                     
-                    const savedUsers = localStorage.getItem('academia_students');
-                    if (savedUsers) { try { this.studentsList = JSON.parse(savedUsers); } catch(e){} }
-                    
-                    const savedMatrix = localStorage.getItem('academia_access');
-                    if (savedMatrix) { try { this.accessMatrix = JSON.parse(savedMatrix); } catch(e){} }
-                    
-                    const savedAdmins = localStorage.getItem('academia_juniors');
-                    if (savedAdmins) { try { this.juniorAdmins = JSON.parse(savedAdmins); } catch(e){} }
-                    
-                    // Utiliza sessionStorage para expirar ao fechar a aba/navegador
                     const sessionCurr = sessionStorage.getItem('academia_current_user');
                     if (sessionCurr) { try { this.currentUser = JSON.parse(sessionCurr); } catch(e){} }
                 },
 
-                saveToStorage() {
-                    localStorage.setItem('academia_courses', JSON.stringify(this.courses));
-                    localStorage.setItem('academia_students', JSON.stringify(this.studentsList));
-                    localStorage.setItem('academia_access', JSON.stringify(this.accessMatrix));
-                    localStorage.setItem('academia_juniors', JSON.stringify(this.juniorAdmins));
+                async saveDataToFirebase() {
+                    try {
+                        await window.firebaseSetDoc(window.firebaseDoc(window.db, "academia_pro", "dados_gerais"), {
+                            courses: this.courses,
+                            studentsList: this.studentsList,
+                            accessMatrix: this.accessMatrix,
+                            juniorAdmins: this.juniorAdmins
+                        });
+                    } catch(e) {
+                        this.showNotification('Erro', 'Falha ao sincronizar com a nuvem.', false);
+                    }
                 },
 
-                registerStudent() {
+                async registerStudent() {
                     if(!this.newStudentEmail) {
                         this.showNotification('Campo Vazio', 'Preencha o e-mail do aluno.', false);
                         return;
@@ -677,12 +698,12 @@
                     const email = this.newStudentEmail.toLowerCase().trim();
                     const exists = this.studentsList.some(s => s.email === email);
                     if(exists) {
-                        this.showNotification('Atenção', 'Este e-mail já está cadastrado no sistema.', false);
+                        this.showNotification('Atenção', 'Este e-mail já está cadastrado.', false);
                         return;
                     }
                     
                     this.studentsList.push({ email: email });
-                    this.saveToStorage();
+                    await this.saveDataToFirebase();
 
                     const templateParams = {
                         to_email: email,
@@ -694,13 +715,13 @@
                     }
 
                     this.newStudentEmail = '';
-                    this.showNotification('E-mail Cadastrado!', `O acesso foi liberado para ${email}.`, true);
+                    this.showNotification('E-mail Cadastrado na Nuvem!', `O acesso foi liberado para ${email}.`, true);
                 },
 
-                removeStudent(index) {
+                async removeStudent(index) {
                     if(confirm('Tem certeza que deseja remover este e-mail?')) {
                         this.studentsList.splice(index, 1);
-                        this.saveToStorage();
+                        await this.saveDataToFirebase();
                     }
                 },
 
@@ -730,7 +751,7 @@
                             role = 'student';
                             userName = email.split('@')[0];
                         } else {
-                            this.showNotification('Acesso Negado', 'Este e-mail não está cadastrado ou autorizado pelo administrador.', false);
+                            this.showNotification('Acesso Negado', 'Este e-mail não está cadastrado ou autorizado.', false);
                             return;
                         }
                     }
@@ -751,7 +772,6 @@
                 logout() {
                     this.currentUser = null;
                     sessionStorage.removeItem('academia_current_user');
-                    localStorage.removeItem('academia_current_user');
                     this.currentView = 'home';
                 },
 
@@ -768,7 +788,7 @@
                     return userAccess.includes(courseId);
                 },
 
-                toggleStudentAccess(email, courseId) {
+                async toggleStudentAccess(email, courseId) {
                     if(!this.accessMatrix[email]) {
                         this.accessMatrix[email] = [];
                     }
@@ -778,7 +798,7 @@
                     } else {
                         this.accessMatrix[email].push(courseId);
                     }
-                    this.saveToStorage();
+                    await this.saveDataToFirebase();
                 },
 
                 openCourse(course) {
@@ -834,9 +854,9 @@
                     this.newLinkUrl = '';
                 },
 
-                createCourse() {
+                async createCourse() {
                     if(!this.newCourse.title || !this.newCourse.category) {
-                        this.showNotification('Atenção', 'Preencha ao menos o título e a categoria do curso.', false);
+                        this.showNotification('Atenção', 'Preencha ao menos o título e a categoria.', false);
                         return;
                     }
                     const newId = Date.now();
@@ -851,8 +871,8 @@
                     };
                     this.courses.push(courseObj);
                     this.newCourse = { title: '', category: '', description: '', urls: [], questions: [] };
-                    this.saveToStorage();
-                    this.showNotification('Sucesso!', 'Curso criado com sucesso!', true);
+                    await this.saveDataToFirebase();
+                    this.showNotification('Sucesso!', 'Curso criado e salvo na nuvem!', true);
                 },
 
                 startEditCourse(course) {
@@ -860,28 +880,28 @@
                     this.openEditModal = true;
                 },
 
-                saveEditCourse() {
+                async saveEditCourse() {
                     if(!this.editingCourse) return;
                     const idx = this.courses.findIndex(c => c.id === this.editingCourse.id);
                     if(idx > -1) {
                         this.courses[idx].title = this.editingCourse.title;
                         this.courses[idx].category = this.editingCourse.category;
                         this.courses[idx].description = this.editingCourse.description;
-                        this.saveToStorage();
+                        await this.saveDataToFirebase();
                     }
                     this.openEditModal = false;
                     this.editingCourse = null;
-                    this.showNotification('Atualizado!', 'Alterações salvas com sucesso.', true);
+                    this.showNotification('Atualizado!', 'Alterações salvas na nuvem.', true);
                 },
 
-                deleteCourse(courseId) {
+                async deleteCourse(courseId) {
                     if(confirm('Tem certeza que deseja excluir este curso?')) {
                         this.courses = this.courses.filter(c => c.id !== courseId);
-                        this.saveToStorage();
+                        await this.saveDataToFirebase();
                     }
                 },
 
-                addVideoToExistingCourse(courseId) {
+                async addVideoToExistingCourse(courseId) {
                     const title = this.editLinkTitle[courseId];
                     const url = this.editLinkUrl[courseId];
                     if(!title || !url) return;
@@ -891,11 +911,11 @@
                         course.urls.push({ title, url });
                         this.editLinkTitle[courseId] = '';
                         this.editLinkUrl[courseId] = '';
-                        this.saveToStorage();
+                        await this.saveDataToFirebase();
                     }
                 },
 
-                addQuestionToCourse(courseId) {
+                async addQuestionToCourse(courseId) {
                     const qText = this.newQuestionText[courseId];
                     const opt0 = this.qOpt0[courseId];
                     const opt1 = this.qOpt1[courseId];
@@ -904,7 +924,7 @@
                     const correct = this.qCorrectIdx[courseId] !== undefined ? Number(this.qCorrectIdx[courseId]) : 0;
 
                     if(!qText || !opt0 || !opt1) {
-                        this.showNotification('Atenção', 'Preencha a pergunta e ao menos as opções A e B.', false);
+                        this.showNotification('Atenção', 'Preencha a pergunta e as opções A e B.', false);
                         return;
                     }
 
@@ -914,6 +934,7 @@
 
                     const course = this.courses.find(c => c.id === courseId);
                     if(course) {
+                        if(!course.questions) course.questions = [];
                         course.questions.push({
                             question: qText,
                             options: options,
@@ -925,25 +946,25 @@
                         this.qOpt2[courseId] = '';
                         this.qOpt3[courseId] = '';
                         this.qCorrectIdx[courseId] = 0;
-                        this.saveToStorage();
-                        this.showNotification('Sucesso!', 'Questão adicionada ao curso.', true);
+                        await this.saveDataToFirebase();
+                        this.showNotification('Sucesso!', 'Questão adicionada e salva na nuvem.', true);
                     }
                 },
 
-                promoteToAdmin() {
+                async promoteToAdmin() {
                     if(!this.newAdminEmail) return;
                     const email = this.newAdminEmail.toLowerCase().trim();
                     if(!this.juniorAdmins.includes(email)) {
                         this.juniorAdmins.push(email);
                         this.newAdminEmail = '';
-                        this.saveToStorage();
+                        await this.saveDataToFirebase();
                         this.showNotification('Admin Promovido!', 'O usuário agora é um Administrador Júnior.', true);
                     }
                 },
 
-                removeJuniorAdmin(email) {
+                async removeJuniorAdmin(email) {
                     this.juniorAdmins = this.juniorAdmins.filter(e => e !== email);
-                    this.saveToStorage();
+                    await this.saveDataToFirebase();
                 }
             }
         }
