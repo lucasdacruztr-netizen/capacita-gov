@@ -3,7 +3,7 @@
 <head>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-      import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyAjStZhes40dPigFEH2Bi4Y80oy8EeL5tE",
@@ -17,7 +17,10 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
+      
+      // Disponibiliza o banco e as ferramentas de gravação globalmente
       window.db = db;
+      window.fbFns = { collection, addDoc, getDocs, doc, setDoc };
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
