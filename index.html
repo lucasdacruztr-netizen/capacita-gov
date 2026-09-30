@@ -587,17 +587,33 @@
     window.firebaseSetDoc = (docRef, data, options) => setDoc(docRef, data, options);
 </script>
     <script>
-        function app() {
-            return {
-                currentView: 'home',
-                adminTab: 'courses',
-                currentUser: null,
-                searchQuery: '',
-                selectedCategory: 'Todos',
-                openLoginModal: false,
-                openEditModal: false,
-                editingCourse: null,
-                loginEmail: '',
+ function app() {
+        return {
+            // Função para guardar dados na nuvem
+            async salvarNaNuven() {
+              try {
+                const docRef = window.firebaseDoc(window.db, "academia_pro", "dados_gerais");
+                await window.firebaseSetDoc(docRef, {
+                  currentView: this.currentView,
+                  adminTab: this.adminTab,
+                });
+                this.showNotification("Sucesso", "Dados guardados na nuvem!", true);
+              } catch (error) {
+                console.error("Erro ao salvar no Firebase:", error);
+                this.showNotification("Erro", "Não foi possível guardar na nuvem.", false);
+              }
+            },
+
+            currentView: 'home',
+            adminTab: 'courses',
+            currentUser: null,
+            searchQuery: '',
+            selectedCategory: 'Todos',
+            selectedCategory: 'Todos',
+            openLoginModal: false,
+            openEditModal: false,
+            editingCourse: null,
+            loginEmail: '',
 
                 notificationModal: {
                     open: false,
