@@ -3,735 +3,844 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma de Estudos • CAPACITA GOV</title>
+    <title>Cursos Gratuitos - CAPACITA GOV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --focuz-bg: #0b0f19;
-            --focuz-sidebar: #0f172a;
-            --focuz-card: #1e293b;
-            --focuz-card-border: #334155;
-            --focuz-green: #10b981;
-            --focuz-green-hover: #059669;
-            --focuz-text: #f8fafc;
-            --focuz-text-muted: #94a3b8;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --primary-blue: #0284c7;
+            --primary-dark: #0f172a;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --error: #ef4444;
+            --transition: all 0.3s ease;
         }
 
-        * { box-sizing: border-box; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            width: 100vw;
-            height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
             display: flex;
-            background-color: var(--focuz-bg);
-            color: var(--focuz-text);
+            height: 100vh;
             overflow: hidden;
         }
 
-        .hidden { display: none !important; }
-
-        /* Login */
-        .login-layout {
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
-
-        .login-pane {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px 64px;
-            background: #0f172a;
-            z-index: 10;
-        }
-
-        .login-pane h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-
-        .login-pane p.subtitle {
-            font-size: 14px;
-            color: var(--focuz-text-muted);
-            margin-bottom: 24px;
-        }
-
-        .form-field {
-            margin-bottom: 16px;
-            text-align: left;
-        }
-
-        .form-field label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 6px;
-            color: var(--focuz-text-muted);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--focuz-card-border);
-            background: #1e293b;
-            color: white;
-            border-radius: 8px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus {
-            border-color: var(--focuz-green);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-        }
-
-        .btn-submit {
-            width: 100%;
-            background-color: var(--focuz-green);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 12px;
-            transition: background-color 0.2s;
-        }
-
-        .btn-submit:hover { background-color: var(--focuz-green-hover); }
-
-        .error-msg {
-            color: #ef4444;
-            font-size: 13px;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .login-banner {
-            flex: 1.5;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 80px;
-            color: white;
-            border-left: 1px solid var(--focuz-card-border);
-        }
-
-        /* App Layout */
-        .app-layout {
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
-
-        .sidebar {
+        /* Sidebar Limpa e Profissional (Azul e Branco) */
+        aside {
             width: 260px;
-            background-color: var(--focuz-sidebar);
-            border-right: 1px solid var(--focuz-card-border);
-            display: flex;
-            flex-direction: column;
-            padding: 24px 16px;
-            flex-shrink: 0;
-        }
-
-        .sidebar-brand {
-            font-size: 18px;
-            font-weight: 700;
+            background-color: var(--primary-dark);
             color: #fff;
-            margin-bottom: 30px;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            flex: 1;
+            justify-content: space-between;
+            padding: 24px 16px;
+            border-right: 1px solid var(--border);
         }
 
-        .sidebar-item {
-            padding: 12px 16px;
-            border-radius: 8px;
-            color: var(--focuz-text-muted);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
+        .logo-area {
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: all 0.2s;
-            user-select: none;
+            padding: 0 12px 24px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .sidebar-item:hover, .sidebar-item.active {
-            background-color: var(--focuz-green);
-            color: white;
+        .logo-area i {
+            font-size: 24px;
+            color: var(--primary-blue);
         }
 
-        .main-content {
-            flex: 1;
+        .logo-area h1 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin-top: 24px;
+            flex-grow: 1;
+        }
+
+        .nav-links li {
+            margin-bottom: 8px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--primary-blue);
+            color: #fff;
+        }
+
+        /* Main Container */
+        .main-container {
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            background-color: var(--focuz-bg);
-            padding: 32px 40px;
         }
 
-        .topbar {
+        header {
+            background-color: var(--bg-card);
+            padding: 16px 32px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
         }
 
-        .greeting-box h2 { margin: 0; font-size: 24px; font-weight: 700; }
-        .greeting-box p { margin: 4px 0 0 0; color: var(--focuz-text-muted); font-size: 13px; }
+        .user-info-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-        .btn-danger {
+        .user-info-header img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-blue);
+        }
+
+        .btn-logout {
             background-color: #ef4444;
-            color: white;
+            color: #fff;
             border: none;
             padding: 8px 16px;
             border-radius: 6px;
-            font-size: 13px;
             cursor: pointer;
             font-weight: 600;
+            transition: var(--transition);
         }
-        .btn-danger:hover { background-color: #dc2626; }
 
-        .card {
-            background-color: var(--focuz-card);
-            border: 1px solid var(--focuz-card-border);
+        .btn-logout:hover {
+            background-color: #dc2626;
+        }
+
+        /* Views Content */
+        .view-section {
+            display: none;
+            padding: 32px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, #ffffff 60%, #e0f2fe 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .hero-banner h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .hero-banner p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 700px;
+            font-size: 15px;
+        }
+
+        /* Layout de Cursos por Categoria */
+        .courses-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        .filter-sidebar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 24px;
+            height: fit-content;
+        }
+
+        .filter-sidebar h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--primary-dark);
+        }
+
+        .filter-group {
             margin-bottom: 20px;
         }
 
-        .admin-box {
-            background: #111827;
-            border: 1px solid var(--focuz-green);
-            padding: 20px;
+        .filter-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .filter-group select, .filter-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+        }
+
+        .course-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .course-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            margin-bottom: 24px;
-        }
-
-        /* Estilo Netflix para Avatares */
-        .avatar-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 70px);
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .avatar-option {
-            width: 70px;
-            height: 70px;
-            border-radius: 8px;
+            padding: 24px;
             cursor: pointer;
-            border: 3px solid transparent;
-            object-fit: cover;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
         }
 
-        .avatar-option:hover {
-            transform: scale(1.08);
+        .course-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: 0 6px 12px rgba(2, 132, 199, 0.08);
+            transform: translateY(-2px);
         }
 
-        .avatar-option.selected {
-            border-color: var(--focuz-green);
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+        .course-badge-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            align-items: center;
         }
 
-        /* Secções */
-        .section-view { display: none; }
-        .section-view.active { display: block; }
+        .badge-online {
+            background-color: #be123c;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-free {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .course-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .course-rating {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .course-rating i {
+            color: #f59e0b;
+        }
+
+        /* Vídeo & Questionário */
+        .video-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+        }
+
+        .video-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .quiz-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            margin-top: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+        }
+
+        .question-box {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--primary-dark);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-label:hover {
+            border-color: var(--primary-blue);
+        }
+
+        .feedback-msg {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0284c7;
+            opacity: 0.9;
+        }
+
+        /* Perfil / Estatísticas */
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+        }
+
+        .stat-card i {
+            font-size: 32px;
+            color: var(--primary-blue);
+            margin-bottom: 12px;
+        }
+
+        .stat-card h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--primary-dark);
+        }
+
+        .stat-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .locked-badge {
+            color: #ef4444;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .unlocked-badge {
+            color: #22c55e;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- TELA DE LOGIN -->
-    <div id="auth-layout" class="login-layout">
-        <div class="login-pane">
-            <h1>CAPACITA GOV</h1>
-            <p class="subtitle">Aceda com o seu Gmail autorizado</p>
-            <form id="login-form">
-                <div class="form-field">
-                    <label>Gmail</label>
-                    <input type="email" id="login-email" class="form-input" placeholder="ex: seu.email@gmail.com" required>
-                </div>
-                <button type="submit" class="btn-submit">Entrar na Plataforma</button>
-                <div id="login-error" class="error-msg hidden">E-mail não autorizado no sistema.</div>
-            </form>
-        </div>
-        <div class="login-banner">
-            <span style="color: var(--focuz-green); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; margin-bottom: 12px;">Ambiente de Alta Performance</span>
-            <h2 style="font-size: 34px; margin: 0 0 16px 0; line-height: 1.2;">Estudo focado com aulas e questões interativas.</h2>
-            <p style="color: var(--focuz-text-muted); font-size: 15px; line-height: 1.5; margin: 0;">Plataforma completa para o seu desenvolvimento profissional.</p>
-        </div>
-    </div>
-
-    <!-- TELA PRINCIPAL -->
-    <div id="app-layout" class="app-layout hidden">
-        <!-- Menu Lateral -->
-        <div class="sidebar">
-            <div class="sidebar-brand">
-                <span>⚡ CAPACITA GOV</span>
+    <!-- Sidebar -->
+    <aside>
+        <div>
+            <div class="logo-area">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h1>CAPACITA GOV</h1>
             </div>
-            <ul class="sidebar-menu">
-                <li class="sidebar-item active" data-target="inicio-view">🏠 <span>Início</span></li>
-                <li class="sidebar-item" data-target="aulas-view">📚 <span>Aulas</span></li>
-                <li class="sidebar-item" data-target="flashcards-view">🃏 <span>Flashcards</span></li>
-                <li class="sidebar-item" data-target="desempenho-view">📊 <span>Desempenho</span></li>
-                <li class="sidebar-item" data-target="perfil-view">👤 <span>Perfil</span></li>
+            <ul class="nav-links">
+                <li><a href="#" class="active" onclick="switchView('inicio', this)"><i class="fa-solid fa-house"></i> Cursos Gratuitos</a></li>
+                <li><a href="#" onclick="switchView('aulas', this)"><i class="fa-solid fa-book-open"></i> Aulas & Questionário</a></li>
+                <li><a href="#" onclick="switchView('desempenho', this)"><i class="fa-solid fa-chart-line"></i> Desempenho</a></li>
+                <li><a href="#" onclick="switchView('perfil', this)"><i class="fa-solid fa-user"></i> Perfil</a></li>
             </ul>
         </div>
-
-        <!-- Conteúdo Principal -->
-        <div class="main-content">
-            <div class="topbar">
-                <div class="greeting-box">
-                    <h2 id="user-greeting">Olá</h2>
-                    <p id="user-email-display"></p>
-                </div>
-                <div style="display: flex; align-items: center; gap: 16px;">
-                    <img id="topbar-avatar" src="https://i.imgur.com/2Y0qPZl.png" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--focuz-green);">
-                    <button id="logout-btn" class="btn-danger">Sair</button>
-                </div>
-            </div>
-
-            <!-- PAINEL ADMINISTRATIVO -->
-            <div id="admin-panel" class="hidden">
-                <div class="admin-box">
-                    <h3 style="margin-top: 0; color: var(--focuz-green); font-size: 17px;">📚 Publicar Aula (Vídeo + Questão Automática Pós-Vídeo)</h3>
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <input type="text" id="aula-titulo" class="form-input" placeholder="Título da Aula...">
-                        <textarea id="aula-texto" class="form-input" placeholder="Descrição ou apontamentos da aula..." style="height: 70px;"></textarea>
-                        <input type="text" id="aula-video" class="form-input" placeholder="Link do YouTube (ex: https://www.youtube.com/watch?v=...)">
-                        
-                        <div style="background: #1e293b; padding: 14px; border-radius: 8px; border: 1px solid var(--focuz-card-border);">
-                            <label style="font-size: 13px; font-weight: 600; color: var(--focuz-green); margin-bottom: 8px; display: block;">Questão Pós-Vídeo (Opcional - se deixar em branco, o sistema cria uma automática sobre formatação):</label>
-                            <input type="text" id="q-pergunta" class="form-input" placeholder="Pergunta..." style="margin-bottom: 6px;">
-                            <input type="text" id="q-op1" class="form-input" placeholder="Opção A" style="margin-bottom: 6px;">
-                            <input type="text" id="q-op2" class="form-input" placeholder="Opção B" style="margin-bottom: 6px;">
-                            <input type="text" id="q-op3" class="form-input" placeholder="Opção C" style="margin-bottom: 6px;">
-                            <label style="font-size: 12px; color: var(--focuz-text-muted); margin-top: 4px; display: block;">Número da Opção Correta (0 para Opção A, 1 para B, 2 para C):</label>
-                            <input type="number" id="q-correta" class="form-input" placeholder="0" min="0" max="2" value="0">
-                        </div>
-
-                        <button type="button" id="publicar-aula-btn" class="btn-submit" style="margin-top: 0;">Publicar Aula Completa</button>
-                    </div>
-                </div>
-
-                <div class="admin-box" style="border-color: #3b82f6;">
-                    <h3 style="margin-top: 0; color: #3b82f6; font-size: 17px;">⚙ Controlo e Direcionamento do Aluno</h3>
-                    <div style="display: flex; gap: 12px; margin-bottom: 10px;">
-                        <input type="email" id="novo-aluno-email" class="form-input" placeholder="Gmail do aluno para autorizar acesso...">
-                        <button type="button" id="adicionar-aluno-btn" class="btn-submit" style="margin-top: 0; width: 160px;">Autorizar</button>
-                    </div>
-                    <div style="display: flex; gap: 12px;">
-                        <input type="email" id="aluno-tarefa-email" class="form-input" placeholder="Gmail do aluno...">
-                        <input type="text" id="aluno-tarefa-instrucao" class="form-input" placeholder="Atribuir tarefa...">
-                        <button type="button" id="atribuir-tarefa-btn" class="btn-submit" style="margin-top: 0; width: 180px; background: #3b82f6;">Enviar Tarefa</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SEÇÃO 1: INÍCIO -->
-            <div id="inicio-view" class="section-view active">
-                <div class="card">
-                    <span style="color: var(--focuz-green); font-size: 12px; font-weight: 600;">ORIENTAÇÃO DO ADMINISTRADOR</span>
-                    <h3 id="tarefa-aluno-titulo" style="font-size: 20px; margin: 8px 0 12px 0;">A carregar diretrizes...</h3>
-                    <p style="color: var(--focuz-text-muted); font-size: 14px; margin: 0;">Utilize o menu lateral para aceder às **Aulas** e responder aos questionários integrados automaticamente após os vídeos.</p>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="card">
-                        <span style="color: var(--focuz-text-muted); font-size: 12px;">MÉDIA DE ACERTOS</span>
-                        <h3 id="stat-media" style="font-size: 26px; margin: 6px 0 0 0;">0%</h3>
-                    </div>
-                    <div class="card">
-                        <span style="color: var(--focuz-text-muted); font-size: 12px;">TESTES REALIZADOS</span>
-                        <h3 id="stat-total" style="font-size: 26px; margin: 6px 0 0 0;">0</h3>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SEÇÃO 2: AULAS -->
-            <div id="aulas-view" class="section-view">
-                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">📚 Módulos de Aulas e Questionários Pós-Vídeo</h3>
-                <div id="lista-aulas"></div>
-            </div>
-
-            <!-- SEÇÃO 3: FLASHCARDS -->
-            <div id="flashcards-view" class="section-view">
-                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">🃏 Flashcards de Fixação</h3>
-                <div class="card" style="text-align: center; padding: 40px;">
-                    <p style="font-size: 18px; margin-bottom: 20px;" id="flashcard-pergunta">O que caracteriza uma gestão pública orientada a resultados?</p>
-                    <button onclick="alert('Resposta: Foco na entrega efetiva de valor para o cidadão e otimização de recursos.')" class="btn-submit" style="max-width: 220px; margin: 0 auto;">Mostrar Resposta</button>
-                </div>
-            </div>
-
-            <!-- SEÇÃO 4: DESEMPENHO -->
-            <div id="desempenho-view" class="section-view">
-                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">📊 O seu Desempenho e Histórico</h3>
-                <div class="card">
-                    <p><strong>Total de Respostas Enviadas:</strong> <span id="perf-total">0</span></p>
-                    <p><strong>Respostas Corretas:</strong> <span id="perf-acertos">0</span></p>
-                    <p><strong>Taxa de Aproveitamento:</strong> <span id="perf-porcentagem">0%</span></p>
-                </div>
-            </div>
-
-            <!-- SEÇÃO 5: PERFIL (Netflix) -->
-            <div id="perfil-view" class="section-view">
-                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">👤 Escolha o seu Avatar (Estilo Netflix)</h3>
-                <div class="card">
-                    <p style="font-size: 14px; color: var(--focuz-text-muted); margin-bottom: 12px;">Clique na imagem que deseja usar como o seu avatar oficial:</p>
-                    <div class="avatar-grid" id="netflix-avatars">
-                        <img src="https://i.imgur.com/2Y0qPZl.png" class="avatar-option" data-url="https://i.imgur.com/2Y0qPZl.png">
-                        <img src="https://i.imgur.com/1Zp5w7C.png" class="avatar-option" data-url="https://i.imgur.com/1Zp5w7C.png">
-                        <img src="https://i.imgur.com/6VBx3io.png" class="avatar-option" data-url="https://i.imgur.com/6VBx3io.png">
-                        <img src="https://i.imgur.com/8Q85n5u.png" class="avatar-option" data-url="https://i.imgur.com/8Q85n5u.png">
-                    </div>
-                    <button type="button" id="salvar-avatar-btn" class="btn-submit" style="width: 200px; margin-top: 20px;">Guardar Avatar</button>
-                </div>
-            </div>
-
+        <div style="color: #64748b; font-size: 12px; text-align: center;">
+            CAPACITA GOV &copy; 2026
         </div>
+    </aside>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <header>
+            <div class="user-info-header">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar">
+                <div>
+                    <h4 style="font-size: 14px; font-weight: 600;">Lucas da Cruz</h4>
+                    <span style="font-size: 12px; color: var(--text-muted);">lucasdacruztr@gmail.com</span>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="alert('Sessão encerrada com sucesso!')">Sair</button>
+        </header>
+
+        <!-- VIEW: INÍCIO / CATÁLOGO -->
+        <section id="view-inicio" class="view-section active">
+            <div class="hero-banner">
+                <h2>Cursos Gratuitos</h2>
+                <p>O CAPACITA GOV foi concebido para disponibilizar cursos em diversas áreas do conhecimento técnico e administrativo. Com conteúdo 100% online, dedique-se ao seu desenvolvimento profissional a qualquer momento.</p>
+            </div>
+
+            <div class="courses-layout">
+                <!-- Filtros Laterais -->
+                <div class="filter-sidebar">
+                    <h3>Ordenar por:</h3>
+                    <div class="filter-group">
+                        <select id="sort-courses">
+                            <option>Nome do curso</option>
+                            <option>Mais bem avaliados</option>
+                            <option>Carga horária</option>
+                        </select>
+                    </div>
+
+                    <h3 style="margin-top: 24px;">Busca:</h3>
+                    <div class="filter-group">
+                        <input type="text" id="search-input" placeholder="Pesquisar por nome...">
+                    </div>
+
+                    <h3 style="margin-top: 24px;">Categoria:</h3>
+                    <div class="filter-group">
+                        <select id="category-filter">
+                            <option>- Qualquer -</option>
+                            <option>Tecnologia e Suporte</option>
+                            <option>Saúde Pública</option>
+                            <option>Gestão Governamental</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Lista de Cursos -->
+                <div class="course-list">
+                    <!-- Curso 1: Liberado para o e-mail -->
+                    <div class="course-card" onclick="openAuthorizedCourse('aulas')">
+                        <div class="course-badge-row">
+                            <span class="badge-online">Online</span>
+                            <span class="badge-free">Cursos Gratuitos</span>
+                            <span class="unlocked-badge"><i class="fa-solid fa-lock-open"></i> Acesso Liberado (E-mail Autorizado)</span>
+                        </div>
+                        <div class="course-meta">
+                            <span><i class="fa-solid fa-folder"></i> Tecnologia e Suporte</span>
+                            <span><i class="fa-regular fa-clock"></i> 2 horas/aula</span>
+                        </div>
+                        <h3 class="course-title">Formatação e Preparação de Computadores: Guia Completo</h3>
+                        <div class="course-rating">
+                            <span>4,9</span>
+                            <div>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <span>(12.450 avaliações)</span>
+                        </div>
+                    </div>
+
+                    <!-- Curso 2: Bloqueado -->
+                    <div class="course-card" onclick="checkAccess('Atenção Primária em Saúde')">
+                        <div class="course-badge-row">
+                            <span class="badge-online">Online</span>
+                            <span class="badge-free">Cursos Gratuitos</span>
+                            <span class="locked-badge"><i class="fa-solid fa-lock"></i> Bloqueado (E-mail não liberado)</span>
+                        </div>
+                        <div class="course-meta">
+                            <span><i class="fa-solid fa-folder"></i> Gestão de Setores Específicos</span>
+                            <span><i class="fa-regular fa-clock"></i> 1 hora/aula</span>
+                        </div>
+                        <h3 class="course-title">A Atenção Primária em Saúde (APS) na Resposta à Pandemia de COVID-19</h3>
+                        <div class="course-rating">
+                            <span>4,9</span>
+                            <div>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <span>(10.086 avaliações)[cite: 10]</span>
+                        </div>
+                    </div>
+
+                    <!-- Curso 3: Bloqueado -->
+                    <div class="course-card" onclick="checkAccess('Gestão Pública')">
+                        <div class="course-badge-row">
+                            <span class="badge-online">Online</span>
+                            <span class="badge-free">Cursos Gratuitos</span>
+                            <span class="locked-badge"><i class="fa-solid fa-lock"></i> Bloqueado (E-mail não liberado)</span>
+                        </div>
+                        <div class="course-meta">
+                            <span><i class="fa-solid fa-folder"></i> Gestão Governamental</span>
+                            <span><i class="fa-regular fa-clock"></i> 3 horas/aula</span>
+                        </div>
+                        <h3 class="course-title">Gestão Pública Orientada a Resultados e Eficiência Administrativa</h3>
+                        <div class="course-rating">
+                            <span>4,8</span>
+                            <div>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                            </div>
+                            <span>(5.320 avaliações)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: AULAS & QUESTIONÁRIO (10 Questões) -->
+        <section id="view-aulas" class="view-section">
+            <div class="video-card">
+                <div class="video-header">
+                    <h3 style="font-size: 18px; margin-bottom: 6px;"><i class="fa-solid fa-laptop-code" style="color: var(--primary-blue);"></i> Formatação e Preparação de Computadores</h3>
+                    <p style="color: var(--text-muted); font-size: 14px;">Assista à aula completa e responda ao questionário obrigatório de 10 questões abaixo.</p>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/eSZ4G2X58tg" title="YouTube video player" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <h3 style="font-size: 20px; margin-bottom: 24px;"><i class="fa-solid fa-clipboard-question"></i> Avaliação do Módulo (10 Questões)</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Nota: O sistema permite avançar e registrar todas as respostas. As corretas e incorretas serão destacadas após a submissão.</p>
+                
+                <form id="quiz-form" onsubmit="submitQuiz(event)">
+                    
+                    <!-- Questão 1 -->
+                    <div class="question-box" data-correct="1">
+                        <p class="question-title">1. Qual é o primeiro passo fundamental a realizar antes de iniciar o processo de formatação?</p>
+                        <div class="options-list">
+                            <label class="option-label"><input type="radio" name="q1" value="0"> A) Comprar um novo disco rígido.</label>
+                            <label class="option-label"><input type="radio" name="q1" value="1"> B) Escolher qual o método de formatação a utilizar.</label>
+                            <label class="option-label"><input type="radio" name="q1" value="2"> C) Atualizar a BIOS da placa-mãe.</label>
+                            <label class="option-label"><input type="radio" name="q1" value="3"> D) Desinstalar todos os programas.</label>
+                        </div>
+                        <div class="feedback-msg"></div>
+                    </div>
+
+                    <!-- Questão 2 -->
+                    <div class="question-box" data-correct="1">
+                        <p class="question-title">2. Qual é atualmente o método mais habitual e comum utilizado para formatar um computador?</p>
+                        <div class="options-list">
+                            <label class="option-label"><input type="radio" name="q2" value="0"> A) Através de um CD de música.</label>
+                            <label class="option-label"><input type="radio" name="q2" value="1"> B) Utilizando um pen drive (pen drive bootável).</label>
+                            <label class="option-label"><input type="radio" name="q2" value="2"> C) Via Bluetooth a partir de um telemóvel.</label>
+                            <label class="option-label"><input type="radio" name="q2" value="3"> D) Download direto pelo navegador.</label>
+                        </div>
+                        <div class="feedback-msg"></div>
+                    </div>
+
+                    <!-- Questão 3 -->
+                    <div class="question-box" data-correct="2">
+                        <p class="question-title">3. O que o utilizador deve fazer se o computador recusar a formatação por pen drive devido a restrições do fabricante?</p>
+                        <div class="options-list">
+                            <label class="option-label"><input type="radio" name="q3" value="0"> A) Desistir de formatar.</label>
+                            <label class="option-label"><input type="radio" name="q3" value="1"> B) Trocar a placa gráfica.</label>
+                            <label class="option-label"><input type="radio" name="q3" value="2"> C) Utilizar um leitor de DVD USB externo para leitura do disco.</label>
+                            <label class="option-label"><input type="radio" name="q3" value="3"> D) Formatar em modo de segurança.</label>
+                        </div>
+                        <div class="feedback-msg"></div>
+                    </div>
+
+                    <!-- Questão 4 -->
+                    <div class="question-box" data-correct="2">
+                        <p class="question-title">4. Qual é a principal característica da restauração do sistema (reset de fábrica) nas configurações do Windows?</p>
+                        <div class="options-list">
+                            <label class="option-label"><input type="radio" name="q4" value="0"> A) Substitui totalmente a formatação clássica por pen drive.</label>
+                            <label class="option-label"><input type="radio" name="q4" value="1"> B) Apaga permanentemente a licença do SO.</label>
+                            <label class="option-label"><input type="radio" name="q4" value="2"> C) É semelhante ao reset de fábrica num telemóvel, sem precisar de discos.</label>
+                            <label class="option-label"><input type="radio" name="q4" value="3"> D) Demora mais de 10 horas.</label>
+                        </div>
+                        <div class="feedback-msg"></div>
+                    </div>
+
+                    <!-- Questão 5 -->
+                    <div class="question-box" data-correct="0">
+                        <p class="question-title">5. Por que razão é importante verificar se a licença do Windows é original ou pirata antes de formatar?</p>
+                        <div class="options-list">
+                            <label class="option-label"><input type="radio" name="q5" value="0"> A) Porque computadores com licença original ativam-se automaticamente via internet.</label>
+                            <label class="option-label"><input type="radio" name="q5" value="1"> B) Porque o Windows pirata impede o PC de ligar.</label>
+                            <label class="option-label"><input type="radio" name="q5" value="2"> C) Porque licenças originais expiram após a formatação.</label>
+                            <label class="option-label"><input type="radio" name="q5" value="3"> D) Para evitar falhas no teclado.</label>
+                        </div>
+                        <div class="feedback-msg"></div>
+                    </div>
+
+                    <!-- Questão 6 -->
+                    <div class="question-box" data-correct="1">
+                        <p class="question-title">6. Qual a recomendação do autor em relação ao uso de ativadores de software para o Windows?</p>
+                        <div class="options-list">
+                            <label class="option-label"><input type="radio" name="q6" value="0"> A) Devem ser sempre usados para desbloquear recursos.</label>
+                            <label class="option-label"><input type="radio" name="q6" value="1"> B) Não fazem sentido, pois o Windows não ativado continua a funcionar sem travar recursos principais.</label>
+                            <label class="option-label"><input type="radio" name="q6" value="2"> C) São obrigatórios no Windows 11.</label>
+                            <label class="option-label"><input type="radio" name="q6" value="3"> D) Devem ser baixados de sites desconhecidos.</label>
+                        </div>
+                        <div class="feedback-msg"></div>
+                    </div>
+
+                    <!-- Questão 7 -->
+                    <div class="question-box" data-correct="0">
+                        <p class="question-title">7. Qual é o terceiro passo fundamental mencionado no vídeo para evitar a perda definitiva de dados?</p>
+                        <div class="options-list">
+                            <label class="option-label"><input type="radio" name="q7" value="0"> A) Fazer um backup total de todos os arquivos antes de formatar.</label>
+                            <label class="option-label"><input type="radio" name="q7" value="1"> B) Enviar ficheiros por e-mail para a Microsoft.</label>
+                            <label class="option-label"><input type="radio" name="q7" value="2"> C) Desligar a ventoinha.</label>
+                            <label class="option-label"><input type="radio" name="q7" value="3"> D) Gravar um vídeo do erro.</label>
+                        </div>
+                        <div class="feedback-msg"></div>
+                    </div>
+
+                    <!-- Questão 8 -->
+                    <div class="question-box" data-correct="1">
+                        <p class="question-title">8. Em que tipo de computadores é importante fazer especificamente um backup de drivers antes de formatar?</p>
+                        <div class="options-list">
+                            <label class="option-label"><input type="radio" name="q8" value="0"> A) Em computadores topo de gama atuais.</label>
+                            <label class="option-label"><input type="radio" name="q8" value="1"> B) Em computadores mais antigos, onde o driver de rede pode não ser reconhecido automaticamente.</label>
+                            <label class="option-label"><input type="radio" name="q8" value="2"> C) Apenas em computadores Apple.</label>
+                            <label class="option-label"><input type="radio" name="q8" value="3"> D) Em nenhum computador.</label>
+                        </div>
+                        <div class="feedback-msg"></div>
+                    </div>
+
+                    <!-- Questão 9 -->
+                    <div class="question-box" data-correct="1">
+                        <p class="question-title">9. Por que razão o autor aconselha a desconectar o computador da internet durante a instalação do Windows?</p>
+                        <div class="options-list">
+                            <label class="option-label"><input type="radio" name="q9" value="0"> A) Para evitar vírus durante a instalação.</label>
+                            <label class="option-label"><input type="radio" name="q9" value="1"> B) Para impedir que o Windows force a criação obrigatória de uma conta Microsoft.</label>
+                            <label class="option-label"><input type="radio" name="q9" value="2"> C) Porque a internet apaga a BIOS.</label>
+                            <label class="option-label"><input type="radio" name="q9" value="3"> D) Para acelerar o processador.</label>
+                        </div>
+                        <div class="feedback-msg"></div>
+                    </div>
+
+                    <!-- Questão 10 -->
+                    <div class="question-box" data-correct="1">
+                        <p class="question-title">10. Quando é que o utilizador deve voltar a conectar o computador à internet após a formatação?</p>
+                        <div class="options-list">
+                            <label class="option-label"><input type="radio" name="q10" value="0"> A) Apenas uma semana depois.</label>
+                            <label class="option-label"><input type="radio" name="q10" value="1"> B) Logo após concluir a formatação e passar pelo processo de criação do utilizador.</label>
+                            <label class="option-label"><input type="radio" name="q10" value="2"> C) Antes de iniciar backups.</label>
+                            <label class="option-label"><input type="radio" name="q10" value="3"> D) Nunca, o PC deve ficar offline.</label>
+                        </div>
+                        <div class="feedback-msg"></div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="margin-top: 16px; width: 100%;">Enviar Respostas e Avançar</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- VIEW: DESEMPENHO -->
+        <section id="view-desempenho" class="view-section">
+            <h2 style="font-size: 24px; margin-bottom: 24px; color: var(--primary-dark);">Painel de Desempenho</h2>
+            <div class="stat-card" style="max-width: 400px; text-align: left; padding: 32px;">
+                <p style="color: var(--text-muted); margin-bottom: 8px;">Taxa de Aproveitamento Geral</p>
+                <h3 style="font-size: 36px; color: var(--primary-blue); margin-bottom: 16px;">88%</h3>
+                <div style="background: var(--border); height: 8px; border-radius: 4px; overflow: hidden;">
+                    <div style="background: var(--success); width: 88%; height: 100%;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: PERFIL -->
+        <section id="view-perfil" class="view-section">
+            <h2 style="font-size: 24px; margin-bottom: 8px; color: var(--primary-dark);">Resumo do Aluno</h2>
+            <p style="color: var(--text-muted); margin-bottom: 24px;">Acompanhe o seu progresso geral na plataforma institucional.</p>
+            
+            <div class="profile-stats-grid">
+                <div class="stat-card">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <h3>12</h3>
+                    <p>Cursos Concluídos</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <h3>92%</h3>
+                    <p>Taxa de Aproveitamento</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-book"></i>
+                    <h3>15</h3>
+                    <p>Total de Cursos Realizados</p>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <!-- Firebase Script -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAjStzMeS40DpIgFEH2Bi4Y80oy8Eel5tE",
-            authDomain: "capacita-gov.firebaseapp.com",
-            projectId: "capacita-gov",
-            storageBucket: "capacita-gov.appspot.com",
-            messagingSenderId: "861908221423",
-            appId: "1:861908221423:web:39c6d3e24313946bb4a1a",
-            measurementId: "G-2L1PEZ0LY7"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        const MASTER_ADMIN = "lucasdaacruztr@gmail.com";
-        let currentUserEmail = "";
-        let selectedAvatarUrl = "https://i.imgur.com/2Y0qPZl.png";
-
-        // CONTROLO DE ABAS
-        const menuItems = document.querySelectorAll(".sidebar-item");
-        const views = document.querySelectorAll(".section-view");
-
-        menuItems.forEach(item => {
-            item.addEventListener("click", () => {
-                menuItems.forEach(i => i.classList.remove("active"));
-                views.forEach(v => v.classList.remove("active"));
-                
-                item.classList.add("active");
-                const targetId = item.getAttribute("data-target");
-                document.getElementById(targetId).classList.add("active");
-            });
-        });
-
-        // SELEÇÃO DE AVATARES
-        const avatarOptions = document.querySelectorAll(".avatar-option");
-        avatarOptions.forEach(img => {
-            img.addEventListener("click", () => {
-                avatarOptions.forEach(i => i.classList.remove("selected"));
-                img.classList.add("selected");
-                selectedAvatarUrl = img.getAttribute("data-url");
-            });
-        });
-
-        document.getElementById("salvar-avatar-btn").addEventListener("click", async () => {
-            await setDoc(doc(db, "perfis", currentUserEmail), { foto: selectedAvatarUrl }, { merge: true });
-            topbarAvatar.src = selectedAvatarUrl;
-            alert("Avatar de perfil atualizado com sucesso!");
-        });
-
-        // AUTENTICAÇÃO
-        const loginForm = document.getElementById("login-form");
-        const loginEmail = document.getElementById("login-email");
-        const loginError = document.getElementById("login-error");
-        const authLayout = document.getElementById("auth-layout");
-        const appLayout = document.getElementById("app-layout");
-        const userGreeting = document.getElementById("user-greeting");
-        const userEmailDisplay = document.getElementById("user-email-display");
-        const adminPanel = document.getElementById("admin-panel");
-        const topbarAvatar = document.getElementById("topbar-avatar");
-
-        window.addEventListener("DOMContentLoaded", () => {
-            const savedEmail = localStorage.getItem("capacita_user");
-            if (savedEmail) verificarEEntrar(savedEmail);
-        });
-
-        loginForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            loginError.classList.add("hidden");
-            await verificarEEntrar(loginEmail.value.trim().toLowerCase());
-        });
-
-        async function verificarEEntrar(email) {
-            const isMaster = (email === MASTER_ADMIN);
-            if (isMaster) await setDoc(doc(db, "admins", email), { email: email }, { merge: true });
-
-            const adminDoc = await getDoc(doc(db, "admins", email));
-            const isAdmin = isMaster || adminDoc.exists();
-
-            let autorizado = isAdmin;
-            if (!autorizado) {
-                const alunoDoc = await getDoc(doc(db, "alunos", email));
-                autorizado = alunoDoc.exists();
-            }
-
-            if (!autorizado) {
-                loginError.classList.remove("hidden");
-                return;
-            }
-
-            currentUserEmail = email;
-            localStorage.setItem("capacita_user", email);
-            userEmailDisplay.innerText = email;
-            userGreeting.innerText = isAdmin ? "Painel do Administrador" : "Área do Aluno";
-
-            if (isAdmin) adminPanel.classList.remove("hidden");
-            else adminPanel.classList.add("hidden");
-
-            authLayout.classList.add("hidden");
-            appLayout.classList.remove("hidden");
-
-            carregarDadosUtilizador(email);
-            carregarConteudoAulas(isAdmin);
-        }
-
-        document.getElementById("logout-btn").addEventListener("click", () => {
-            localStorage.removeItem("capacita_user");
-            location.reload();
-        });
-
-        // ADMIN
-        document.getElementById("adicionar-aluno-btn").addEventListener("click", async () => {
-            const email = document.getElementById("novo-aluno-email").value.trim().toLowerCase();
-            if (!email) return;
-            await setDoc(doc(db, "alunos", email), { email: email });
-            alert(`Aluno ${email} autorizado com sucesso!`);
-            document.getElementById("novo-aluno-email").value = "";
-        });
-
-        document.getElementById("atribuir-tarefa-btn").addEventListener("click", async () => {
-            const email = document.getElementById("aluno-tarefa-email").value.trim().toLowerCase();
-            const instrucao = document.getElementById("aluno-tarefa-instrucao").value.trim();
-            if (!email || !instrucao) return;
-            await setDoc(doc(db, "tarefas", email), { instrucao: instrucao }, { merge: true });
-            alert(`Tarefa atribuída ao aluno ${email}!`);
-            document.getElementById("aluno-tarefa-email").value = "";
-            document.getElementById("aluno-tarefa-instrucao").value = "";
-        });
-
-        document.getElementById("publicar-aula-btn").addEventListener("click", async () => {
-            const titulo = document.getElementById("aula-titulo").value.trim();
-            const texto = document.getElementById("aula-texto").value.trim();
-            const video = document.getElementById("aula-video").value.trim();
+    <script>
+        function switchView(viewId, element) {
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
             
-            const qPergunta = document.getElementById("q-pergunta").value.trim();
-            const qOp1 = document.getElementById("q-op1").value.trim();
-            const qOp2 = document.getElementById("q-op2").value.trim();
-            const qOp3 = document.getElementById("q-op3").value.trim();
-            const qCorreta = parseInt(document.getElementById("q-correta").value);
-
-            if (!titulo) { alert("Insira o título da aula."); return; }
-
-            // Se o admin preencheu a pergunta, usa. Caso contrário, deixa null para gerar automaticamente a padrão
-            let questaoObj = null;
-            if (qPergunta && qOp1) {
-                questaoObj = {
-                    pergunta: qPergunta,
-                    opcoes: [qOp1, qOp2, qOp3].filter(Boolean),
-                    correta: isNaN(qCorreta) ? 0 : qCorreta
-                };
-            }
-
-            try {
-                await addDoc(collection(db, "aulas"), {
-                    titulo, texto, video, questao: questaoObj, criadoEm: new Date()
-                });
-                alert("Aula publicada com sucesso!");
-                document.getElementById("aula-titulo").value = "";
-                document.getElementById("aula-texto").value = "";
-                document.getElementById("aula-video").value = "";
-                document.getElementById("q-pergunta").value = "";
-                document.getElementById("q-op1").value = "";
-                document.getElementById("q-op2").value = "";
-                document.getElementById("q-op3").value = "";
-            } catch (err) {
-                console.error(err);
-                alert("Erro ao publicar.");
-            }
-        });
-
-        window.apagarAula = async function(id) {
-            if (confirm("Deseja apagar esta aula?")) await deleteDoc(doc(db, "aulas", id));
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            if(element) element.classList.add('active');
         }
 
-        // RENDERIZAR AULAS (Com questão automática de formatação garantida)
-        function carregarConteudoAulas(isAdmin) {
-            onSnapshot(collection(db, "aulas"), (snapshot) => {
-                const listaAulasDiv = document.getElementById("lista-aulas");
-                listaAulasDiv.innerHTML = "";
+        function openAuthorizedCourse(viewId) {
+            const navLink = document.querySelectorAll('.nav-links a')[1];
+            switchView(viewId, navLink);
+        }
 
-                if (snapshot.empty) {
-                    listaAulasDiv.innerHTML = `<div class="card" style="color: var(--focuz-text-muted);">Nenhuma aula disponível no momento.</div>`;
-                    return;
-                }
+        function checkAccess(courseName) {
+            alert(`Acesso restrito: O curso "${courseName}" não está liberado para o seu e-mail (lucasdacruztr@gmail.com). Apenas cursos com autorização prévia ficam disponíveis.`);
+        }
 
-                snapshot.forEach((docSnap) => {
-                    const aula = docSnap.data();
-                    const id = docSnap.id;
+        function submitQuiz(event) {
+            event.preventDefault();
+            const boxes = document.querySelectorAll('.question-box');
+            let score = 0;
 
-                    const cardAula = document.createElement("div");
-                    cardAula.className = "card";
+            boxes.forEach((box, index) => {
+                const correctIdx = box.getAttribute('data-correct');
+                const selected = box.querySelector(`input[name="q${index+1}"]:checked`);
+                const feedback = box.querySelector('.feedback-msg');
+                
+                feedback.style.display = 'block';
+                
+                box.querySelectorAll('.option-label').forEach(lbl => {
+                    lbl.style.borderColor = 'var(--border)';
+                    lbl.style.background = '#f8fafc';
+                });
 
-                    let htmlAula = `<h4 style="margin-top: 0; font-size: 18px; color: #fff;">📚 ${aula.titulo}</h4>`;
-                    if (aula.texto) htmlAula += `<p style="font-size: 14px; color: var(--focuz-text-muted); line-height: 1.5;">${aula.texto}</p>`;
+                const correctLabel = box.querySelectorAll('.option-label')[+correctIdx];
+                correctLabel.style.borderColor = 'var(--success)';
+                correctLabel.style.background = 'rgba(34, 197, 94, 0.08)';
+
+                if (selected) {
+                    const selectedVal = selected.value;
+                    const selectedLabel = selected.parentElement;
                     
-                    if (aula.video) {
-                        let videoUrl = aula.video;
-                        if (videoUrl.includes("watch?v=")) videoUrl = videoUrl.replace("watch?v=", "embed/");
-                        else if (videoUrl.includes("youtu.be/")) {
-                            const vId = videoUrl.split("youtu.be/")[1].split("?")[0];
-                            videoUrl = `https://www.youtube.com/embed/${vId}`;
-                        }
-                        if (videoUrl.includes("&")) videoUrl = videoUrl.split("&")[0];
-
-                        htmlAula += `<div style="margin: 14px 0; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"><iframe src="${videoUrl}" style="position: absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius: 8px;" allowfullscreen></iframe></div>`;
-                        
-                        htmlAula += `<button onclick="mostrarQuestionario('${id}')" class="btn-submit" style="background: #3b82f6; margin-top: 8px;">Concluir Vídeo e Ir para o Questionário ➔</button>`;
+                    if (selectedVal === correctIdx) {
+                        score++;
+                        feedback.innerHTML = '<span style="color: var(--success);"><i class="fa-solid fa-circle-check"></i> Correto!</span>';
+                    } else {
+                        selectedLabel.style.borderColor = 'var(--error)';
+                        selectedLabel.style.background = 'rgba(239, 68, 68, 0.08)';
+                        feedback.innerHTML = '<span style="color: var(--error);"><i class="fa-solid fa-circle-xmark"></i> Incorreto (Marcado em vermelho). A resposta correta está destacada em verde.</span>';
                     }
-
-                    // GARANTIR QUE SEMPRE EXISTE UMA QUESTÃO (Se o admin não cadastrou, usa a padrão sobre formatação/educação)
-                    const q = aula.questao || {
-                        pergunta: "Qual é o principal objetivo da formatação correta de documentos e vídeos educacionais abordada?",
-                        opcoes: [
-                            "Garantir a padronização, clareza e facilidade de compreensão para o espectador.",
-                            "Tornar o arquivo o mais pesado possível para armazenamento em nuvem.",
-                            "Omitir as diretrizes principais de apresentação."
-                        ],
-                        correta: 0
-                    };
-
-                    htmlAula += `
-                        <div id="quest-box-${id}" style="display: none; background: #111827; border: 1px solid var(--focuz-card-border); padding: 18px; border-radius: 8px; margin-top: 16px;">
-                            <span style="color: var(--focuz-green); font-size: 12px; font-weight: 600; text-transform: uppercase;">Questionário Pós-Vídeo</span>
-                            <p style="font-size: 15px; font-weight: 500; margin: 8px 0 12px 0;">${q.pergunta}</p>
-                            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
-                                ${q.opcoes.map((op, idx) => `
-                                    <label style="font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                                        <input type="radio" name="resp-${id}" value="${idx}"> ${op}
-                                    </label>
-                                `).join('')}
-                            </div>
-                            <button onclick="responderQuestao('${id}', ${q.correta})" class="btn-submit" style="width: 180px; margin-top:0;">Enviar Resposta</button>
-                            <p id="feedback-${id}" style="font-size: 13px; margin-top: 8px; font-weight: 600;"></p>
-                        </div>
-                    `;
-
-                    if (isAdmin) {
-                        htmlAula += `<div style="margin-top: 16px; border-top: 1px solid var(--focuz-card-border); padding-top: 12px;"><button onclick="apagarAula('${id}')" class="btn-danger">Eliminar Aula</button></div>`;
-                    }
-
-                    cardAula.innerHTML = htmlAula;
-                    listaAulasDiv.appendChild(cardAula);
-                });
+                } else {
+                    feedback.innerHTML = '<span style="color: #f59e0b;"><i class="fa-solid fa-triangle-exclamation"></i> Questão não respondida. A alternativa correta está destacada em verde.</span>';
+                }
             });
-        }
 
-        window.mostrarQuestionario = function(id) {
-            const qBox = document.getElementById(`quest-box-${id}`);
-            if (qBox) {
-                qBox.style.display = "block";
-                qBox.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        window.responderQuestao = async function(id, corretaIdx) {
-            const selecionado = document.querySelector(`input[name="resp-${id}"]:checked`);
-            const feedback = document.getElementById(`feedback-${id}`);
-            if (!selecionado) {
-                feedback.style.color = "#ef4444";
-                feedback.innerText = "Selecione uma opção.";
-                return;
-            }
-
-            const acertou = (parseInt(selecionado.value) === corretaIdx);
-
-            if (acertou) {
-                feedback.style.color = "var(--focuz-green)";
-                feedback.innerText = "✔ Resposta Correta! Parabéns!";
-            } else {
-                feedback.style.color = "#ef4444";
-                feedback.innerText = "✖ Resposta incorreta. Reveja o vídeo e tente novamente!";
-            }
-
-            const userRef = doc(db, "desempenho", currentUserEmail);
-            const userSnap = await getDoc(userRef);
-            let total = 1, acertos = acertou ? 1 : 0;
-            if (userSnap.exists()) {
-                const data = userSnap.data();
-                total = (data.total || 0) + 1;
-                acertos = (data.acertos || 0) + (acertou ? 1 : 0);
-            }
-            await setDoc(userRef, { total, acertos }, { merge: true });
-            carregarDadosUtilizador(currentUserEmail);
-        }
-
-        async function carregarDadosUtilizador(email) {
-            const tarefaDoc = await getDoc(doc(db, "tarefas", email));
-            if (tarefaDoc.exists()) {
-                document.getElementById("tarefa-aluno-titulo").innerText = tarefaDoc.data().instrucao;
-            } else {
-                document.getElementById("tarefa-aluno-titulo").innerText = "Explore as aulas e responda aos questionários pós-vídeo!";
-            }
-
-            const perfDoc = await getDoc(doc(db, "desempenho", email));
-            if (perfDoc.exists()) {
-                const d = perfDoc.data();
-                const total = d.total || 0;
-                const acertos = d.acertos || 0;
-                const porc = total > 0 ? Math.round((acertos / total) * 100) : 0;
-
-                document.getElementById("stat-media").innerText = `${porc}%`;
-                document.getElementById("stat-total").innerText = total;
-                document.getElementById("perf-total").innerText = total;
-                document.getElementById("perf-acertos").innerText = acertos;
-                document.getElementById("perf-porcentagem").innerText = `${porc}%`;
-            }
-
-            const perfilDoc = await getDoc(doc(db, "perfis", email));
-            if (perfilDoc.exists() && perfilDoc.data().foto) {
-                const fotoUrl = perfilDoc.data().foto;
-                topbarAvatar.src = fotoUrl;
-                selectedAvatarUrl = fotoUrl;
-                avatarOptions.forEach(img => {
-                    if (img.getAttribute("data-url") === fotoUrl) img.classList.add("selected");
-                });
-            }
+            alert(`Avaliação enviada com sucesso! Você acertou ${score} de 10 questões. O fluxo seguiu sem bloqueios.`);
         }
     </script>
 </body>
