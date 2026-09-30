@@ -3,844 +3,600 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cursos Gratuitos - CAPACITA GOV</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Plataforma de Cursos - Lucas da Cruz</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- FontAwesome para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-body: #f8fafc;
-            --bg-card: #ffffff;
-            --primary-blue: #0284c7;
-            --primary-dark: #0f172a;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --success: #22c55e;
-            --error: #ef4444;
-            --transition: all 0.3s ease;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* Sidebar Limpa e Profissional (Azul e Branco) */
-        aside {
-            width: 260px;
-            background-color: var(--primary-dark);
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 24px 16px;
-            border-right: 1px solid var(--border);
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 12px 24px 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .logo-area i {
-            font-size: 24px;
-            color: var(--primary-blue);
-        }
-
-        .logo-area h1 {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-links {
-            list-style: none;
-            margin-top: 24px;
-            flex-grow: 1;
-        }
-
-        .nav-links li {
-            margin-bottom: 8px;
-        }
-
-        .nav-links a {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            color: #94a3b8;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            background-color: var(--primary-blue);
-            color: #fff;
-        }
-
-        /* Main Container */
-        .main-container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-
-        header {
-            background-color: var(--bg-card);
-            padding: 16px 32px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .user-info-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-info-header img {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-blue);
-        }
-
-        .btn-logout {
-            background-color: #ef4444;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .btn-logout:hover {
-            background-color: #dc2626;
-        }
-
-        /* Views Content */
-        .view-section {
-            display: none;
-            padding: 32px;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .view-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Hero Banner */
-        .hero-banner {
-            background: linear-gradient(135deg, #ffffff 60%, #e0f2fe 100%);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 40px;
-            margin-bottom: 32px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
-
-        .hero-banner h2 {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 12px;
-        }
-
-        .hero-banner p {
-            color: var(--text-muted);
-            line-height: 1.6;
-            max-width: 700px;
-            font-size: 15px;
-        }
-
-        /* Layout de Cursos por Categoria */
-        .courses-layout {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 24px;
-        }
-
-        .filter-sidebar {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            height: fit-content;
-        }
-
-        .filter-sidebar h3 {
-            font-size: 16px;
-            margin-bottom: 16px;
-            color: var(--primary-dark);
-        }
-
-        .filter-group {
-            margin-bottom: 20px;
-        }
-
-        .filter-group label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-
-        .filter-group select, .filter-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 14px;
-            outline: none;
-            background: #fff;
-        }
-
-        .course-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .course-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
-        }
-
-        .course-card:hover {
-            border-color: var(--primary-blue);
-            box-shadow: 0 6px 12px rgba(2, 132, 199, 0.08);
-            transform: translateY(-2px);
-        }
-
-        .course-badge-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .badge-online {
-            background-color: #be123c;
-            color: #fff;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .badge-free {
-            background-color: #f1f5f9;
-            color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .course-meta {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .course-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 12px;
-        }
-
-        .course-rating {
-            font-size: 13px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .course-rating i {
-            color: #f59e0b;
-        }
-
-        /* Vídeo & Questionário */
-        .video-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
-        }
-
-        .video-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            background: #000;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .quiz-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 32px;
-            margin-top: 24px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
-        }
-
-        .question-box {
-            margin-bottom: 32px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .question-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--primary-dark);
-        }
-
-        .options-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .option-label {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #f8fafc;
-            padding: 12px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .option-label:hover {
-            border-color: var(--primary-blue);
-        }
-
-        .feedback-msg {
-            margin-top: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            display: none;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-blue);
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-            display: inline-block;
-            text-decoration: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #0284c7;
-            opacity: 0.9;
-        }
-
-        /* Perfil / Estatísticas */
-        .profile-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-top: 24px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 28px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
-        }
-
-        .stat-card i {
-            font-size: 32px;
-            color: var(--primary-blue);
-            margin-bottom: 12px;
-        }
-
-        .stat-card h3 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: var(--primary-dark);
-        }
-
-        .stat-card p {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .locked-badge {
-            color: #ef4444;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .unlocked-badge {
-            color: #22c55e;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-    </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased" x-data="app()">
 
-    <!-- Sidebar -->
-    <aside>
-        <div>
-            <div class="logo-area">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <h1>CAPACITA GOV</h1>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#" class="active" onclick="switchView('inicio', this)"><i class="fa-solid fa-house"></i> Cursos Gratuitos</a></li>
-                <li><a href="#" onclick="switchView('aulas', this)"><i class="fa-solid fa-book-open"></i> Aulas & Questionário</a></li>
-                <li><a href="#" onclick="switchView('desempenho', this)"><i class="fa-solid fa-chart-line"></i> Desempenho</a></li>
-                <li><a href="#" onclick="switchView('perfil', this)"><i class="fa-solid fa-user"></i> Perfil</a></li>
-            </ul>
-        </div>
-        <div style="color: #64748b; font-size: 12px; text-align: center;">
-            CAPACITA GOV &copy; 2026
-        </div>
-    </aside>
-
-    <!-- Main Container -->
-    <div class="main-container">
-        <header>
-            <div class="user-info-header">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar">
+    <!-- HEADER / NAVEGAÇÃO PRINCIPAL (2 ABAS: ALUNO E ADMINISTRADOR) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" @click="currentView = 'home'">
+                <div class="bg-blue-600 text-white p-2 rounded-lg font-bold text-xl">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
                 <div>
-                    <h4 style="font-size: 14px; font-weight: 600;">Lucas da Cruz</h4>
-                    <span style="font-size: 12px; color: var(--text-muted);">lucasdacruztr@gmail.com</span>
-                </div>
-            </div>
-            <button class="btn-logout" onclick="alert('Sessão encerrada com sucesso!')">Sair</button>
-        </header>
-
-        <!-- VIEW: INÍCIO / CATÁLOGO -->
-        <section id="view-inicio" class="view-section active">
-            <div class="hero-banner">
-                <h2>Cursos Gratuitos</h2>
-                <p>O CAPACITA GOV foi concebido para disponibilizar cursos em diversas áreas do conhecimento técnico e administrativo. Com conteúdo 100% online, dedique-se ao seu desenvolvimento profissional a qualquer momento.</p>
-            </div>
-
-            <div class="courses-layout">
-                <!-- Filtros Laterais -->
-                <div class="filter-sidebar">
-                    <h3>Ordenar por:</h3>
-                    <div class="filter-group">
-                        <select id="sort-courses">
-                            <option>Nome do curso</option>
-                            <option>Mais bem avaliados</option>
-                            <option>Carga horária</option>
-                        </select>
-                    </div>
-
-                    <h3 style="margin-top: 24px;">Busca:</h3>
-                    <div class="filter-group">
-                        <input type="text" id="search-input" placeholder="Pesquisar por nome...">
-                    </div>
-
-                    <h3 style="margin-top: 24px;">Categoria:</h3>
-                    <div class="filter-group">
-                        <select id="category-filter">
-                            <option>- Qualquer -</option>
-                            <option>Tecnologia e Suporte</option>
-                            <option>Saúde Pública</option>
-                            <option>Gestão Governamental</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Lista de Cursos -->
-                <div class="course-list">
-                    <!-- Curso 1: Liberado para o e-mail -->
-                    <div class="course-card" onclick="openAuthorizedCourse('aulas')">
-                        <div class="course-badge-row">
-                            <span class="badge-online">Online</span>
-                            <span class="badge-free">Cursos Gratuitos</span>
-                            <span class="unlocked-badge"><i class="fa-solid fa-lock-open"></i> Acesso Liberado (E-mail Autorizado)</span>
-                        </div>
-                        <div class="course-meta">
-                            <span><i class="fa-solid fa-folder"></i> Tecnologia e Suporte</span>
-                            <span><i class="fa-regular fa-clock"></i> 2 horas/aula</span>
-                        </div>
-                        <h3 class="course-title">Formatação e Preparação de Computadores: Guia Completo</h3>
-                        <div class="course-rating">
-                            <span>4,9</span>
-                            <div>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                            </div>
-                            <span>(12.450 avaliações)</span>
-                        </div>
-                    </div>
-
-                    <!-- Curso 2: Bloqueado -->
-                    <div class="course-card" onclick="checkAccess('Atenção Primária em Saúde')">
-                        <div class="course-badge-row">
-                            <span class="badge-online">Online</span>
-                            <span class="badge-free">Cursos Gratuitos</span>
-                            <span class="locked-badge"><i class="fa-solid fa-lock"></i> Bloqueado (E-mail não liberado)</span>
-                        </div>
-                        <div class="course-meta">
-                            <span><i class="fa-solid fa-folder"></i> Gestão de Setores Específicos</span>
-                            <span><i class="fa-regular fa-clock"></i> 1 hora/aula</span>
-                        </div>
-                        <h3 class="course-title">A Atenção Primária em Saúde (APS) na Resposta à Pandemia de COVID-19</h3>
-                        <div class="course-rating">
-                            <span>4,9</span>
-                            <div>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                            </div>
-                            <span>(10.086 avaliações)[cite: 10]</span>
-                        </div>
-                    </div>
-
-                    <!-- Curso 3: Bloqueado -->
-                    <div class="course-card" onclick="checkAccess('Gestão Pública')">
-                        <div class="course-badge-row">
-                            <span class="badge-online">Online</span>
-                            <span class="badge-free">Cursos Gratuitos</span>
-                            <span class="locked-badge"><i class="fa-solid fa-lock"></i> Bloqueado (E-mail não liberado)</span>
-                        </div>
-                        <div class="course-meta">
-                            <span><i class="fa-solid fa-folder"></i> Gestão Governamental</span>
-                            <span><i class="fa-regular fa-clock"></i> 3 horas/aula</span>
-                        </div>
-                        <h3 class="course-title">Gestão Pública Orientada a Resultados e Eficiência Administrativa</h3>
-                        <div class="course-rating">
-                            <span>4,8</span>
-                            <div>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star-half-stroke"></i>
-                            </div>
-                            <span>(5.320 avaliações)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- VIEW: AULAS & QUESTIONÁRIO (10 Questões) -->
-        <section id="view-aulas" class="view-section">
-            <div class="video-card">
-                <div class="video-header">
-                    <h3 style="font-size: 18px; margin-bottom: 6px;"><i class="fa-solid fa-laptop-code" style="color: var(--primary-blue);"></i> Formatação e Preparação de Computadores</h3>
-                    <p style="color: var(--text-muted); font-size: 14px;">Assista à aula completa e responda ao questionário obrigatório de 10 questões abaixo.</p>
-                </div>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/eSZ4G2X58tg" title="YouTube video player" allowfullscreen></iframe>
+                    <h1 class="font-bold text-lg leading-tight">Academia Pro</h1>
+                    <p class="text-xs text-gray-500">Lucas da Cruz</p>
                 </div>
             </div>
 
-            <div class="quiz-container">
-                <h3 style="font-size: 20px; margin-bottom: 24px;"><i class="fa-solid fa-clipboard-question"></i> Avaliação do Módulo (10 Questões)</h3>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Nota: O sistema permite avançar e registrar todas as respostas. As corretas e incorretas serão destacadas após a submissão.</p>
+            <!-- ABAS DE NAVEGAÇÃO (ALUNO / ADMINISTRADOR) -->
+            <div class="hidden md:flex items-center space-x-2 bg-gray-100 p-1 rounded-xl">
+                <button @click="currentView = 'home'" 
+                        :class="currentView === 'home' || currentView === 'course-detail' ? 'bg-white text-blue-600 shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'"
+                        class="px-4 py-2 rounded-lg text-sm transition">
+                    <i class="fa-solid fa-book-open mr-1"></i> Área do Aluno
+                </button>
                 
-                <form id="quiz-form" onsubmit="submitQuiz(event)">
+                <template x-if="currentUser && (currentUser.role === 'admin' || currentUser.role === 'admin_junior')">
+                    <button @click="currentView = 'admin'" 
+                            :class="currentView === 'admin' ? 'bg-white text-blue-600 shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'"
+                            class="px-4 py-2 rounded-lg text-sm transition">
+                        <i class="fa-solid fa-gauge-high mr-1"></i> Área do Administrador
+                    </button>
+                </template>
+            </div>
+
+            <!-- PERFIL DE USUÁRIO / LOGIN -->
+            <div class="flex items-center space-x-4">
+                <template x-if="currentUser">
+                    <div class="flex items-center space-x-3">
+                        <!-- Foto de Perfil com Inicial Exata -->
+                        <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-inner uppercase"
+                             x-text="currentUser.name.charAt(0)">
+                        </div>
+                        <div class="text-left">
+                            <div class="text-sm font-semibold flex items-center gap-1">
+                                <span x-text="currentUser.name"></span>
+                                <!-- Indicador Admin Supremo (AA) -->
+                                <template x-if="currentUser.email === 'lucaasdacruztr@gmail.com' || currentUser.isSupreme">
+                                    <span class="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold" title="Administrador Supremo">AA</span>
+                                </template>
+                            </div>
+                            <span class="text-xs text-gray-500 capitalize" x-text="currentUser.role === 'admin' ? 'Administrador' : 'Aluno'"></span>
+                        </div>
+                        <button @click="logout()" class="text-red-500 hover:text-red-700 text-sm p-2 ml-2" title="Sair">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                </template>
+                <template x-if="!currentUser">
+                    <button @click="openLoginModal = true" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                        Entrar / Cadastrar
+                    </button>
+                </template>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+
+        <!-- ==================== ÁREA DO ALUNO ==================== -->
+        <div x-show="currentView === 'home'">
+            <!-- Busca Limpa (Sem filtros complexos) -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 md:p-10 text-white mb-8 shadow-md">
+                <h2 class="text-2xl md:text-3xl font-bold mb-2">Seus Cursos Disponíveis</h2>
+                <p class="text-blue-100 mb-6 text-sm md:text-base">Acesse os conteúdos liberados pelo administrador para o seu perfil.</p>
+                
+                <div class="relative max-w-xl">
+                    <input type="text" x-model="searchQuery" placeholder="Buscar curso pelo nome..." 
+                           class="w-full pl-10 pr-4 py-3 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-4 text-gray-400"></i>
+                </div>
+            </div>
+
+            <!-- Categorias Dinâmicas criadas pelo Admin -->
+            <div class="flex gap-2 overflow-x-auto pb-4 mb-6">
+                <button @click="selectedCategory = 'Todos'" 
+                        :class="selectedCategory === 'Todos' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border'"
+                        class="px-4 py-2 rounded-xl text-sm font-medium shadow-sm transition whitespace-nowrap">
+                    Todas as Categorias
+                </button>
+                <template x-for="cat in dynamicCategories" :key="cat">
+                    <button @click="selectedCategory = cat" 
+                            :class="selectedCategory === cat ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border'"
+                            class="px-4 py-2 rounded-xl text-sm font-medium shadow-sm transition whitespace-nowrap"
+                            x-text="cat">
+                    </button>
+                </template>
+            </div>
+
+            <!-- Grid de Cursos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <template x-for="course in filteredCourses" :key="course.id">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+                        <div>
+                            <div class="bg-gray-100 h-40 relative flex items-center justify-center text-gray-400">
+                                <i :class="course.icon || 'fa-solid fa-book'" class="text-4xl"></i>
+                                <span class="absolute top-3 right-3 bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full" x-text="course.category"></span>
+                                <!-- Status de Trancado / Liberado -->
+                                <template x-if="!isCourseAccessible(course.id)">
+                                    <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center text-white">
+                                        <i class="fa-solid fa-lock text-2xl mb-1"></i>
+                                        <span class="text-xs font-bold">Curso Trancado</span>
+                                    </div>
+                                </template>
+                            </div>
+                            <div class="p-5">
+                                <h3 class="font-bold text-lg mb-2 text-gray-900" x-text="course.title"></h3>
+                                <p class="text-gray-600 text-sm mb-4 line-clamp-2" x-text="course.description"></p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <template x-if="isCourseAccessible(course.id)">
+                                <button @click="openCourse(course)" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-medium text-sm transition shadow-sm">
+                                    Acessar Conteúdo
+                                </button>
+                            </template>
+                            <template x-if="!isCourseAccessible(course.id)">
+                                <button disabled class="w-full bg-gray-200 text-gray-400 py-2.5 rounded-xl font-medium text-sm cursor-not-allowed">
+                                    Aguardando Liberação
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- VIEW: DETALHE DO CURSO E QUIZ COM FEEDBACK IMEDIATO -->
+        <div x-show="currentView === 'course-detail'" class="bg-white rounded-2xl shadow-sm border p-6 md:p-8">
+            <button @click="currentView = 'home'" class="text-sm text-blue-600 hover:underline mb-6 inline-flex items-center gap-1 font-semibold">
+                <i class="fa-solid fa-arrow-left"></i> Voltar aos cursos
+            </button>
+
+            <template x-if="activeCourse">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2" x-text="activeCourse.title"></h2>
+                    <p class="text-gray-600 mb-6" x-text="activeCourse.description"></p>
+
+                    <!-- URLs / Links Externos adicionados pelo Admin -->
+                    <template x-if="activeCourse.urls && activeCourse.urls.length > 0">
+                        <div class="mb-6 bg-blue-50 border border-blue-100 p-4 rounded-xl">
+                            <h4 class="text-sm font-bold text-blue-900 mb-2"><i class="fa-solid fa-link mr-1"></i> Links e Materiais Externos:</h4>
+                            <ul class="space-y-1">
+                                <template x-for="link in activeCourse.urls">
+                                    <li>
+                                        <a :href="link.url" target="_blank" class="text-sm text-blue-600 hover:underline flex items-center gap-1">
+                                            <i class="fa-solid fa-external-link text-xs"></i> <span x-text="link.title"></span>
+                                        </a>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+
+                    <hr class="my-6">
+
+                    <!-- Quiz com Feedback Imediato ao Clicar -->
+                    <h3 class="text-lg font-bold mb-4 text-gray-800"><i class="fa-solid fa-clipboard-question text-blue-600 mr-2"></i> Quiz de Avaliação</h3>
                     
-                    <!-- Questão 1 -->
-                    <div class="question-box" data-correct="1">
-                        <p class="question-title">1. Qual é o primeiro passo fundamental a realizar antes de iniciar o processo de formatação?</p>
-                        <div class="options-list">
-                            <label class="option-label"><input type="radio" name="q1" value="0"> A) Comprar um novo disco rígido.</label>
-                            <label class="option-label"><input type="radio" name="q1" value="1"> B) Escolher qual o método de formatação a utilizar.</label>
-                            <label class="option-label"><input type="radio" name="q1" value="2"> C) Atualizar a BIOS da placa-mãe.</label>
-                            <label class="option-label"><input type="radio" name="q1" value="3"> D) Desinstalar todos os programas.</label>
-                        </div>
-                        <div class="feedback-msg"></div>
+                    <div class="space-y-6">
+                        <template x-for="(q, qIndex) in activeCourse.questions" :key="qIndex">
+                            <div class="bg-gray-50 border p-5 rounded-xl">
+                                <p class="font-semibold text-gray-800 mb-3" x-text="(qIndex + 1) + '. ' + q.question"></p>
+                                <div class="space-y-2">
+                                    <template x-for="(opt, oIndex) in q.options" :key="oIndex">
+                                        <button @click="answerQuiz(qIndex, oIndex)"
+                                                :class="{
+                                                    'bg-green-100 border-green-500 text-green-800 font-bold': userAnswers[qIndex] === oIndex && quizAnsweredState[qIndex] && oIndex === q.correct,
+                                                    'bg-red-100 border-red-500 text-red-800 font-bold': userAnswers[qIndex] === oIndex && quizAnsweredState[qIndex] && oIndex !== q.correct,
+                                                    'bg-white border-gray-200 hover:bg-gray-100': userAnswers[qIndex] !== oIndex || !quizAnsweredState[qIndex]
+                                                }"
+                                                class="w-full text-left px-4 py-3 rounded-lg border text-sm transition flex justify-between items-center">
+                                            <span x-text="opt"></span>
+                                            <template x-if="quizAnsweredState[qIndex] && oIndex === q.correct">
+                                                <i class="fa-solid fa-check text-green-600"></i>
+                                            </template>
+                                            <template x-if="quizAnsweredState[qIndex] && userAnswers[qIndex] === oIndex && oIndex !== q.correct">
+                                                <i class="fa-solid fa-xmark text-red-600"></i>
+                                            </template>
+                                        </button>
+                                    </template>
+                                </div>
+                                <template x-if="quizAnsweredState[qIndex]">
+                                    <div class="mt-2 text-xs font-bold" :class="userAnswers[qIndex] === q.correct ? 'text-green-600' : 'text-red-600'">
+                                        <span x-text="userAnswers[qIndex] === q.correct ? '✓ Acertou na hora!' : '✕ Errou!'"></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
                     </div>
 
-                    <!-- Questão 2 -->
-                    <div class="question-box" data-correct="1">
-                        <p class="question-title">2. Qual é atualmente o método mais habitual e comum utilizado para formatar um computador?</p>
-                        <div class="options-list">
-                            <label class="option-label"><input type="radio" name="q2" value="0"> A) Através de um CD de música.</label>
-                            <label class="option-label"><input type="radio" name="q2" value="1"> B) Utilizando um pen drive (pen drive bootável).</label>
-                            <label class="option-label"><input type="radio" name="q2" value="2"> C) Via Bluetooth a partir de um telemóvel.</label>
-                            <label class="option-label"><input type="radio" name="q2" value="3"> D) Download direto pelo navegador.</label>
+                    <!-- Envio final para consolidar a média -->
+                    <div class="mt-8 flex items-center justify-between bg-gray-100 p-4 rounded-xl">
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700">Média consolidada: </span>
+                            <span class="font-bold text-blue-600 text-lg" x-text="calculateUserScore() + '%' "></span>
                         </div>
-                        <div class="feedback-msg"></div>
+                        <button @click="finalizeQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition shadow">
+                            Enviar Respostas e Salvar Média
+                        </button>
                     </div>
+                </div>
+            </template>
+        </div>
 
-                    <!-- Questão 3 -->
-                    <div class="question-box" data-correct="2">
-                        <p class="question-title">3. O que o utilizador deve fazer se o computador recusar a formatação por pen drive devido a restrições do fabricante?</p>
-                        <div class="options-list">
-                            <label class="option-label"><input type="radio" name="q3" value="0"> A) Desistir de formatar.</label>
-                            <label class="option-label"><input type="radio" name="q3" value="1"> B) Trocar a placa gráfica.</label>
-                            <label class="option-label"><input type="radio" name="q3" value="2"> C) Utilizar um leitor de DVD USB externo para leitura do disco.</label>
-                            <label class="option-label"><input type="radio" name="q3" value="3"> D) Formatar em modo de segurança.</label>
-                        </div>
-                        <div class="feedback-msg"></div>
-                    </div>
-
-                    <!-- Questão 4 -->
-                    <div class="question-box" data-correct="2">
-                        <p class="question-title">4. Qual é a principal característica da restauração do sistema (reset de fábrica) nas configurações do Windows?</p>
-                        <div class="options-list">
-                            <label class="option-label"><input type="radio" name="q4" value="0"> A) Substitui totalmente a formatação clássica por pen drive.</label>
-                            <label class="option-label"><input type="radio" name="q4" value="1"> B) Apaga permanentemente a licença do SO.</label>
-                            <label class="option-label"><input type="radio" name="q4" value="2"> C) É semelhante ao reset de fábrica num telemóvel, sem precisar de discos.</label>
-                            <label class="option-label"><input type="radio" name="q4" value="3"> D) Demora mais de 10 horas.</label>
-                        </div>
-                        <div class="feedback-msg"></div>
-                    </div>
-
-                    <!-- Questão 5 -->
-                    <div class="question-box" data-correct="0">
-                        <p class="question-title">5. Por que razão é importante verificar se a licença do Windows é original ou pirata antes de formatar?</p>
-                        <div class="options-list">
-                            <label class="option-label"><input type="radio" name="q5" value="0"> A) Porque computadores com licença original ativam-se automaticamente via internet.</label>
-                            <label class="option-label"><input type="radio" name="q5" value="1"> B) Porque o Windows pirata impede o PC de ligar.</label>
-                            <label class="option-label"><input type="radio" name="q5" value="2"> C) Porque licenças originais expiram após a formatação.</label>
-                            <label class="option-label"><input type="radio" name="q5" value="3"> D) Para evitar falhas no teclado.</label>
-                        </div>
-                        <div class="feedback-msg"></div>
-                    </div>
-
-                    <!-- Questão 6 -->
-                    <div class="question-box" data-correct="1">
-                        <p class="question-title">6. Qual a recomendação do autor em relação ao uso de ativadores de software para o Windows?</p>
-                        <div class="options-list">
-                            <label class="option-label"><input type="radio" name="q6" value="0"> A) Devem ser sempre usados para desbloquear recursos.</label>
-                            <label class="option-label"><input type="radio" name="q6" value="1"> B) Não fazem sentido, pois o Windows não ativado continua a funcionar sem travar recursos principais.</label>
-                            <label class="option-label"><input type="radio" name="q6" value="2"> C) São obrigatórios no Windows 11.</label>
-                            <label class="option-label"><input type="radio" name="q6" value="3"> D) Devem ser baixados de sites desconhecidos.</label>
-                        </div>
-                        <div class="feedback-msg"></div>
-                    </div>
-
-                    <!-- Questão 7 -->
-                    <div class="question-box" data-correct="0">
-                        <p class="question-title">7. Qual é o terceiro passo fundamental mencionado no vídeo para evitar a perda definitiva de dados?</p>
-                        <div class="options-list">
-                            <label class="option-label"><input type="radio" name="q7" value="0"> A) Fazer um backup total de todos os arquivos antes de formatar.</label>
-                            <label class="option-label"><input type="radio" name="q7" value="1"> B) Enviar ficheiros por e-mail para a Microsoft.</label>
-                            <label class="option-label"><input type="radio" name="q7" value="2"> C) Desligar a ventoinha.</label>
-                            <label class="option-label"><input type="radio" name="q7" value="3"> D) Gravar um vídeo do erro.</label>
-                        </div>
-                        <div class="feedback-msg"></div>
-                    </div>
-
-                    <!-- Questão 8 -->
-                    <div class="question-box" data-correct="1">
-                        <p class="question-title">8. Em que tipo de computadores é importante fazer especificamente um backup de drivers antes de formatar?</p>
-                        <div class="options-list">
-                            <label class="option-label"><input type="radio" name="q8" value="0"> A) Em computadores topo de gama atuais.</label>
-                            <label class="option-label"><input type="radio" name="q8" value="1"> B) Em computadores mais antigos, onde o driver de rede pode não ser reconhecido automaticamente.</label>
-                            <label class="option-label"><input type="radio" name="q8" value="2"> C) Apenas em computadores Apple.</label>
-                            <label class="option-label"><input type="radio" name="q8" value="3"> D) Em nenhum computador.</label>
-                        </div>
-                        <div class="feedback-msg"></div>
-                    </div>
-
-                    <!-- Questão 9 -->
-                    <div class="question-box" data-correct="1">
-                        <p class="question-title">9. Por que razão o autor aconselha a desconectar o computador da internet durante a instalação do Windows?</p>
-                        <div class="options-list">
-                            <label class="option-label"><input type="radio" name="q9" value="0"> A) Para evitar vírus durante a instalação.</label>
-                            <label class="option-label"><input type="radio" name="q9" value="1"> B) Para impedir que o Windows force a criação obrigatória de uma conta Microsoft.</label>
-                            <label class="option-label"><input type="radio" name="q9" value="2"> C) Porque a internet apaga a BIOS.</label>
-                            <label class="option-label"><input type="radio" name="q9" value="3"> D) Para acelerar o processador.</label>
-                        </div>
-                        <div class="feedback-msg"></div>
-                    </div>
-
-                    <!-- Questão 10 -->
-                    <div class="question-box" data-correct="1">
-                        <p class="question-title">10. Quando é que o utilizador deve voltar a conectar o computador à internet após a formatação?</p>
-                        <div class="options-list">
-                            <label class="option-label"><input type="radio" name="q10" value="0"> A) Apenas uma semana depois.</label>
-                            <label class="option-label"><input type="radio" name="q10" value="1"> B) Logo após concluir a formatação e passar pelo processo de criação do utilizador.</label>
-                            <label class="option-label"><input type="radio" name="q10" value="2"> C) Antes de iniciar backups.</label>
-                            <label class="option-label"><input type="radio" name="q10" value="3"> D) Nunca, o PC deve ficar offline.</label>
-                        </div>
-                        <div class="feedback-msg"></div>
-                    </div>
-
-                    <button type="submit" class="btn-primary" style="margin-top: 16px; width: 100%;">Enviar Respostas e Avançar</button>
-                </form>
+        <!-- ==================== ÁREA DO ADMINISTRADOR ==================== -->
+        <div x-show="currentView === 'admin'" class="space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Área do Administrador</h2>
+                    <p class="text-sm text-gray-500">Gerenciamento completo de cursos, permissões e níveis de acesso.</p>
+                </div>
+                <button @click="currentView = 'home'" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium transition">
+                    Ir para Área do Aluno
+                </button>
             </div>
-        </section>
 
-        <!-- VIEW: DESEMPENHO -->
-        <section id="view-desempenho" class="view-section">
-            <h2 style="font-size: 24px; margin-bottom: 24px; color: var(--primary-dark);">Painel de Desempenho</h2>
-            <div class="stat-card" style="max-width: 400px; text-align: left; padding: 32px;">
-                <p style="color: var(--text-muted); margin-bottom: 8px;">Taxa de Aproveitamento Geral</p>
-                <h3 style="font-size: 36px; color: var(--primary-blue); margin-bottom: 16px;">88%</h3>
-                <div style="background: var(--border); height: 8px; border-radius: 4px; overflow: hidden;">
-                    <div style="background: var(--success); width: 88%; height: 100%;"></div>
+            <!-- Sub-abas do Painel Admin -->
+            <div class="flex gap-2 border-b pb-2">
+                <button @click="adminTab = 'courses'" :class="adminTab === 'courses' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
+                    Criar e Gerenciar Cursos
+                </button>
+                <button @click="adminTab = 'permissions'" :class="adminTab === 'permissions' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
+                    Permissões de Alunos (Checkboxes)
+                </button>
+                <button @click="adminTab = 'admins'" :class="adminTab === 'admins' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
+                    Administradores Júnior
+                </button>
+            </div>
+
+            <!-- ABA 1: GERENCIAR CURSOS E URLS -->
+            <div x-show="adminTab === 'courses'" class="bg-white rounded-2xl shadow-sm border p-6">
+                <h3 class="font-bold text-lg mb-4">Adicionar Novo Curso</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <input type="text" x-model="newCourse.title" placeholder="Nome do Curso (ex: Curso Básico de Administração)" class="border p-3 rounded-xl text-sm">
+                    <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Administração)" class="border p-3 rounded-xl text-sm">
+                </div>
+                <textarea x-model="newCourse.description" placeholder="Descrição do curso..." class="border p-3 rounded-xl text-sm w-full mb-4"></textarea>
+                
+                <!-- Adicionar Link/URL -->
+                <div class="border p-4 rounded-xl mb-4 bg-gray-50">
+                    <h4 class="text-xs font-bold text-gray-700 mb-2">Adicionar Link ou URL Útil</h4>
+                    <div class="flex gap-2">
+                        <input type="text" x-model="newLinkTitle" placeholder="Título do link" class="border p-2 rounded-lg text-xs flex-1 bg-white">
+                        <input type="text" x-model="newLinkUrl" placeholder="https://..." class="border p-2 rounded-lg text-xs flex-1 bg-white">
+                        <button @click="addLinkToNewCourse()" class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-lg text-xs font-semibold">Adicionar</button>
+                    </div>
+                    <ul class="mt-2 space-y-1">
+                        <template x-for="(l, idx) in newCourse.urls">
+                            <li class="text-xs text-gray-600 flex justify-between bg-white p-1.5 rounded border">
+                                <span x-text="l.title + ' (' + l.url + ')'"></span>
+                                <button @click="newCourse.urls.splice(idx, 1)" class="text-red-500 font-bold">×</button>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+
+                <button @click="createCourse()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition">
+                    Publicar Curso
+                </button>
+
+                <hr class="my-6">
+
+                <h3 class="font-bold text-lg mb-4">Cursos Atuais no Sistema</h3>
+                <div class="space-y-3">
+                    <template x-for="course in courses" :key="course.id">
+                        <div class="flex justify-between items-center p-4 border rounded-xl bg-gray-50">
+                            <div>
+                                <h4 class="font-bold text-sm" x-text="course.title"></h4>
+                                <span class="text-xs text-gray-500" x-text="'Categoria: ' + course.category"></span>
+                            </div>
+                            <button @click="deleteCourse(course.id)" class="text-red-500 hover:text-red-700 text-sm p-2"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </template>
                 </div>
             </div>
-        </section>
 
-        <!-- VIEW: PERFIL -->
-        <section id="view-perfil" class="view-section">
-            <h2 style="font-size: 24px; margin-bottom: 8px; color: var(--primary-dark);">Resumo do Aluno</h2>
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Acompanhe o seu progresso geral na plataforma institucional.</p>
-            
-            <div class="profile-stats-grid">
-                <div class="stat-card">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <h3>12</h3>
-                    <p>Cursos Concluídos</p>
-                </div>
-                <div class="stat-card">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <h3>92%</h3>
-                    <p>Taxa de Aproveitamento</p>
-                </div>
-                <div class="stat-card">
-                    <i class="fa-solid fa-book"></i>
-                    <h3>15</h3>
-                    <p>Total de Cursos Realizados</p>
+            <!-- ABA 2: MATRIZ DE PERMISSÕES COM CHECKBOXES -->
+            <div x-show="adminTab === 'permissions'" class="bg-white rounded-2xl shadow-sm border p-6">
+                <h3 class="font-bold text-lg mb-2">Controle de Acesso dos Alunos</h3>
+                <p class="text-xs text-gray-500 mb-6">Selecione com check quais cursos cada aluno pode visualizar e acessar.</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b bg-gray-50">
+                                <th class="p-3 text-xs font-bold text-gray-600">Aluno / E-mail</th>
+                                <template x-for="course in courses" :key="course.id">
+                                    <th class="p-3 text-xs font-bold text-gray-600 text-center" x-text="course.title"></th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="student in studentsList" :key="student.email">
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="p-3 text-sm">
+                                        <div class="font-semibold" x-text="student.name"></div>
+                                        <div class="text-xs text-gray-400" x-text="student.email"></div>
+                                    </td>
+                                    <template x-for="course in courses" :key="course.id">
+                                        <td class="p-3 text-center">
+                                            <input type="checkbox" 
+                                                   :checked="hasAccess(student.email, course.id)" 
+                                                   @change="toggleStudentAccess(student.email, course.id)"
+                                                   class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                        </td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </section>
-    </div>
 
+            <!-- ABA 3: ADMINISTRADORES JÚNIOR -->
+            <div x-show="adminTab === 'admins'" class="bg-white rounded-2xl shadow-sm border p-6">
+                <h3 class="font-bold text-lg mb-4">Gerenciar Administradores Júnior</h3>
+                <div class="flex gap-3 mb-6">
+                    <input type="email" x-model="newAdminEmail" placeholder="E-mail do novo administrador júnior..." class="border p-3 rounded-xl text-sm flex-1">
+                    <button @click="promoteToAdmin()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-medium text-sm transition">
+                        Promover a Admin Júnior
+                    </button>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- Admin Supremo Fixo -->
+                    <div class="p-4 border rounded-xl bg-purple-50 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-sm text-purple-900">Lucas da Cruz (Admin Supremo)</h4>
+                            <p class="text-xs text-purple-700">lucaasdacruztr@gmail.com - Controle Total</p>
+                        </div>
+                        <span class="bg-purple-200 text-purple-800 text-xs px-2.5 py-1 rounded-full font-bold">Supremo (AA)</span>
+                    </div>
+
+                    <template x-for="adm in juniorAdmins" :key="adm">
+                        <div class="p-4 border rounded-xl bg-gray-50 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm" x-text="adm"></h4>
+                                <p class="text-xs text-gray-500">Administrador Júnior</p>
+                            </div>
+                            <button @click="removeJuniorAdmin(adm)" class="text-red-500 text-sm"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL DE LOGIN -->
+    <template x-if="openLoginModal">
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative">
+                <button @click="openLoginModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <h3 class="font-bold text-xl mb-4 text-gray-900">Entrar na Plataforma</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 mb-1">Seu Nome Completo</label>
+                        <input type="text" x-model="loginForm.name" placeholder="Ex: Lucas da Cruz" class="w-full border p-3 rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 mb-1">Seu E-mail</label>
+                        <input type="email" x-model="loginForm.email" placeholder="seu@email.com" class="w-full border p-3 rounded-xl text-sm">
+                    </div>
+                    <button @click="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-medium text-sm transition shadow">
+                        Acessar Sistema
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- SCRIPT DE CONTROLE -->
     <script>
-        function switchView(viewId, element) {
-            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById('view-' + viewId).classList.add('active');
-            
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            if(element) element.classList.add('active');
-        }
-
-        function openAuthorizedCourse(viewId) {
-            const navLink = document.querySelectorAll('.nav-links a')[1];
-            switchView(viewId, navLink);
-        }
-
-        function checkAccess(courseName) {
-            alert(`Acesso restrito: O curso "${courseName}" não está liberado para o seu e-mail (lucasdacruztr@gmail.com). Apenas cursos com autorização prévia ficam disponíveis.`);
-        }
-
-        function submitQuiz(event) {
-            event.preventDefault();
-            const boxes = document.querySelectorAll('.question-box');
-            let score = 0;
-
-            boxes.forEach((box, index) => {
-                const correctIdx = box.getAttribute('data-correct');
-                const selected = box.querySelector(`input[name="q${index+1}"]:checked`);
-                const feedback = box.querySelector('.feedback-msg');
+        function app() {
+            return {
+                currentView: 'home',
+                adminTab: 'courses',
+                openLoginModal: false,
+                searchQuery: '',
+                selectedCategory: 'Todos',
                 
-                feedback.style.display = 'block';
-                
-                box.querySelectorAll('.option-label').forEach(lbl => {
-                    lbl.style.borderColor = 'var(--border)';
-                    lbl.style.background = '#f8fafc';
-                });
+                // Usuário logado inicial (Admin Supremo com seu e-mail correto)
+                currentUser: {
+                    name: 'Lucas da Cruz',
+                    email: 'lucaasdacruztr@gmail.com',
+                    role: 'admin',
+                    isSupreme: true
+                },
 
-                const correctLabel = box.querySelectorAll('.option-label')[+correctIdx];
-                correctLabel.style.borderColor = 'var(--success)';
-                correctLabel.style.background = 'rgba(34, 197, 94, 0.08)';
+                loginForm: { name: '', email: '' },
 
-                if (selected) {
-                    const selectedVal = selected.value;
-                    const selectedLabel = selected.parentElement;
-                    
-                    if (selectedVal === correctIdx) {
-                        score++;
-                        feedback.innerHTML = '<span style="color: var(--success);"><i class="fa-solid fa-circle-check"></i> Correto!</span>';
-                    } else {
-                        selectedLabel.style.borderColor = 'var(--error)';
-                        selectedLabel.style.background = 'rgba(239, 68, 68, 0.08)';
-                        feedback.innerHTML = '<span style="color: var(--error);"><i class="fa-solid fa-circle-xmark"></i> Incorreto (Marcado em vermelho). A resposta correta está destacada em verde.</span>';
+                courses: [
+                    {
+                        id: 1,
+                        title: 'Curso Básico de Administração',
+                        category: 'Administração',
+                        description: 'Fundamentos essenciais de gestão, rotinas administrativas e processos corporativos.',
+                        icon: 'fa-solid fa-briefcase',
+                        urls: [{ title: 'Material em PDF', url: 'https://example.com' }],
+                        questions: [
+                            { question: 'O que significa planejar na administração?', options: ['Definir objetivos e rumos', 'Ignorar problemas', 'Gastar recursos', 'Trabalhar sozinho'], correct: 0 },
+                            { question: 'Qual a principal função do controle?', options: ['Avaliar resultados comparando com o planejado', 'Demitir funcionários', 'Aumentar custos', 'Parar a produção'], correct: 0 }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        title: 'Curso de Informática e Formatação',
+                        category: 'Tecnologia',
+                        description: 'Aprenda formatação de computadores, instalação de sistemas e suporte básico.',
+                        icon: 'fa-solid fa-computer',
+                        urls: [{ title: 'Guia de Instalação', url: 'https://example.com' }],
+                        questions: [
+                            { question: 'Qual componente armazena os dados permanentemente?', options: ['Memória RAM', 'Disco Rigido / SSD', 'Processador', 'Cooler'], correct: 1 },
+                            { question: 'O que é o BIOS/UEFI?', options: ['Um jogo', 'Firmware de inicialização da placa-mãe', 'Um navegador', 'Antivírus'], correct: 1 }
+                        ]
                     }
-                } else {
-                    feedback.innerHTML = '<span style="color: #f59e0b;"><i class="fa-solid fa-triangle-exclamation"></i> Questão não respondida. A alternativa correta está destacada em verde.</span>';
-                }
-            });
+                ],
 
-            alert(`Avaliação enviada com sucesso! Você acertou ${score} de 10 questões. O fluxo seguiu sem bloqueios.`);
+                studentsList: [
+                    { name: 'Lucas da Cruz', email: 'lucaasdacruztr@gmail.com' },
+                    { name: 'João Silva', email: 'joao@aluno.com' },
+                    { name: 'Maria Souza', email: 'maria@aluno.com' }
+                ],
+
+                accessPermissions: {
+                    'lucaasdacruztr@gmail.com': { 1: true, 2: true },
+                    'joao@aluno.com': { 1: true, 2: false },
+                    'maria@aluno.com': { 1: false, 2: true }
+                },
+
+                juniorAdmins: [],
+                newAdminEmail: '',
+
+                newCourse: { title: '', category: '', description: '', urls: [], questions: [] },
+                newLinkTitle: '',
+                newLinkUrl: '',
+
+                activeCourse: null,
+                userAnswers: {},
+                quizAnsweredState: {},
+
+                get dynamicCategories() {
+                    let cats = this.courses.map(c => c.category);
+                    return [...new Set(cats)];
+                },
+
+                get filteredCourses() {
+                    return this.courses.filter(c => {
+                        let matchName = c.title.toLowerCase().includes(this.searchQuery.toLowerCase());
+                        let matchCat = this.selectedCategory === 'Todos' || c.category === this.selectedCategory;
+                        return matchName && matchCat;
+                    });
+                },
+
+                isCourseAccessible(courseId) {
+                    if (!this.currentUser) return false;
+                    if (this.currentUser.role === 'admin' || this.currentUser.role === 'admin_junior') return true;
+                    return this.accessPermissions[this.currentUser.email]?.[courseId] === true;
+                },
+
+                openCourse(course) {
+                    this.activeCourse = course;
+                    this.userAnswers = {};
+                    this.quizAnsweredState = {};
+                    this.currentView = 'course-detail';
+                },
+
+                answerQuiz(qIndex, oIndex) {
+                    // Dá feedback imediato assim que clica
+                    this.userAnswers[qIndex] = oIndex;
+                    this.quizAnsweredState[qIndex] = true;
+                },
+
+                calculateUserScore() {
+                    if (!this.activeCourse || !this.activeCourse.questions) return 0;
+                    let total = this.activeCourse.questions.length;
+                    let correctCount = 0;
+                    this.activeCourse.questions.forEach((q, idx) => {
+                        if (this.userAnswers[idx] === q.correct) correctCount++;
+                    });
+                    return Math.round((correctCount / total) * 100);
+                },
+
+                finalizeQuiz() {
+                    alert('Respostas enviadas e média registrada com sucesso!');
+                    this.currentView = 'home';
+                },
+
+                addLinkToNewCourse() {
+                    if (this.newLinkTitle && this.newLinkUrl) {
+                        this.newCourse.urls.push({ title: this.newLinkTitle, url: this.newLinkUrl });
+                        this.newLinkTitle = '';
+                        this.newLinkUrl = '';
+                    }
+                },
+
+                createCourse() {
+                    if (!this.newCourse.title || !this.newCourse.category) {
+                        alert('Preencha o título e a categoria do curso.');
+                        return;
+                    }
+                    let newId = this.courses.length + 1;
+                    this.courses.push({
+                        id: newId,
+                        title: this.newCourse.title,
+                        category: this.newCourse.category,
+                        description: this.newCourse.description,
+                        icon: 'fa-solid fa-book-open',
+                        urls: [...this.newCourse.urls],
+                        questions: [
+                            { question: 'Questão gerada automaticamente para este curso?', options: ['Opção Correta', 'Opção Incorreta'], correct: 0 }
+                        ]
+                    });
+                    this.newCourse = { title: '', category: '', description: '', urls: [], questions: [] };
+                    alert('Curso criado com sucesso! Ele já foi enviado para a matriz de permissões.');
+                },
+
+                deleteCourse(id) {
+                    this.courses = this.courses.filter(c => c.id !== id);
+                },
+
+                hasAccess(email, courseId) {
+                    return this.accessPermissions[email]?.[courseId] === true;
+                },
+
+                toggleStudentAccess(email, courseId) {
+                    if (!this.accessPermissions[email]) {
+                        this.accessPermissions[email] = {};
+                    }
+                    this.accessPermissions[email][courseId] = !this.accessPermissions[email][courseId];
+                },
+
+                promoteToAdmin() {
+                    if (this.newAdminEmail) {
+                        this.juniorAdmins.push(this.newAdminEmail);
+                        if (!this.studentsList.some(s => s.email === this.newAdminEmail)) {
+                            this.studentsList.push({ name: 'Admin Júnior', email: this.newAdminEmail });
+                        }
+                        this.newAdminEmail = '';
+                        alert('Administrador Júnior cadastrado com sucesso!');
+                    }
+                },
+
+                removeJuniorAdmin(email) {
+                    this.juniorAdmins = this.juniorAdmins.filter(e => e !== email);
+                },
+
+                login() {
+                    if (!this.loginForm.name || !this.loginForm.email) {
+                        alert('Preencha todos os campos.');
+                        return;
+                    }
+                    let isSupreme = this.loginForm.email === 'lucaasdacruztr@gmail.com';
+                    let isJunior = this.juniorAdmins.includes(this.loginForm.email);
+                    let role = (isSupreme || isJunior) ? 'admin' : 'aluno';
+
+                    this.currentUser = {
+                        name: this.loginForm.name,
+                        email: this.loginForm.email,
+                        role: role,
+                        isSupreme: isSupreme
+                    };
+
+                    if (!this.studentsList.some(s => s.email === this.loginForm.email)) {
+                        this.studentsList.push({ name: this.loginForm.name, email: this.loginForm.email });
+                    }
+
+                    this.openLoginModal = false;
+                    this.loginForm = { name: '', email: '' };
+                },
+
+                logout() {
+                    this.currentUser = null;
+                    this.currentView = 'home';
+                }
+            }
         }
     </script>
 </body>
