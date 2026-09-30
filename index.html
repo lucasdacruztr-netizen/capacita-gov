@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma de Cursos - Lucas da Cruz</title>
+    <title>Academia Pro - Plataforma de Cursos</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Alpine.js -->
@@ -13,7 +13,7 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased" x-data="app()">
 
-    <!-- HEADER / NAVEGAÇÃO PRINCIPAL (2 ABAS: ALUNO E ADMINISTRADOR) -->
+    <!-- HEADER / NAVEGAÇÃO PRINCIPAL -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3 cursor-pointer" @click="currentView = 'home'">
@@ -22,11 +22,11 @@
                 </div>
                 <div>
                     <h1 class="font-bold text-lg leading-tight">Academia Pro</h1>
-                    <p class="text-xs text-gray-500">Lucas da Cruz</p>
+                    <p class="text-xs text-gray-500">Plataforma de Ensino</p>
                 </div>
             </div>
 
-            <!-- ABAS DE NAVEGAÇÃO (ALUNO / ADMINISTRADOR) -->
+            <!-- ABAS DE NAVEGAÇÃO -->
             <div class="hidden md:flex items-center space-x-2 bg-gray-100 p-1 rounded-xl">
                 <button @click="currentView = 'home'" 
                         :class="currentView === 'home' || currentView === 'course-detail' ? 'bg-white text-blue-600 shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'"
@@ -43,18 +43,16 @@
                 </template>
             </div>
 
-            <!-- PERFIL DE USUÁRIO / LOGIN -->
+            <!-- PERFIL / LOGIN -->
             <div class="flex items-center space-x-4">
                 <template x-if="currentUser">
                     <div class="flex items-center space-x-3">
-                        <!-- Foto de Perfil com Inicial Exata -->
                         <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-inner uppercase"
                              x-text="currentUser.name.charAt(0)">
                         </div>
                         <div class="text-left">
                             <div class="text-sm font-semibold flex items-center gap-1">
                                 <span x-text="currentUser.name"></span>
-                                <!-- Indicador Admin Supremo (AA) -->
                                 <template x-if="currentUser.email === 'lucaasdacruztr@gmail.com' || currentUser.isSupreme">
                                     <span class="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold" title="Administrador Supremo">AA</span>
                                 </template>
@@ -67,7 +65,7 @@
                     </div>
                 </template>
                 <template x-if="!currentUser">
-                    <button @click="openLoginModal = true" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                    <button @click="openLoginModal = true" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm">
                         Entrar / Cadastrar
                     </button>
                 </template>
@@ -80,19 +78,35 @@
 
         <!-- ==================== ÁREA DO ALUNO ==================== -->
         <div x-show="currentView === 'home'">
-            <!-- Busca Limpa (Sem filtros complexos) -->
+            
+            <!-- BANNER DINÂMICO (Visitante vs Aluno Logado) -->
             <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 md:p-10 text-white mb-8 shadow-md">
-                <h2 class="text-2xl md:text-3xl font-bold mb-2">Seus Cursos Disponíveis</h2>
-                <p class="text-blue-100 mb-6 text-sm md:text-base">Acesse os conteúdos liberados pelo administrador para o seu perfil.</p>
+                <template x-if="!currentUser">
+                    <div>
+                        <span class="bg-blue-500/50 text-blue-100 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Cursos Libres & Profissionais</span>
+                        <h2 class="text-2xl md:text-3xl font-bold mb-2">Venha fazer parte da Academia Pro!</h2>
+                        <p class="text-blue-100 mb-6 text-sm md:text-base max-w-2xl">Explore nossos cursos disponíveis, adquira conhecimentos práticos e solicite seu acesso ao administrador para iniciar sua jornada de aprendizado.</p>
+                        <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-6 py-2.5 rounded-xl font-bold text-sm transition shadow">
+                            Fazer Cadastro / Entrar
+                        </button>
+                    </div>
+                </template>
+                <template x-if="currentUser">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-bold mb-2">Seus Cursos Disponíveis</h2>
+                        <p class="text-blue-100 mb-6 text-sm md:text-base">Acesse os conteúdos liberados pelo administrador para o seu perfil.</p>
+                    </div>
+                </template>
                 
-                <div class="relative max-w-xl">
-                    <input type="text" x-model="searchQuery" placeholder="Buscar curso pelo nome..." 
+                <!-- Barra de Busca Inteligente -->
+                <div class="relative max-w-xl mt-6">
+                    <input type="text" x-model="searchQuery" placeholder="Buscar curso por nome ou categoria (ex: Formatação, Administração)..." 
                            class="w-full pl-10 pr-4 py-3 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-4 text-gray-400"></i>
                 </div>
             </div>
 
-            <!-- Categorias Dinâmicas criadas pelo Admin -->
+            <!-- Categorias Dinâmicas -->
             <div class="flex gap-2 overflow-x-auto pb-4 mb-6">
                 <button @click="selectedCategory = 'Todos'" 
                         :class="selectedCategory === 'Todos' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border'"
@@ -116,11 +130,10 @@
                             <div class="bg-gray-100 h-40 relative flex items-center justify-center text-gray-400">
                                 <i :class="course.icon || 'fa-solid fa-book'" class="text-4xl"></i>
                                 <span class="absolute top-3 right-3 bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full" x-text="course.category"></span>
-                                <!-- Status de Trancado / Liberado -->
                                 <template x-if="!isCourseAccessible(course.id)">
-                                    <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center text-white">
+                                    <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center text-white p-4 text-center">
                                         <i class="fa-solid fa-lock text-2xl mb-1"></i>
-                                        <span class="text-xs font-bold">Curso Trancado</span>
+                                        <span class="text-xs font-bold" x-text="currentUser ? 'Curso Trancado (Aguardando Liberação)' : 'Faça login para solicitar acesso'"></span>
                                     </div>
                                 </template>
                             </div>
@@ -132,12 +145,12 @@
                         <div class="p-5 pt-0">
                             <template x-if="isCourseAccessible(course.id)">
                                 <button @click="openCourse(course)" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-medium text-sm transition shadow-sm">
-                                    Acessar Conteúdo
+                                    Acessar Conteúdo & Quiz
                                 </button>
                             </template>
                             <template x-if="!isCourseAccessible(course.id)">
-                                <button disabled class="w-full bg-gray-200 text-gray-400 py-2.5 rounded-xl font-medium text-sm cursor-not-allowed">
-                                    Aguardando Liberação
+                                <button @click="currentUser ? null : openLoginModal = true" class="w-full bg-gray-200 text-gray-600 hover:bg-gray-300 py-2.5 rounded-xl font-medium text-sm transition">
+                                    <span x-text="currentUser ? 'Aguardando Liberação' : 'Entrar para Liberar Acesso'"></span>
                                 </button>
                             </template>
                         </div>
@@ -146,9 +159,9 @@
             </div>
         </div>
 
-        <!-- VIEW: DETALHE DO CURSO E QUIZ COM FEEDBACK IMEDIATO -->
+        <!-- VIEW: DETALHE DO CURSO, VÍDEO E QUIZ TRAVADO -->
         <div x-show="currentView === 'course-detail'" class="bg-white rounded-2xl shadow-sm border p-6 md:p-8">
-            <button @click="currentView = 'home'" class="text-sm text-blue-600 hover:underline mb-6 inline-flex items-center gap-1 font-semibold">
+            <button @click="currentView = 'home'; quizFinished = false;" class="text-sm text-blue-600 hover:underline mb-6 inline-flex items-center gap-1 font-semibold">
                 <i class="fa-solid fa-arrow-left"></i> Voltar aos cursos
             </button>
 
@@ -157,67 +170,98 @@
                     <h2 class="text-2xl font-bold text-gray-900 mb-2" x-text="activeCourse.title"></h2>
                     <p class="text-gray-600 mb-6" x-text="activeCourse.description"></p>
 
-                    <!-- URLs / Links Externos adicionados pelo Admin -->
+                    <!-- Vídeos e Links Externos -->
                     <template x-if="activeCourse.urls && activeCourse.urls.length > 0">
-                        <div class="mb-6 bg-blue-50 border border-blue-100 p-4 rounded-xl">
-                            <h4 class="text-sm font-bold text-blue-900 mb-2"><i class="fa-solid fa-link mr-1"></i> Links e Materiais Externos:</h4>
-                            <ul class="space-y-1">
-                                <template x-for="link in activeCourse.urls">
-                                    <li>
-                                        <a :href="link.url" target="_blank" class="text-sm text-blue-600 hover:underline flex items-center gap-1">
-                                            <i class="fa-solid fa-external-link text-xs"></i> <span x-text="link.title"></span>
-                                        </a>
-                                    </li>
-                                </template>
-                            </ul>
+                        <div class="mb-8 space-y-4">
+                            <template x-for="link in activeCourse.urls">
+                                <div>
+                                    <template x-if="isYoutubeUrl(link.url)">
+                                        <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-inner bg-black mb-2">
+                                            <iframe :src="getYoutubeEmbedUrl(link.url)" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+                                        </div>
+                                    </template>
+                                    <a :href="link.url" target="_blank" class="text-sm text-blue-600 font-semibold hover:underline flex items-center gap-1 bg-blue-50 p-3 rounded-xl border border-blue-100">
+                                        <i class="fa-solid fa-video text-xs"></i> <span>Assistir / Material: <span x-text="link.title"></span></span>
+                                    </a>
+                                </div>
+                            </template>
                         </div>
                     </template>
 
                     <hr class="my-6">
 
-                    <!-- Quiz com Feedback Imediato ao Clicar -->
-                    <h3 class="text-lg font-bold mb-4 text-gray-800"><i class="fa-solid fa-clipboard-question text-blue-600 mr-2"></i> Quiz de Avaliação</h3>
-                    
-                    <div class="space-y-6">
-                        <template x-for="(q, qIndex) in activeCourse.questions" :key="qIndex">
-                            <div class="bg-gray-50 border p-5 rounded-xl">
-                                <p class="font-semibold text-gray-800 mb-3" x-text="(qIndex + 1) + '. ' + q.question"></p>
-                                <div class="space-y-2">
-                                    <template x-for="(opt, oIndex) in q.options" :key="oIndex">
-                                        <button @click="answerQuiz(qIndex, oIndex)"
-                                                :class="{
-                                                    'bg-green-100 border-green-500 text-green-800 font-bold': userAnswers[qIndex] === oIndex && quizAnsweredState[qIndex] && oIndex === q.correct,
-                                                    'bg-red-100 border-red-500 text-red-800 font-bold': userAnswers[qIndex] === oIndex && quizAnsweredState[qIndex] && oIndex !== q.correct,
-                                                    'bg-white border-gray-200 hover:bg-gray-100': userAnswers[qIndex] !== oIndex || !quizAnsweredState[qIndex]
-                                                }"
-                                                class="w-full text-left px-4 py-3 rounded-lg border text-sm transition flex justify-between items-center">
-                                            <span x-text="opt"></span>
-                                            <template x-if="quizAnsweredState[qIndex] && oIndex === q.correct">
-                                                <i class="fa-solid fa-check text-green-600"></i>
-                                            </template>
-                                            <template x-if="quizAnsweredState[qIndex] && userAnswers[qIndex] === oIndex && oIndex !== q.correct">
-                                                <i class="fa-solid fa-xmark text-red-600"></i>
-                                            </template>
-                                        </button>
+                    <!-- SEÇÃO DO QUIZ COM TELA DE PLACAR FINAL -->
+                    <div x-show="!quizFinished">
+                        <h3 class="text-lg font-bold mb-2 text-gray-800"><i class="fa-solid fa-clipboard-question text-blue-600 mr-2"></i> Quiz de Avaliação</h3>
+                        <p class="text-xs text-gray-500 mb-6">Responda com atenção. Cada alternativa é fixada permanentemente após o clique.</p>
+                        
+                        <div class="space-y-6">
+                            <template x-for="(q, qIndex) in activeCourse.questions" :key="qIndex">
+                                <div class="bg-gray-50 border p-5 rounded-xl">
+                                    <p class="font-semibold text-gray-800 mb-3" x-text="(qIndex + 1) + '. ' + q.question"></p>
+                                    <div class="space-y-2">
+                                        <template x-for="(opt, oIndex) in q.options" :key="oIndex">
+                                            <button @click="answerQuiz(qIndex, oIndex)"
+                                                    :disabled="userAnswers[qIndex] !== undefined"
+                                                    :class="{
+                                                        'bg-green-100 border-green-500 text-green-900 font-bold': userAnswers[qIndex] === oIndex && oIndex === q.correct,
+                                                        'bg-red-100 border-red-500 text-red-900 font-bold': userAnswers[qIndex] === oIndex && oIndex !== q.correct,
+                                                        'bg-white border-gray-200 hover:bg-gray-100': userAnswers[qIndex] === undefined
+                                                    }"
+                                                    class="w-full text-left px-4 py-3 rounded-lg border text-sm transition flex justify-between items-center shadow-xs">
+                                                <span x-text="opt"></span>
+                                                <template x-if="userAnswers[qIndex] !== undefined && oIndex === q.correct">
+                                                    <i class="fa-solid fa-check text-green-600"></i>
+                                                </template>
+                                                <template x-if="userAnswers[qIndex] === oIndex && oIndex !== q.correct">
+                                                    <i class="fa-solid fa-xmark text-red-600"></i>
+                                                </template>
+                                            </button>
+                                        </template>
+                                    </div>
+                                    <template x-if="userAnswers[qIndex] !== undefined">
+                                        <div class="mt-2 text-xs font-bold" :class="userAnswers[qIndex] === q.correct ? 'text-green-600' : 'text-red-600'">
+                                            <span x-text="userAnswers[qIndex] === q.correct ? '✓ Resposta correta travada!' : '✕ Resposta incorreta travada.'"></span>
+                                        </div>
                                     </template>
                                 </div>
-                                <template x-if="quizAnsweredState[qIndex]">
-                                    <div class="mt-2 text-xs font-bold" :class="userAnswers[qIndex] === q.correct ? 'text-green-600' : 'text-red-600'">
-                                        <span x-text="userAnswers[qIndex] === q.correct ? '✓ Acertou na hora!' : '✕ Errou!'"></span>
-                                    </div>
-                                </template>
-                            </div>
-                        </template>
+                            </template>
+                        </div>
+
+                        <!-- Botão de Envio do Quiz -->
+                        <div class="mt-8 flex items-center justify-between bg-gray-100 p-4 rounded-xl">
+                            <span class="text-xs text-gray-600">Certifique-se de responder todas as questões antes de enviar.</span>
+                            <button @click="submitQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium text-sm transition shadow">
+                                Enviar Respostas & Ver Placar
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Envio final para consolidar a média -->
-                    <div class="mt-8 flex items-center justify-between bg-gray-100 p-4 rounded-xl">
-                        <div>
-                            <span class="text-sm font-semibold text-gray-700">Média consolidada: </span>
-                            <span class="font-bold text-blue-600 text-lg" x-text="calculateUserScore() + '%' "></span>
+                    <!-- PLACAR FINAL -->
+                    <div x-show="quizFinished" class="bg-gradient-to-br from-gray-900 to-indigo-900 text-white rounded-2xl p-8 text-center shadow-xl">
+                        <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg">
+                            <i class="fa-solid fa-trophy text-yellow-300"></i>
                         </div>
-                        <button @click="finalizeQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition shadow">
-                            Enviar Respostas e Salvar Média
+                        <h3 class="text-2xl font-bold mb-2">Resultado Final do Quiz</h3>
+                        <p class="text-gray-300 text-sm mb-6">Parabéns por concluir a avaliação deste módulo!</p>
+                        
+                        <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-8 bg-white/10 backdrop-blur p-4 rounded-xl border border-white/10">
+                            <div>
+                                <span class="block text-xs text-gray-400">Acertos</span>
+                                <span class="text-xl font-bold text-green-400" x-text="finalScore.correct"></span>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-gray-400">Erros</span>
+                                <span class="text-xl font-bold text-red-400" x-text="finalScore.wrong"></span>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-gray-400">Aproveitamento</span>
+                                <span class="text-xl font-bold text-blue-300" x-text="finalScore.percentage + '%'"></span>
+                            </div>
+                        </div>
+
+                        <button @click="currentView = 'home'; quizFinished = false;" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold text-sm transition shadow">
+                            Voltar para a Lista de Cursos
                         </button>
                     </div>
                 </div>
@@ -229,77 +273,95 @@
             <div class="bg-white p-6 rounded-2xl shadow-sm border flex justify-between items-center">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900">Área do Administrador</h2>
-                    <p class="text-sm text-gray-500">Gerenciamento completo de cursos, permissões e níveis de acesso.</p>
+                    <p class="text-sm text-gray-500">Criação de cursos, gerenciamento de perguntas e liberação de permissões.</p>
                 </div>
                 <button @click="currentView = 'home'" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium transition">
                     Ir para Área do Aluno
                 </button>
             </div>
 
-            <!-- Sub-abas do Painel Admin -->
+            <!-- Abas Admin -->
             <div class="flex gap-2 border-b pb-2">
                 <button @click="adminTab = 'courses'" :class="adminTab === 'courses' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
-                    Criar e Gerenciar Cursos
+                    Gerenciar Cursos & Questões
                 </button>
                 <button @click="adminTab = 'permissions'" :class="adminTab === 'permissions' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
-                    Permissões de Alunos (Checkboxes)
+                    Permissões de Alunos
                 </button>
                 <button @click="adminTab = 'admins'" :class="adminTab === 'admins' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
                     Administradores Júnior
                 </button>
             </div>
 
-            <!-- ABA 1: GERENCIAR CURSOS E URLS -->
-            <div x-show="adminTab === 'courses'" class="bg-white rounded-2xl shadow-sm border p-6">
-                <h3 class="font-bold text-lg mb-4">Adicionar Novo Curso</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <input type="text" x-model="newCourse.title" placeholder="Nome do Curso (ex: Curso Básico de Administração)" class="border p-3 rounded-xl text-sm">
-                    <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Administração)" class="border p-3 rounded-xl text-sm">
-                </div>
-                <textarea x-model="newCourse.description" placeholder="Descrição do curso..." class="border p-3 rounded-xl text-sm w-full mb-4"></textarea>
-                
-                <!-- Adicionar Link/URL -->
-                <div class="border p-4 rounded-xl mb-4 bg-gray-50">
-                    <h4 class="text-xs font-bold text-gray-700 mb-2">Adicionar Link ou URL Útil</h4>
-                    <div class="flex gap-2">
-                        <input type="text" x-model="newLinkTitle" placeholder="Título do link" class="border p-2 rounded-lg text-xs flex-1 bg-white">
-                        <input type="text" x-model="newLinkUrl" placeholder="https://..." class="border p-2 rounded-lg text-xs flex-1 bg-white">
-                        <button @click="addLinkToNewCourse()" class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-lg text-xs font-semibold">Adicionar</button>
+            <!-- ABA 1: GERENCIAR CURSOS, VÍDEOS E QUESTÕES -->
+            <div x-show="adminTab === 'courses'" class="bg-white rounded-2xl shadow-sm border p-6 space-y-6">
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Adicionar Novo Curso</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <input type="text" x-model="newCourse.title" placeholder="Nome do Curso (ex: Técnico em Redes)" class="border p-3 rounded-xl text-sm">
+                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Tecnologia)" class="border p-3 rounded-xl text-sm">
                     </div>
-                    <ul class="mt-2 space-y-1">
-                        <template x-for="(l, idx) in newCourse.urls">
-                            <li class="text-xs text-gray-600 flex justify-between bg-white p-1.5 rounded border">
-                                <span x-text="l.title + ' (' + l.url + ')'"></span>
-                                <button @click="newCourse.urls.splice(idx, 1)" class="text-red-500 font-bold">×</button>
-                            </li>
-                        </template>
-                    </ul>
+                    <textarea x-model="newCourse.description" placeholder="Descrição do curso..." class="border p-3 rounded-xl text-sm w-full mb-4"></textarea>
+                    
+                    <div class="border p-4 rounded-xl mb-4 bg-gray-50">
+                        <h4 class="text-xs font-bold text-gray-700 mb-2">Adicionar Vídeo ou Link Útil</h4>
+                        <div class="flex gap-2">
+                            <input type="text" x-model="newLinkTitle" placeholder="Título do Vídeo/Link" class="border p-2 rounded-lg text-xs flex-1 bg-white">
+                            <input type="text" x-model="newLinkUrl" placeholder="URL do YouTube ou site" class="border p-2 rounded-lg text-xs flex-1 bg-white">
+                            <button @click="addLinkToNewCourse()" class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-lg text-xs font-semibold">Adicionar</button>
+                        </div>
+                        <ul class="mt-2 space-y-1">
+                            <template x-for="(l, idx) in newCourse.urls">
+                                <li class="text-xs text-gray-600 flex justify-between bg-white p-1.5 rounded border">
+                                    <span x-text="l.title"></span>
+                                    <button @click="newCourse.urls.splice(idx, 1)" class="text-red-500 font-bold">×</button>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+
+                    <button @click="createCourse()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition">
+                        Criar Curso Base
+                    </button>
                 </div>
 
-                <button @click="createCourse()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition">
-                    Publicar Curso
-                </button>
+                <hr>
 
-                <hr class="my-6">
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Gerenciar e Editar Questões dos Cursos</h3>
+                    <div class="space-y-4">
+                        <template x-for="course in courses" :key="course.id">
+                            <div class="border p-4 rounded-xl bg-gray-50 space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <h4 class="font-bold text-sm text-blue-900" x-text="course.title + ' (' + course.questions.length + ' questões)'"></h4>
+                                    <button @click="deleteCourse(course.id)" class="text-red-500 text-xs font-bold"><i class="fa-solid fa-trash mr-1"></i> Excluir Curso</button>
+                                </div>
 
-                <h3 class="font-bold text-lg mb-4">Cursos Atuais no Sistema</h3>
-                <div class="space-y-3">
-                    <template x-for="course in courses" :key="course.id">
-                        <div class="flex justify-between items-center p-4 border rounded-xl bg-gray-50">
-                            <div>
-                                <h4 class="font-bold text-sm" x-text="course.title"></h4>
-                                <span class="text-xs text-gray-500" x-text="'Categoria: ' + course.category"></span>
+                                <div class="bg-white p-3 rounded-lg border space-y-2">
+                                    <span class="text-xs font-bold text-gray-700">Adicionar Nova Questão ao Curso:</span>
+                                    <input type="text" x-model="newQuestionText[course.id]" placeholder="Texto da pergunta..." class="w-full border p-2 rounded text-xs">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <input type="text" x-model="qOpt0[course.id]" placeholder="Opção A" class="border p-1.5 rounded text-xs">
+                                        <input type="text" x-model="qOpt1[course.id]" placeholder="Opção B" class="border p-1.5 rounded text-xs">
+                                        <input type="text" x-model="qOpt2[course.id]" placeholder="Opção C (Opcional)" class="border p-1.5 rounded text-xs">
+                                        <input type="text" x-model="qOpt3[course.id]" placeholder="Opção D (Opcional)" class="border p-1.5 rounded text-xs">
+                                    </div>
+                                    <div class="flex gap-2 items-center pt-1">
+                                        <span class="text-xs text-gray-500">Índice da resposta correta (0 = A, 1 = B, 2 = C, 3 = D):</span>
+                                        <input type="number" min="0" max="3" x-model.number="qCorrectIdx[course.id]" class="border w-16 p-1 rounded text-xs text-center" value="0">
+                                        <button @click="addQuestionToCourse(course.id)" class="bg-gray-800 text-white px-4 py-1.5 rounded text-xs font-semibold ml-auto">Adicionar Questão</button>
+                                    </div>
+                                </div>
                             </div>
-                            <button @click="deleteCourse(course.id)" class="text-red-500 hover:text-red-700 text-sm p-2"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </template>
+                        </template>
+                    </div>
                 </div>
             </div>
 
-            <!-- ABA 2: MATRIZ DE PERMISSÕES COM CHECKBOXES -->
+            <!-- ABA 2: MATRIZ DE PERMISSÕES -->
             <div x-show="adminTab === 'permissions'" class="bg-white rounded-2xl shadow-sm border p-6">
-                <h3 class="font-bold text-lg mb-2">Controle de Acesso dos Alunos</h3>
-                <p class="text-xs text-gray-500 mb-6">Selecione com check quais cursos cada aluno pode visualizar e acessar.</p>
+                <h3 class="font-bold text-lg mb-2">Controle de Acesso por Aluno</h3>
+                <p class="text-xs text-gray-500 mb-6">Defina por checkboxes quais cursos cada aluno pode acessar.</p>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -344,7 +406,6 @@
                 </div>
 
                 <div class="space-y-3">
-                    <!-- Admin Supremo Fixo -->
                     <div class="p-4 border rounded-xl bg-purple-50 flex justify-between items-center">
                         <div>
                             <h4 class="font-bold text-sm text-purple-900">Lucas da Cruz (Admin Supremo)</h4>
@@ -368,7 +429,7 @@
 
     </main>
 
-    <!-- MODAL DE LOGIN -->
+    <!-- MODAL DE LOGIN LIMPO -->
     <template x-if="openLoginModal">
         <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative">
@@ -377,22 +438,22 @@
                 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 mb-1">Seu Nome Completo</label>
-                        <input type="text" x-model="loginForm.name" placeholder="Ex: Lucas da Cruz" class="w-full border p-3 rounded-xl text-sm">
+                        <label class="block text-xs font-bold text-gray-600 mb-1">Nome de Usuário</label>
+                        <input type="text" x-model="loginForm.name" placeholder="Digite seu nome" class="w-full border p-3 rounded-xl text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 mb-1">Seu E-mail</label>
-                        <input type="email" x-model="loginForm.email" placeholder="seu@email.com" class="w-full border p-3 rounded-xl text-sm">
+                        <label class="block text-xs font-bold text-gray-600 mb-1">E-mail</label>
+                        <input type="email" x-model="loginForm.email" placeholder="seuemail@exemplo.com" class="w-full border p-3 rounded-xl text-sm">
                     </div>
                     <button @click="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-medium text-sm transition shadow">
-                        Acessar Sistema
+                        Entrar no Sistema
                     </button>
                 </div>
             </div>
         </div>
     </template>
 
-    <!-- SCRIPT DE CONTROLE -->
+    <!-- SCRIPT DA APLICAÇÃO -->
     <script>
         function app() {
             return {
@@ -402,14 +463,7 @@
                 searchQuery: '',
                 selectedCategory: 'Todos',
                 
-                // Usuário logado inicial (Admin Supremo com seu e-mail correto)
-                currentUser: {
-                    name: 'Lucas da Cruz',
-                    email: 'lucaasdacruztr@gmail.com',
-                    role: 'admin',
-                    isSupreme: true
-                },
-
+                currentUser: null,
                 loginForm: { name: '', email: '' },
 
                 courses: [
@@ -419,22 +473,31 @@
                         category: 'Administração',
                         description: 'Fundamentos essenciais de gestão, rotinas administrativas e processos corporativos.',
                         icon: 'fa-solid fa-briefcase',
-                        urls: [{ title: 'Material em PDF', url: 'https://example.com' }],
+                        urls: [{ title: 'Vídeo Aula Introdutória', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }],
                         questions: [
                             { question: 'O que significa planejar na administração?', options: ['Definir objetivos e rumos', 'Ignorar problemas', 'Gastar recursos', 'Trabalhar sozinho'], correct: 0 },
-                            { question: 'Qual a principal função do controle?', options: ['Avaliar resultados comparando com o planejado', 'Demitir funcionários', 'Aumentar custos', 'Parar a produção'], correct: 0 }
+                            { question: 'Qual a principal função do controle?', options: ['Avaliar resultados comparando com o planejado', 'Demitir funcionários', 'Aumentar custos', 'Parar a produção'], correct: 0 },
+                            { question: 'O que é organograma?', options: ['Uma ferramenta musical', 'Representação gráfica da estrutura organizacional', 'Um relatório financeiro', 'Um tipo de software'], correct: 1 }
                         ]
                     },
                     {
                         id: 2,
                         title: 'Curso de Informática e Formatação',
                         category: 'Tecnologia',
-                        description: 'Aprenda formatação de computadores, instalação de sistemas e suporte básico.',
+                        description: 'Aprenda formatação completa de computadores, instalação de sistemas e suporte técnico básico.',
                         icon: 'fa-solid fa-computer',
-                        urls: [{ title: 'Guia de Instalação', url: 'https://example.com' }],
+                        urls: [{ title: 'Vídeo Prático: Como Formatar o PC', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }],
                         questions: [
-                            { question: 'Qual componente armazena os dados permanentemente?', options: ['Memória RAM', 'Disco Rigido / SSD', 'Processador', 'Cooler'], correct: 1 },
-                            { question: 'O que é o BIOS/UEFI?', options: ['Um jogo', 'Firmware de inicialização da placa-mãe', 'Um navegador', 'Antivírus'], correct: 1 }
+                            { question: 'Qual componente armazena os arquivos permanentemente no computador?', options: ['Memória RAM', 'Disco Rígido / SSD', 'Processador', 'Placa de Vídeo'], correct: 1 },
+                            { question: 'O que é o BIOS ou UEFI?', options: ['Um jogo eletrônico', 'Firmware de inicialização da placa-mãe', 'Um navegador web', 'Um programa antivírus'], correct: 1 },
+                            { question: 'Qual tecla geralmente é pressionada para abrir o boot menu ao ligar o PC?', options: ['F2, F12 ou Delete', 'Ctrl + Alt + Del', 'Esc e Shift', 'Barra de Espaço'], correct: 0 },
+                            { question: 'Para que serve a formatação limpa?', options: ['Para apagar vírus e arquivos corrompidos reinstalando o SO', 'Apenas para trocar a cor da tela', 'Para acelerar a internet física', 'Para atualizar o mouse'], correct: 0 },
+                            { question: 'O que significa a sigla SSD?', options: ['Super Sistema de Dados', 'Solid State Drive', 'Simple Storage Device', 'System Software Disk'], correct: 1 },
+                            { question: 'Qual sistema de arquivos é mais moderno e utilizado no Windows atual?', options: ['FAT32', 'NTFS', 'EXT4', 'MS-DOS'], correct: 1 },
+                            { question: 'O que é necessário antes de iniciar uma formatação por segurança?', options: ['Backup dos dados importantes', 'Desligar a tomada', 'Retirar a memória RAM', 'Ligar o som'], correct: 0 },
+                            { question: 'Qual ferramenta do Windows cria uma mídia bootável oficial?', options: ['Media Creation Tool', 'Bloco de Notas', 'Paint', 'Calculadora'], correct: 0 },
+                            { question: 'O que são drivers de dispositivos?', options: ['Pequenos softwares que fazem o S.O. se comunicar com o hardware', 'Parafusos do gabinete', 'Cabos de energia', 'Dispositivos de som'], correct: 0 },
+                            { question: 'O que é um pendrive bootável?', options: ['Um pendrive preparado para instalar um sistema operacional', 'Um pendrive com senha', 'Um pendrive que não funciona', 'Um HD externo'], correct: 0 }
                         ]
                     }
                 ],
@@ -458,9 +521,13 @@
                 newLinkTitle: '',
                 newLinkUrl: '',
 
+                newQuestionText: {},
+                qOpt0: {}, qOpt1: {}, qOpt2: {}, qOpt3: {}, qCorrectIdx: {},
+
                 activeCourse: null,
                 userAnswers: {},
-                quizAnsweredState: {},
+                quizFinished: false,
+                finalScore: { correct: 0, wrong: 0, percentage: 0 },
 
                 get dynamicCategories() {
                     let cats = this.courses.map(c => c.category);
@@ -469,8 +536,9 @@
 
                 get filteredCourses() {
                     return this.courses.filter(c => {
-                        let matchName = c.title.toLowerCase().includes(this.searchQuery.toLowerCase());
-                        let matchCat = this.selectedCategory === 'Todos' || c.category === this.selectedCategory;
+                        let query = this.searchQuery.toLowerCase();
+                        let matchName = c.title.toLowerCase().includes(query) || c.description.toLowerCase().includes(query) || c.category.toLowerCase().includes(query);
+                        let matchCat = this.selectedCategory === 'Todos' || c.category.toLowerCase() === this.selectedCategory.toLowerCase();
                         return matchName && matchCat;
                     });
                 },
@@ -482,31 +550,52 @@
                 },
 
                 openCourse(course) {
+                    if (!this.isCourseAccessible(course.id)) {
+                        alert('Este curso está trancado. Faça login ou aguarde a liberação do administrador.');
+                        return;
+                    }
                     this.activeCourse = course;
                     this.userAnswers = {};
-                    this.quizAnsweredState = {};
+                    this.quizFinished = false;
                     this.currentView = 'course-detail';
                 },
 
                 answerQuiz(qIndex, oIndex) {
-                    // Dá feedback imediato assim que clica
-                    this.userAnswers[qIndex] = oIndex;
-                    this.quizAnsweredState[qIndex] = true;
+                    if (this.userAnswers[qIndex] === undefined) {
+                        this.userAnswers[qIndex] = oIndex;
+                    }
                 },
 
-                calculateUserScore() {
-                    if (!this.activeCourse || !this.activeCourse.questions) return 0;
+                submitQuiz() {
+                    if (!this.activeCourse || !this.activeCourse.questions) return;
                     let total = this.activeCourse.questions.length;
                     let correctCount = 0;
+                    
                     this.activeCourse.questions.forEach((q, idx) => {
-                        if (this.userAnswers[idx] === q.correct) correctCount++;
+                        if (this.userAnswers[idx] === q.correct) {
+                            correctCount++;
+                        }
                     });
-                    return Math.round((correctCount / total) * 100);
+
+                    let wrongCount = total - correctCount;
+                    let percentage = Math.round((correctCount / total) * 100);
+
+                    this.finalScore = { correct: correctCount, wrong: wrongCount, percentage: percentage };
+                    this.quizFinished = true;
                 },
 
-                finalizeQuiz() {
-                    alert('Respostas enviadas e média registrada com sucesso!');
-                    this.currentView = 'home';
+                isYoutubeUrl(url) {
+                    return url.includes('youtube.com') || url.includes('youtu.be');
+                },
+
+                getYoutubeEmbedUrl(url) {
+                    let videoId = '';
+                    if (url.includes('v=')) {
+                        videoId = url.split('v=')[1]?.split('&')[0];
+                    } else if (url.includes('youtu.be/')) {
+                        videoId = url.split('youtu.be/')[1]?.split('?')[0];
+                    }
+                    return 'https://www.youtube.com/embed/' + videoId;
                 },
 
                 addLinkToNewCourse() {
@@ -531,15 +620,47 @@
                         icon: 'fa-solid fa-book-open',
                         urls: [...this.newCourse.urls],
                         questions: [
-                            { question: 'Questão gerada automaticamente para este curso?', options: ['Opção Correta', 'Opção Incorreta'], correct: 0 }
+                            { question: 'Questão inicial de teste?', options: ['Alternativa A', 'Alternativa B'], correct: 0 }
                         ]
                     });
                     this.newCourse = { title: '', category: '', description: '', urls: [], questions: [] };
-                    alert('Curso criado com sucesso! Ele já foi enviado para a matriz de permissões.');
+                    alert('Curso criado com sucesso e integrado ao sistema!');
+                },
+
+                addQuestionToCourse(courseId) {
+                    let qText = this.newQuestionText[courseId];
+                    if (!qText) {
+                        alert('Digite o texto da pergunta.');
+                        return;
+                    }
+                    let opts = [];
+                    if (this.qOpt0[courseId]) opts.push(this.qOpt0[courseId]);
+                    if (this.qOpt1[courseId]) opts.push(this.qOpt1[courseId]);
+                    if (this.qOpt2[courseId]) opts.push(this.qOpt2[courseId]);
+                    if (this.qOpt3[courseId]) opts.push(this.qOpt3[courseId]);
+
+                    if (opts.length < 2) {
+                        alert('Insira pelo menos 2 opções de resposta.');
+                        return;
+                    }
+
+                    let correct = this.qCorrectIdx[courseId] || 0;
+                    let course = this.courses.find(c => c.id === courseId);
+                    if (course) {
+                        course.questions.push({ question: qText, options: opts, correct: correct });
+                        this.newQuestionText[courseId] = '';
+                        this.qOpt0[courseId] = '';
+                        this.qOpt1[courseId] = '';
+                        this.qOpt2[courseId] = '';
+                        this.qOpt3[courseId] = '';
+                        alert('Nova questão adicionada com sucesso ao curso!');
+                    }
                 },
 
                 deleteCourse(id) {
-                    this.courses = this.courses.filter(c => c.id !== id);
+                    if (confirm('Deseja realmente excluir este curso?')) {
+                        this.courses = this.courses.filter(c => c.id !== id);
+                    }
                 },
 
                 hasAccess(email, courseId) {
@@ -560,7 +681,7 @@
                             this.studentsList.push({ name: 'Admin Júnior', email: this.newAdminEmail });
                         }
                         this.newAdminEmail = '';
-                        alert('Administrador Júnior cadastrado com sucesso!');
+                        alert('Administrador Júnior promovido com sucesso!');
                     }
                 },
 
@@ -570,7 +691,7 @@
 
                 login() {
                     if (!this.loginForm.name || !this.loginForm.email) {
-                        alert('Preencha todos os campos.');
+                        alert('Preencha seu nome e e-mail.');
                         return;
                     }
                     let isSupreme = this.loginForm.email === 'lucaasdacruztr@gmail.com';
