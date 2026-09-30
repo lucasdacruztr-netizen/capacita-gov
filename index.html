@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
+       })();
+    </script>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased" x-data="app()" x-init="initApp()">
 
@@ -377,7 +382,7 @@
                 </div>
             </div>
 
-            <!-- ABA 2: CADASTRAR ALUNOS AUTORIZADOS (APENAS E-MAIL) -->
+            <!-- ABA 2: CADASTRAR ALUNOS AUTORIZADOS -->
             <div x-show="adminTab === 'students'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8 space-y-6">
                 <div>
                     <h3 class="font-bold text-lg mb-2 text-gray-900">Adicionar Novo E-mail Permitido</h3>
@@ -652,8 +657,9 @@
                     const savedAdmins = localStorage.getItem('academia_juniors');
                     if (savedAdmins) { try { this.juniorAdmins = JSON.parse(savedAdmins); } catch(e){} }
                     
-                    const savedCurr = localStorage.getItem('academia_current_user');
-                    if (savedCurr) { try { this.currentUser = JSON.parse(savedCurr); } catch(e){} }
+                    // Utiliza sessionStorage para expirar ao fechar a aba/navegador
+                    const sessionCurr = sessionStorage.getItem('academia_current_user');
+                    if (sessionCurr) { try { this.currentUser = JSON.parse(sessionCurr); } catch(e){} }
                 },
 
                 saveToStorage() {
@@ -661,11 +667,6 @@
                     localStorage.setItem('academia_students', JSON.stringify(this.studentsList));
                     localStorage.setItem('academia_access', JSON.stringify(this.accessMatrix));
                     localStorage.setItem('academia_juniors', JSON.stringify(this.juniorAdmins));
-                    if (this.currentUser) {
-                        localStorage.setItem('academia_current_user', JSON.stringify(this.currentUser));
-                    } else {
-                        localStorage.removeItem('academia_current_user');
-                    }
                 },
 
                 registerStudent() {
@@ -743,12 +744,13 @@
 
                     this.openLoginModal = false;
                     this.loginEmail = '';
-                    this.saveToStorage();
+                    sessionStorage.setItem('academia_current_user', JSON.stringify(this.currentUser));
                     this.showNotification('Login Realizado!', 'Bem-vindo de volta!', true);
                 },
 
                 logout() {
                     this.currentUser = null;
+                    sessionStorage.removeItem('academia_current_user');
                     localStorage.removeItem('academia_current_user');
                     this.currentView = 'home';
                 },
