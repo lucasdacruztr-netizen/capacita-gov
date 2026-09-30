@@ -57,7 +57,7 @@
                                     <span class="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold" title="Administrador Supremo">AA</span>
                                 </template>
                             </div>
-                            <span class="text-xs text-gray-500 capitalize" x-text="currentUser.role === 'admin' ? 'Administrador' : 'Aluno'"></span>
+                            <span class="text-xs text-gray-500 capitalize" x-text="currentUser.role === 'admin' ? 'Administrador' : (currentUser.role === 'admin_junior' ? 'Admin Júnior' : 'Aluno')"></span>
                         </div>
                         <button @click="logout()" class="text-red-500 hover:text-red-700 text-sm p-2 ml-2" title="Sair">
                             <i class="fa-solid fa-right-from-bracket"></i>
@@ -66,7 +66,7 @@
                 </template>
                 <template x-if="!currentUser">
                     <button @click="openLoginModal = true" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm">
-                        Entrar / Cadastrar
+                        Entrar na Plataforma
                     </button>
                 </template>
             </div>
@@ -79,34 +79,34 @@
         <!-- ==================== ÁREA DO ALUNO ==================== -->
         <div x-show="currentView === 'home'">
             
-            <!-- BANNER DINÂMICO (Visitante vs Aluno Logado) -->
+            <!-- BANNER DINÂMICO -->
             <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 md:p-10 text-white mb-8 shadow-md">
                 <template x-if="!currentUser">
                     <div>
-                        <span class="bg-blue-500/50 text-blue-100 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Cursos Livres & Profissionais</span>
-                        <h2 class="text-2xl md:text-3xl font-bold mb-2">Venha fazer parte da Academia Pro!</h2>
-                        <p class="text-blue-100 mb-6 text-sm md:text-base max-w-2xl">Explore nossos cursos disponíveis, adquira conhecimentos práticos e solicite seu acesso ao administrador para iniciar sua jornada de aprendizado.</p>
+                        <span class="bg-blue-500/50 text-blue-100 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Acesso Restrito</span>
+                        <h2 class="text-2xl md:text-3xl font-bold mb-2">Bem-vindo à Academia Pro!</h2>
+                        <p class="text-blue-100 mb-6 text-sm md:text-base max-w-2xl">O acesso a esta plataforma é exclusivo para alunos devidamente cadastrados e autorizados pelos administradores. Faça login para acessar seus cursos.</p>
                         <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-6 py-2.5 rounded-xl font-bold text-sm transition shadow">
-                            Fazer Cadastro / Entrar
+                            Fazer Login
                         </button>
                     </div>
                 </template>
                 <template x-if="currentUser">
                     <div>
                         <h2 class="text-2xl md:text-3xl font-bold mb-2">Seus Cursos Disponíveis</h2>
-                        <p class="text-blue-100 mb-6 text-sm md:text-base">Acesse os conteúdos liberados pelo administrador para o seu perfil ou explore os cursos da plataforma.</p>
+                        <p class="text-blue-100 mb-6 text-sm md:text-base">Acesse os conteúdos liberados pelo administrador para o seu perfil.</p>
                     </div>
                 </template>
                 
-                <!-- Barra de Busca Inteligente -->
+                <!-- Barra de Busca -->
                 <div class="relative max-w-xl mt-6">
-                    <input type="text" x-model="searchQuery" placeholder="Buscar curso por nome ou categoria (ex: Administração, Tecnologia)..." 
+                    <input type="text" x-model="searchQuery" placeholder="Buscar curso por nome ou categoria..." 
                            class="w-full pl-10 pr-4 py-3 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-4 text-gray-400"></i>
                 </div>
             </div>
 
-            <!-- Categorias Dinâmicas -->
+            <!-- Categorias -->
             <div class="flex gap-2 overflow-x-auto pb-4 mb-6">
                 <button @click="selectedCategory = 'Todos'" 
                         :class="selectedCategory === 'Todos' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border'"
@@ -133,7 +133,7 @@
                                 <template x-if="!isCourseAccessible(course.id)">
                                     <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center text-white p-4 text-center">
                                         <i class="fa-solid fa-lock text-2xl mb-1"></i>
-                                        <span class="text-xs font-bold" x-text="currentUser ? 'Curso Bloqueado (Aguardando Liberação)' : 'Faça login para solicitar acesso'"></span>
+                                        <span class="text-xs font-bold" x-text="currentUser ? 'Curso Bloqueado (Aguardando Liberação)' : 'Faça login para ver o status'"></span>
                                     </div>
                                 </template>
                             </div>
@@ -150,7 +150,7 @@
                             </template>
                             <template x-if="!isCourseAccessible(course.id)">
                                 <button @click="currentUser ? null : openLoginModal = true" class="w-full bg-gray-200 text-gray-600 hover:bg-gray-300 py-2.5 rounded-xl font-medium text-sm transition">
-                                    <span x-text="currentUser ? 'Aguardando Liberação do Admin' : 'Entrar para Visualizar'"></span>
+                                    <span x-text="currentUser ? 'Aguardando Liberação do Admin' : 'Entrar para Verificar Acesso'"></span>
                                 </button>
                             </template>
                         </div>
@@ -219,18 +219,12 @@
                                             </button>
                                         </template>
                                     </div>
-                                    <template x-if="userAnswers[qIndex] !== undefined">
-                                        <div class="mt-2 text-xs font-bold" :class="userAnswers[qIndex] === q.correct ? 'text-green-600' : 'text-red-600'">
-                                            <span x-text="userAnswers[qIndex] === q.correct ? '✓ Resposta correta travada!' : '✕ Resposta incorreta travada.'"></span>
-                                        </div>
-                                    </template>
                                 </div>
                             </template>
                         </div>
 
-                        <!-- Botão de Envio do Quiz -->
                         <div class="mt-8 flex items-center justify-between bg-gray-100 p-4 rounded-xl">
-                            <span class="text-xs text-gray-600">Certifique-se de responder todas as questões antes de enviar.</span>
+                            <span class="text-xs text-gray-600">Responda todas as questões antes de enviar.</span>
                             <button @click="submitQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium text-sm transition shadow">
                                 Enviar Respostas & Ver Placar
                             </button>
@@ -245,7 +239,7 @@
                         <h3 class="text-2xl font-bold mb-2">Resultado Final do Quiz</h3>
                         <p class="text-gray-300 text-sm mb-6">Parabéns por concluir a avaliação deste módulo!</p>
                         
-                        <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-8 bg-white/10 backdrop-blur p-4 rounded-xl border border-white/10">
+                        <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-8 bg-white/15 backdrop-blur p-4 rounded-xl border border-white/10">
                             <div>
                                 <span class="block text-xs text-gray-400">Acertos</span>
                                 <span class="text-xl font-bold text-green-400" x-text="finalScore.correct"></span>
@@ -273,7 +267,7 @@
             <div class="bg-white p-6 rounded-2xl shadow-sm border flex justify-between items-center">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900">Área do Administrador</h2>
-                    <p class="text-sm text-gray-500">Criação de cursos, edição de conteúdos, perguntas e permissões.</p>
+                    <p class="text-sm text-gray-500">Gerencie cadastros de alunos, cursos, perguntas e permissões.</p>
                 </div>
                 <button @click="currentView = 'home'" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium transition">
                     Ir para Área do Aluno
@@ -285,21 +279,24 @@
                 <button @click="adminTab = 'courses'" :class="adminTab === 'courses' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
                     Gerenciar Cursos & Questões
                 </button>
+                <button @click="adminTab = 'students'" :class="adminTab === 'students' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
+                    Cadastrar Alunos Autorizados
+                </button>
                 <button @click="adminTab = 'permissions'" :class="adminTab === 'permissions' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
-                    Permissões de Alunos
+                    Permissões de Acesso por Aluno
                 </button>
                 <button @click="adminTab = 'admins'" :class="adminTab === 'admins' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
                     Administradores Júnior
                 </button>
             </div>
 
-            <!-- ABA 1: GERENCIAR E EDITAR CURSOS, VÍDEOS E QUESTÕES -->
+            <!-- ABA 1: GERENCIAR CURSOS -->
             <div x-show="adminTab === 'courses'" class="bg-white rounded-2xl shadow-sm border p-6 space-y-6">
                 <div>
                     <h3 class="font-bold text-lg mb-4">Adicionar Novo Curso</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <input type="text" x-model="newCourse.title" placeholder="Nome do Curso (ex: AD - Administração Direta)" class="border p-3 rounded-xl text-sm">
-                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: AD ou Tecnologia)" class="border p-3 rounded-xl text-sm">
+                        <input type="text" x-model="newCourse.title" placeholder="Nome do Curso" class="border p-3 rounded-xl text-sm">
+                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Administração)" class="border p-3 rounded-xl text-sm">
                     </div>
                     <textarea x-model="newCourse.description" placeholder="Descrição do curso..." class="border p-3 rounded-xl text-sm w-full mb-4"></textarea>
                     
@@ -321,14 +318,14 @@
                     </div>
 
                     <button @click="createCourse()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition">
-                        Publicar Curso para Alunos
+                        Publicar Curso
                     </button>
                 </div>
 
                 <hr>
 
                 <div>
-                    <h3 class="font-bold text-lg mb-4">Editar, Modificar e Gerenciar Cursos Atuais</h3>
+                    <h3 class="font-bold text-lg mb-4">Cursos Atuais</h3>
                     <div class="space-y-4">
                         <template x-for="course in courses" :key="course.id">
                             <div class="border p-4 rounded-xl bg-gray-50 space-y-3">
@@ -336,34 +333,33 @@
                                     <h4 class="font-bold text-sm text-blue-900" x-text="course.title + ' (' + course.category + ')'"></h4>
                                     <div class="flex items-center gap-2">
                                         <button @click="startEditCourse(course)" class="bg-amber-100 hover:bg-amber-200 text-amber-800 px-3 py-1.5 rounded-lg text-xs font-bold transition">
-                                            <i class="fa-solid fa-pen-to-square mr-1"></i> Alterar Dados
+                                            Editar
                                         </button>
                                         <button @click="deleteCourse(course.id)" class="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">
-                                            <i class="fa-solid fa-trash mr-1"></i> Excluir
+                                            Excluir
                                         </button>
                                     </div>
                                 </div>
 
-                                <!-- Bloco de Gerenciamento de Questões e Vídeos do Curso -->
                                 <div class="bg-white p-3 rounded-lg border space-y-3">
-                                    <div class="text-xs font-bold text-gray-700">Vídeos Cadastrados:</div>
+                                    <div class="text-xs font-bold text-gray-700">Vídeos:</div>
                                     <div class="space-y-1">
                                         <template x-for="(lnk, lIdx) in course.urls">
                                             <div class="flex justify-between items-center text-xs bg-gray-50 p-2 rounded border">
-                                                <span x-text="lnk.title + ' (' + lnk.url + ')'"></span>
-                                                <button @click="course.urls.splice(lIdx, 1); saveToStorage()" class="text-red-500 font-bold ml-2">Remover Vídeo</button>
+                                                <span x-text="lnk.title"></span>
+                                                <button @click="course.urls.splice(lIdx, 1); saveToStorage()" class="text-red-500 font-bold ml-2">Remover</button>
                                             </div>
                                         </template>
                                     </div>
                                     <div class="flex gap-2 pt-1">
-                                        <input type="text" x-model="editLinkTitle[course.id]" placeholder="Novo título de vídeo" class="border p-1.5 rounded text-xs flex-1">
-                                        <input type="text" x-model="editLinkUrl[course.id]" placeholder="Nova URL" class="border p-1.5 rounded text-xs flex-1">
+                                        <input type="text" x-model="editLinkTitle[course.id]" placeholder="Título do vídeo" class="border p-1.5 rounded text-xs flex-1">
+                                        <input type="text" x-model="editLinkUrl[course.id]" placeholder="URL" class="border p-1.5 rounded text-xs flex-1">
                                         <button @click="addVideoToExistingCourse(course.id)" class="bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-semibold">Adicionar Vídeo</button>
                                     </div>
 
                                     <hr class="my-2">
 
-                                    <span class="text-xs font-bold text-gray-700">Adicionar Nova Questão ao Curso (<span x-text="course.questions.length"></span> questões atuais):</span>
+                                    <span class="text-xs font-bold text-gray-700">Nova Questão (<span x-text="course.questions.length"></span> atuais):</span>
                                     <input type="text" x-model="newQuestionText[course.id]" placeholder="Texto da pergunta..." class="w-full border p-2 rounded text-xs">
                                     <div class="grid grid-cols-2 gap-2">
                                         <input type="text" x-model="qOpt0[course.id]" placeholder="Opção A" class="border p-1.5 rounded text-xs">
@@ -372,7 +368,7 @@
                                         <input type="text" x-model="qOpt3[course.id]" placeholder="Opção D (Opcional)" class="border p-1.5 rounded text-xs">
                                     </div>
                                     <div class="flex gap-2 items-center pt-1">
-                                        <span class="text-xs text-gray-500">Índice da resposta correta (0 = A, 1 = B, 2 = C, 3 = D):</span>
+                                        <span class="text-xs text-gray-500">Correta (0=A, 1=B, 2=C, 3=D):</span>
                                         <input type="number" min="0" max="3" x-model.number="qCorrectIdx[course.id]" class="border w-16 p-1 rounded text-xs text-center" value="0">
                                         <button @click="addQuestionToCourse(course.id)" class="bg-gray-800 text-white px-4 py-1.5 rounded text-xs font-semibold ml-auto">Adicionar Questão</button>
                                     </div>
@@ -383,10 +379,44 @@
                 </div>
             </div>
 
-            <!-- ABA 2: MATRIZ DE PERMISSÕES -->
+            <!-- ABA 2: CADASTRAR ALUNOS AUTORIZADOS -->
+            <div x-show="adminTab === 'students'" class="bg-white rounded-2xl shadow-sm border p-6 space-y-6">
+                <div>
+                    <h3 class="font-bold text-lg mb-2">Adicionar Novo Aluno Permitido</h3>
+                    <p class="text-xs text-gray-500 mb-4">Somente os e-mails cadastrados aqui conseguirão entrar na plataforma.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                        <input type="text" x-model="newStudentName" placeholder="Nome do Aluno" class="border p-3 rounded-xl text-sm">
+                        <input type="email" x-model="newStudentEmail" placeholder="E-mail do Aluno" class="border p-3 rounded-xl text-sm">
+                    </div>
+                    <button @click="registerStudent()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition">
+                        Cadastrar Aluno Autorizado
+                    </button>
+                </div>
+
+                <hr>
+
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Alunos Cadastrados no Sistema</h3>
+                    <div class="space-y-3">
+                        <template x-for="(student, sIdx) in studentsList" :key="student.email">
+                            <div class="p-4 border rounded-xl bg-gray-50 flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-sm text-gray-900" x-text="student.name"></h4>
+                                    <p class="text-xs text-gray-500" x-text="student.email"></p>
+                                </div>
+                                <button @click="removeStudent(sIdx)" class="text-red-500 hover:text-red-700 text-sm" title="Remover Aluno">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 3: PERMISSÕES DE ACESSO -->
             <div x-show="adminTab === 'permissions'" class="bg-white rounded-2xl shadow-sm border p-6">
                 <h3 class="font-bold text-lg mb-2">Controle de Acesso por Aluno</h3>
-                <p class="text-xs text-gray-500 mb-6">Defina por checkboxes quais cursos cada aluno pode acessar (novos cursos ficam bloqueados por padrão até você autorizar aqui).</p>
+                <p class="text-xs text-gray-500 mb-6">Defina quais cursos cada aluno cadastrado pode visualizar e acessar.</p>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -420,7 +450,7 @@
                 </div>
             </div>
 
-            <!-- ABA 3: ADMINISTRADORES JÚNIOR -->
+            <!-- ABA 4: ADMINISTRADORES JÚNIOR -->
             <div x-show="adminTab === 'admins'" class="bg-white rounded-2xl shadow-sm border p-6">
                 <h3 class="font-bold text-lg mb-4">Gerenciar Administradores Júnior</h3>
                 <div class="flex gap-3 mb-6">
@@ -454,56 +484,50 @@
 
     </main>
 
-    <!-- MODAL DE EDIÇÃO DE CURSO -->
-    <template x-if="editingCourseModal">
-        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl relative space-y-4">
-                <button @click="editingCourseModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-                <h3 class="font-bold text-xl text-gray-900">Alterar Dados do Curso</h3>
-                
+    <!-- MODAL DE LOGIN (RIGOROSO COM CADASTRO) -->
+    <div x-show="openLoginModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative" @click.away="openLoginModal = false">
+            <button @click="openLoginModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-xl font-bold mb-2 text-gray-900">Entrar na Plataforma</h3>
+            <p class="text-xs text-gray-500 mb-4">Insira o e-mail previamente cadastrado na base de dados dos administradores.</p>
+            <div class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 mb-1">Título do Curso</label>
-                    <input type="text" x-model="tempEditCourse.title" class="w-full border p-3 rounded-xl text-sm">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Seu E-mail Cadastrado</label>
+                    <input type="email" x-model="loginEmail" placeholder="seu@email.com" class="w-full border p-3 rounded-xl text-sm">
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-600 mb-1">Categoria</label>
-                    <input type="text" x-model="tempEditCourse.category" class="w-full border p-3 rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-600 mb-1">Descrição</label>
-                    <textarea x-model="tempEditCourse.description" class="w-full border p-3 rounded-xl text-sm"></textarea>
-                </div>
-                <div class="flex justify-end gap-2 pt-2">
-                    <button @click="editingCourseModal = false" class="bg-gray-200 px-4 py-2 rounded-xl text-sm font-semibold">Cancelar</button>
-                    <button @click="saveEditedCourse()" class="bg-blue-600 text-white px-6 py-2 rounded-xl text-sm font-semibold shadow">Salvar Alterações</button>
-                </div>
+                <button @click="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-sm transition shadow">
+                    Validar Acesso
+                </button>
             </div>
         </div>
-    </template>
+    </div>
 
-    <!-- MODAL DE LOGIN -->
-    <template x-if="openLoginModal">
-        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative">
-                <button @click="openLoginModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-                <h3 class="font-bold text-xl mb-4 text-gray-900">Entrar na Plataforma</h3>
-                
+    <!-- MODAL DE EDIÇÃO DE CURSO -->
+    <div x-show="openEditModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative" @click.away="openEditModal = false">
+            <button @click="openEditModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-xl font-bold mb-4 text-gray-900">Editar Dados do Curso</h3>
+            <template x-if="editingCourse">
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 mb-1">Nome de Usuário</label>
-                        <input type="text" x-model="loginForm.name" placeholder="Digite seu nome" class="w-full border p-3 rounded-xl text-sm">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Título do Curso</label>
+                        <input type="text" x-model="editingCourse.title" class="w-full border p-3 rounded-xl text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 mb-1">E-mail</label>
-                        <input type="email" x-model="loginForm.email" placeholder="seuemail@exemplo.com" class="w-full border p-3 rounded-xl text-sm">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Categoria</label>
+                        <input type="text" x-model="editingCourse.category" class="w-full border p-3 rounded-xl text-sm">
                     </div>
-                    <button @click="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-medium text-sm transition shadow">
-                        Entrar no Sistema
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Descrição</label>
+                        <textarea x-model="editingCourse.description" class="w-full border p-3 rounded-xl text-sm"></textarea>
+                    </div>
+                    <button @click="saveEditCourse()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-sm transition shadow">
+                        Salvar Alterações
                     </button>
                 </div>
-            </div>
+            </template>
         </div>
-    </template>
+    </div>
 
     <!-- SCRIPT DA APLICAÇÃO -->
     <script>
@@ -511,337 +535,378 @@
             return {
                 currentView: 'home',
                 adminTab: 'courses',
-                openLoginModal: false,
-                editingCourseModal: false,
+                currentUser: null,
                 searchQuery: '',
                 selectedCategory: 'Todos',
+                openLoginModal: false,
+                openEditModal: false,
+                editingCourse: null,
                 
-                currentUser: null,
-                loginForm: { name: '', email: '' },
+                loginEmail: '',
 
                 courses: [
                     {
                         id: 1,
-                        title: 'Curso Básico de Administração',
+                        title: 'Administração Direta e Indireta',
                         category: 'Administração',
-                        description: 'Fundamentos essenciais de gestão, rotinas administrativas e processos corporativos.',
-                        icon: 'fa-solid fa-briefcase',
-                        urls: [{ title: 'Vídeo Aula Introdutória', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }],
+                        description: 'Compreenda os conceitos fundamentais da organização da administração pública brasileira.',
+                        icon: 'fa-solid fa-building-columns',
+                        urls: [
+                            { title: 'Introdução à Administração Pública', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }
+                        ],
                         questions: [
-                            { question: 'O que significa planejar na administração?', options: ['Definir objetivos e rumos', 'Ignorar problemas', 'Gastar recursos', 'Trabalhar sozinho'], correct: 0 },
-                            { question: 'Qual a principal função do controle?', options: ['Avaliar resultados comparando com o planejado', 'Demitir funcionários', 'Aumentar custos', 'Parar a produção'], correct: 0 },
-                            { question: 'O que é organograma?', options: ['Uma ferramenta musical', 'Representação gráfica da estrutura organizacional', 'Um relatório financeiro', 'Um tipo de software'], correct: 1 }
-                        ]
-                    },
-                    {
-                        id: 2,
-                        title: 'Curso de Informática e Formatação',
-                        category: 'Tecnologia',
-                        description: 'Aprenda formatação completa de computadores, instalação de sistemas e suporte técnico básico.',
-                        icon: 'fa-solid fa-computer',
-                        urls: [{ title: 'Vídeo Prático: Como Formatar o PC', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }],
-                        questions: [
-                            { question: 'Qual componente armazena os arquivos permanentemente no computador?', options: ['Memória RAM', 'Disco Rígido / SSD', 'Processador', 'Placa de Vídeo'], correct: 1 },
-                            { question: 'O que é o BIOS ou UEFI?', options: ['Um jogo eletrônico', 'Firmware de inicialização da placa-mãe', 'Um navegador web', 'Um programa antivírus'], correct: 1 },
-                            { question: 'Qual tecla geralmente é pressionada para abrir o boot menu ao ligar o PC?', options: ['F2, F12 ou Delete', 'Ctrl + Alt + Del', 'Esc e Shift', 'Barra de Espaço'], correct: 0 },
-                            { question: 'Para que serve a formatação limpa?', options: ['Para apagar vírus e arquivos corrompidos reinstalando o SO', 'Apenas para trocar a cor da tela', 'Para acelerar a internet física', 'Para atualizar o mouse'], correct: 0 },
-                            { question: 'O que significa a sigla SSD?', options: ['Super Sistema de Dados', 'Solid State Drive', 'Simple Storage Device', 'System Software Disk'], correct: 1 },
-                            { question: 'Qual sistema de arquivos é mais moderno e utilizado no Windows atual?', options: ['FAT32', 'NTFS', 'EXT4', 'MS-DOS'], correct: 1 },
-                            { question: 'O que é necessário antes de iniciar uma formatação por segurança?', options: ['Backup dos dados importantes', 'Desligar a tomada', 'Retirar a memória RAM', 'Ligar o som'], correct: 0 },
-                            { question: 'Qual ferramenta do Windows cria uma mídia bootável oficial?', options: ['Media Creation Tool', 'Bloco de Notas', 'Paint', 'Calculadora'], correct: 0 },
-                            { question: 'O que são drivers de dispositivos?', options: ['Pequenos softwares que fazem o S.O. se comunicar com o hardware', 'Parafusos do gabinete', 'Cabos de energia', 'Dispositivos de som'], correct: 0 },
-                            { question: 'O que é um pendrive bootável?', options: ['Um pendrive preparado para instalar um sistema operacional', 'Um pendrive com senha', 'Um pendrive que não funciona', 'Um HD externo'], correct: 0 }
+                            {
+                                question: 'O que caracteriza a Administração Direta?',
+                                options: [
+                                    'Órgãos integrados à estrutura administrativa da Presidência e Ministérios.',
+                                    'Entidades com personalidade jurídica própria.',
+                                    'Empresas puramente privadas.',
+                                    'Nenhuma das anteriores.'
+                                ],
+                                correct: 0
+                            }
                         ]
                     }
                 ],
 
                 studentsList: [
-                    { name: 'Lucas da Cruz', email: 'lucaasdacruztr@gmail.com' },
-                    { name: 'João Silva', email: 'joao@aluno.com' },
-                    { name: 'Maria Souza', email: 'maria@aluno.com' }
+                    { name: 'Aluno Exemplo', email: 'aluno@exemplo.com' }
                 ],
-
-                accessPermissions: {
-                    'lucaasdacruztr@gmail.com': { 1: true, 2: true },
-                    'joao@aluno.com': { 1: true, 2: false },
-                    'maria@aluno.com': { 1: false, 2: true }
-                },
-
+                accessMatrix: {}, 
                 juniorAdmins: [],
                 newAdminEmail: '',
+
+                newStudentName: '',
+                newStudentEmail: '',
 
                 newCourse: { title: '', category: '', description: '', urls: [], questions: [] },
                 newLinkTitle: '',
                 newLinkUrl: '',
-
-                tempEditCourse: { id: null, title: '', category: '', description: '' },
-                editLinkTitle: {},
-                editLinkUrl: {},
-
-                newQuestionText: {},
-                qOpt0: {}, qOpt1: {}, qOpt2: {}, qOpt3: {}, qCorrectIdx: {},
 
                 activeCourse: null,
                 userAnswers: {},
                 quizFinished: false,
                 finalScore: { correct: 0, wrong: 0, percentage: 0 },
 
-                initApp() {
-                    // Carrega dados salvos localmente se existirem, garantindo persistência ao atualizar
-                    let savedUser = localStorage.getItem('academia_user');
-                    if (savedUser) {
-                        try { this.currentUser = JSON.parse(savedUser); } catch(e) {}
-                    }
-                    let savedCourses = localStorage.getItem('academia_courses');
-                    if (savedCourses) {
-                        try { this.courses = JSON.parse(savedCourses); } catch(e) {}
-                    }
-                    let savedPerms = localStorage.getItem('academia_perms');
-                    if (savedPerms) {
-                        try { this.accessPermissions = JSON.parse(savedPerms); } catch(e) {}
-                    }
-                },
-
-                saveToStorage() {
-                    localStorage.setItem('academia_courses', JSON.stringify(this.courses));
-                    localStorage.setItem('academia_perms', JSON.stringify(this.accessPermissions));
-                    if (this.currentUser) {
-                        localStorage.setItem('academia_user', JSON.stringify(this.currentUser));
-                    } else {
-                        localStorage.removeItem('academia_user');
-                    }
-                },
+                editLinkTitle: {},
+                editLinkUrl: {},
+                newQuestionText: {},
+                qOpt0: {},
+                qOpt1: {},
+                qOpt2: {},
+                qOpt3: {},
+                qCorrectIdx: {},
 
                 get dynamicCategories() {
-                    let cats = this.courses.map(c => c.category);
+                    const cats = this.courses.map(c => c.category);
                     return [...new Set(cats)];
                 },
 
                 get filteredCourses() {
                     return this.courses.filter(c => {
-                        let query = this.searchQuery.toLowerCase();
-                        let matchName = c.title.toLowerCase().includes(query) || c.description.toLowerCase().includes(query) || c.category.toLowerCase().includes(query);
-                        let matchCat = this.selectedCategory === 'Todos' || c.category.toLowerCase() === this.selectedCategory.toLowerCase();
-                        return matchName && matchCat;
+                        const matchesCat = this.selectedCategory === 'Todos' || c.category === this.selectedCategory;
+                        const matchesSearch = c.title.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
+                                              c.category.toLowerCase().includes(this.searchQuery.toLowerCase());
+                        return matchesCat && matchesSearch;
                     });
                 },
 
+                initApp() {
+                    const savedCourses = localStorage.getItem('academia_courses');
+                    if (savedCourses) { try { this.courses = JSON.parse(savedCourses); } catch(e){} }
+                    
+                    const savedUsers = localStorage.getItem('academia_students');
+                    if (savedUsers) { try { this.studentsList = JSON.parse(savedUsers); } catch(e){} }
+                    
+                    const savedMatrix = localStorage.getItem('academia_access');
+                    if (savedMatrix) { try { this.accessMatrix = JSON.parse(savedMatrix); } catch(e){} }
+                    
+                    const savedAdmins = localStorage.getItem('academia_juniors');
+                    if (savedAdmins) { try { this.juniorAdmins = JSON.parse(savedAdmins); } catch(e){} }
+                    
+                    const savedCurr = localStorage.getItem('academia_current_user');
+                    if (savedCurr) { try { this.currentUser = JSON.parse(savedCurr); } catch(e){} }
+                },
+
+                saveToStorage() {
+                    localStorage.setItem('academia_courses', JSON.stringify(this.courses));
+                    localStorage.setItem('academia_students', JSON.stringify(this.studentsList));
+                    localStorage.setItem('academia_access', JSON.stringify(this.accessMatrix));
+                    localStorage.setItem('academia_juniors', JSON.stringify(this.juniorAdmins));
+                    if (this.currentUser) {
+                        localStorage.setItem('academia_current_user', JSON.stringify(this.currentUser));
+                    } else {
+                        localStorage.removeItem('academia_current_user');
+                    }
+                },
+
+                registerStudent() {
+                    if(!this.newStudentName || !this.newStudentEmail) {
+                        alert('Preencha o nome e o e-mail do aluno.');
+                        return;
+                    }
+                    const email = this.newStudentEmail.toLowerCase().trim();
+                    const exists = this.studentsList.some(s => s.email === email);
+                    if(exists) {
+                        alert('Este e-mail já está cadastrado.');
+                        return;
+                    }
+                    this.studentsList.push({ name: this.newStudentName.trim(), email: email });
+                    this.newStudentName = '';
+                    this.newStudentEmail = '';
+                    this.saveToStorage();
+                    alert('Aluno cadastrado com sucesso!');
+                },
+
+                removeStudent(index) {
+                    if(confirm('Tem certeza que deseja remover este aluno?')) {
+                        this.studentsList.splice(index, 1);
+                        this.saveToStorage();
+                    }
+                },
+
+                handleLogin() {
+                    if(!this.loginEmail) {
+                        alert('Digite o seu e-mail.');
+                        return;
+                    }
+
+                    const email = this.loginEmail.toLowerCase().trim();
+                    let role = 'student';
+                    let isSupreme = false;
+                    let userName = '';
+
+                    // Verifica se é o Admin Supremo
+                    if(email === 'lucaasdacruztr@gmail.com') {
+                        role = 'admin';
+                        isSupreme = true;
+                        userName = 'Lucas da Cruz';
+                    } 
+                    // Verifica se é Admin Júnior
+                    else if(this.juniorAdmins.includes(email)) {
+                        role = 'admin_junior';
+                        userName = 'Admin Júnior';
+                    } 
+                    // Verifica se está na lista de alunos autorizados
+                    else {
+                        const foundStudent = this.studentsList.find(s => s.email === email);
+                        if(foundStudent) {
+                            role = 'student';
+                            userName = foundStudent.name;
+                        } else {
+                            // ACESSO NEGADO RIGOROSO
+                            alert('Acesso Negado! Este e-mail não está cadastrado ou autorizado pelo administrador.');
+                            return;
+                        }
+                    }
+
+                    this.currentUser = {
+                        name: userName,
+                        email: email,
+                        role: role,
+                        isSupreme: isSupreme
+                    };
+
+                    this.openLoginModal = false;
+                    this.loginEmail = '';
+                    this.saveToStorage();
+                    alert('Login efetuado com sucesso! Bem-vindo, ' + this.currentUser.name);
+                },
+
+                logout() {
+                    this.currentUser = null;
+                    localStorage.removeItem('academia_current_user');
+                    this.currentView = 'home';
+                },
+
                 isCourseAccessible(courseId) {
-                    if (!this.currentUser) return false;
-                    if (this.currentUser.role === 'admin' || this.currentUser.role === 'admin_junior') return true;
-                    return this.accessPermissions[this.currentUser.email]?.[courseId] === true;
+                    if(!this.currentUser) return false;
+                    if(this.currentUser.role === 'admin' || this.currentUser.isSupreme || this.currentUser.role === 'admin_junior') return true;
+                    
+                    const userAccess = this.accessMatrix[this.currentUser.email] || [];
+                    return userAccess.includes(courseId);
+                },
+
+                hasAccess(email, courseId) {
+                    const userAccess = this.accessMatrix[email] || [];
+                    return userAccess.includes(courseId);
+                },
+
+                toggleStudentAccess(email, courseId) {
+                    if(!this.accessMatrix[email]) {
+                        this.accessMatrix[email] = [];
+                    }
+                    const idx = this.accessMatrix[email].indexOf(courseId);
+                    if(idx > -1) {
+                        this.accessMatrix[email].splice(idx, 1);
+                    } else {
+                        this.accessMatrix[email].push(courseId);
+                    }
+                    this.saveToStorage();
                 },
 
                 openCourse(course) {
-                    if (!this.isCourseAccessible(course.id)) {
-                        alert('Este curso está bloqueado. Solicite a liberação ao administrador.');
-                        return;
-                    }
                     this.activeCourse = course;
                     this.userAnswers = {};
                     this.quizFinished = false;
                     this.currentView = 'course-detail';
                 },
 
-                answerQuiz(qIndex, oIndex) {
-                    if (this.userAnswers[qIndex] === undefined) {
-                        this.userAnswers[qIndex] = oIndex;
-                    }
-                },
-
-                submitQuiz() {
-                    if (!this.activeCourse || !this.activeCourse.questions) return;
-                    let total = this.activeCourse.questions.length;
-                    let correctCount = 0;
-                    
-                    this.activeCourse.questions.forEach((q, idx) => {
-                        if (this.userAnswers[idx] === q.correct) {
-                            correctCount++;
-                        }
-                    });
-
-                    let wrongCount = total - correctCount;
-                    let percentage = Math.round((correctCount / total) * 100);
-
-                    this.finalScore = { correct: correctCount, wrong: wrongCount, percentage: percentage };
-                    this.quizFinished = true;
-                },
-
                 isYoutubeUrl(url) {
-                    return url && (url.includes('youtube.com') || url.includes('youtu.be'));
+                    return url.includes('youtube.com') || url.includes('youtu.be');
                 },
 
                 getYoutubeEmbedUrl(url) {
                     let videoId = '';
-                    if (url.includes('v=')) {
-                        videoId = url.split('v=')[1]?.split('&')[0];
-                    } else if (url.includes('youtu.be/')) {
+                    if (url.includes('youtu.be/')) {
                         videoId = url.split('youtu.be/')[1]?.split('?')[0];
+                    } else if (url.includes('watch?v=')) {
+                        videoId = url.split('watch?v=')[1]?.split('&')[0];
                     }
-                    return 'https://www.youtube.com/embed/' + videoId;
+                    return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+                },
+
+                answerQuiz(qIndex, oIndex) {
+                    if(this.userAnswers[qIndex] !== undefined) return;
+                    this.userAnswers[qIndex] = oIndex;
+                },
+
+                submitQuiz() {
+                    if(!this.activeCourse || !this.activeCourse.questions) return;
+                    const totalQ = this.activeCourse.questions.length;
+                    
+                    let correctCount = 0;
+                    let wrongCount = 0;
+
+                    for(let i=0; i<totalQ; i++) {
+                        if(this.userAnswers[i] === this.activeCourse.questions[i].correct) {
+                            correctCount++;
+                        } else {
+                            wrongCount++;
+                        }
+                    }
+
+                    const percentage = Math.round((correctCount / totalQ) * 100);
+                    this.finalScore = { correct: correctCount, wrong: wrongCount, percentage: percentage };
+                    this.quizFinished = true;
                 },
 
                 addLinkToNewCourse() {
-                    if (this.newLinkTitle && this.newLinkUrl) {
-                        this.newCourse.urls.push({ title: this.newLinkTitle, url: this.newLinkUrl });
-                        this.newLinkTitle = '';
-                        this.newLinkUrl = '';
-                    }
+                    if(!this.newLinkTitle || !this.newLinkUrl) return;
+                    this.newCourse.urls.push({ title: this.newLinkTitle, url: this.newLinkUrl });
+                    this.newLinkTitle = '';
+                    this.newLinkUrl = '';
                 },
 
                 createCourse() {
-                    if (!this.newCourse.title || !this.newCourse.category) {
-                        alert('Preencha o título e a categoria do curso.');
+                    if(!this.newCourse.title || !this.newCourse.category) {
+                        alert('Preencha ao menos o título e a categoria do curso.');
                         return;
                     }
-                    let newId = this.courses.length > 0 ? Math.max(...this.courses.map(c => c.id)) + 1 : 1;
-                    
-                    let created = {
+                    const newId = Date.now();
+                    const courseObj = {
                         id: newId,
                         title: this.newCourse.title,
                         category: this.newCourse.category,
-                        description: this.newCourse.description || 'Sem descrição.',
-                        icon: 'fa-solid fa-book-open',
+                        description: this.newCourse.description,
+                        icon: 'fa-solid fa-graduation-cap',
                         urls: [...this.newCourse.urls],
-                        questions: [
-                            { question: 'Questão inicial padrão?', options: ['Sim', 'Não'], correct: 0 }
-                        ]
+                        questions: []
                     };
-
-                    this.courses.push(created);
+                    this.courses.push(courseObj);
                     this.newCourse = { title: '', category: '', description: '', urls: [], questions: [] };
                     this.saveToStorage();
-                    alert('Curso publicado com sucesso! Ele já está disponível visualmente para os alunos (bloqueado até você autorizar o acesso).');
+                    alert('Curso criado com sucesso!');
                 },
 
                 startEditCourse(course) {
-                    this.tempEditCourse = { id: course.id, title: course.title, category: course.category, description: course.description };
-                    this.editingCourseModal = true;
+                    this.editingCourse = { ...course };
+                    this.openEditModal = true;
                 },
 
-                saveEditedCourse() {
-                    let c = this.courses.find(item => item.id === this.tempEditCourse.id);
-                    if (c) {
-                        c.title = this.tempEditCourse.title;
-                        c.category = this.tempEditCourse.category;
-                        c.description = this.tempEditCourse.description;
+                saveEditCourse() {
+                    if(!this.editingCourse) return;
+                    const idx = this.courses.findIndex(c => c.id === this.editingCourse.id);
+                    if(idx > -1) {
+                        this.courses[idx].title = this.editingCourse.title;
+                        this.courses[idx].category = this.editingCourse.category;
+                        this.courses[idx].description = this.editingCourse.description;
                         this.saveToStorage();
-                        this.editingCourseModal = false;
-                        alert('Curso alterado com sucesso!');
+                    }
+                    this.openEditModal = false;
+                    this.editingCourse = null;
+                },
+
+                deleteCourse(courseId) {
+                    if(confirm('Tem certeza que deseja excluir este curso?')) {
+                        this.courses = this.courses.filter(c => c.id !== courseId);
+                        this.saveToStorage();
                     }
                 },
 
                 addVideoToExistingCourse(courseId) {
-                    let title = this.editLinkTitle[courseId];
-                    let url = this.editLinkUrl[courseId];
-                    if (title && url) {
-                        let c = this.courses.find(item => item.id === courseId);
-                        if (c) {
-                            c.urls.push({ title: title, url: url });
-                            this.editLinkTitle[courseId] = '';
-                            this.editLinkUrl[courseId] = '';
-                            this.saveToStorage();
-                            alert('Vídeo adicionado com sucesso!');
-                        }
-                    } else {
-                        alert('Preencha o título e a URL do vídeo.');
+                    const title = this.editLinkTitle[courseId];
+                    const url = this.editLinkUrl[courseId];
+                    if(!title || !url) return;
+
+                    const course = this.courses.find(c => c.id === courseId);
+                    if(course) {
+                        course.urls.push({ title, url });
+                        this.editLinkTitle[courseId] = '';
+                        this.editLinkUrl[courseId] = '';
+                        this.saveToStorage();
                     }
                 },
 
                 addQuestionToCourse(courseId) {
-                    let qText = this.newQuestionText[courseId];
-                    if (!qText) {
-                        alert('Digite o texto da pergunta.');
-                        return;
-                    }
-                    let opts = [];
-                    if (this.qOpt0[courseId]) opts.push(this.qOpt0[courseId]);
-                    if (this.qOpt1[courseId]) opts.push(this.qOpt1[courseId]);
-                    if (this.qOpt2[courseId]) opts.push(this.qOpt2[courseId]);
-                    if (this.qOpt3[courseId]) opts.push(this.qOpt3[courseId]);
+                    const qText = this.newQuestionText[courseId];
+                    const opt0 = this.qOpt0[courseId];
+                    const opt1 = this.qOpt1[courseId];
+                    const opt2 = this.qOpt2[courseId];
+                    const opt3 = this.qOpt3[courseId];
+                    const correct = this.qCorrectIdx[courseId] !== undefined ? Number(this.qCorrectIdx[courseId]) : 0;
 
-                    if (opts.length < 2) {
-                        alert('Insira pelo menos 2 opções de resposta.');
+                    if(!qText || !opt0 || !opt1) {
+                        alert('Preencha a pergunta e ao menos as opções A e B.');
                         return;
                     }
 
-                    let correct = this.qCorrectIdx[courseId] || 0;
-                    let course = this.courses.find(c => c.id === courseId);
-                    if (course) {
-                        course.questions.push({ question: qText, options: opts, correct: correct });
+                    const options = [opt0, opt1];
+                    if(opt2) options.push(opt2);
+                    if(opt3) options.push(opt3);
+
+                    const course = this.courses.find(c => c.id === courseId);
+                    if(course) {
+                        course.questions.push({
+                            question: qText,
+                            options: options,
+                            correct: correct
+                        });
                         this.newQuestionText[courseId] = '';
                         this.qOpt0[courseId] = '';
                         this.qOpt1[courseId] = '';
                         this.qOpt2[courseId] = '';
                         this.qOpt3[courseId] = '';
+                        this.qCorrectIdx[courseId] = 0;
                         this.saveToStorage();
-                        alert('Nova questão adicionada com sucesso ao curso!');
+                        alert('Questão adicionada com sucesso!');
                     }
-                },
-
-                deleteCourse(id) {
-                    if (confirm('Deseja realmente excluir este curso?')) {
-                        this.courses = this.courses.filter(c => c.id !== id);
-                        this.saveToStorage();
-                    }
-                },
-
-                hasAccess(email, courseId) {
-                    return this.accessPermissions[email]?.[courseId] === true;
-                },
-
-                toggleStudentAccess(email, courseId) {
-                    if (!this.accessPermissions[email]) {
-                        this.accessPermissions[email] = {};
-                    }
-                    this.accessPermissions[email][courseId] = !this.accessPermissions[email][courseId];
-                    this.saveToStorage();
                 },
 
                 promoteToAdmin() {
-                    if (this.newAdminEmail) {
-                        this.juniorAdmins.push(this.newAdminEmail);
-                        if (!this.studentsList.some(s => s.email === this.newAdminEmail)) {
-                            this.studentsList.push({ name: 'Admin Júnior', email: this.newAdminEmail });
-                        }
+                    if(!this.newAdminEmail) return;
+                    const email = this.newAdminEmail.toLowerCase().trim();
+                    if(!this.juniorAdmins.includes(email)) {
+                        this.juniorAdmins.push(email);
                         this.newAdminEmail = '';
+                        this.saveToStorage();
                         alert('Administrador Júnior promovido com sucesso!');
                     }
                 },
 
                 removeJuniorAdmin(email) {
                     this.juniorAdmins = this.juniorAdmins.filter(e => e !== email);
-                },
-
-                login() {
-                    if (!this.loginForm.name || !this.loginForm.email) {
-                        alert('Preencha seu nome e e-mail.');
-                        return;
-                    }
-                    let isSupreme = this.loginForm.email === 'lucaasdacruztr@gmail.com';
-                    let isJunior = this.juniorAdmins.includes(this.loginForm.email);
-                    let role = (isSupreme || isJunior) ? 'admin' : 'aluno';
-
-                    this.currentUser = {
-                        name: this.loginForm.name,
-                        email: this.loginForm.email,
-                        role: role,
-                        isSupreme: isSupreme
-                    };
-
-                    if (!this.studentsList.some(s => s.email === this.loginForm.email)) {
-                        this.studentsList.push({ name: this.loginForm.name, email: this.loginForm.email });
-                    }
-
                     this.saveToStorage();
-                    this.openLoginModal = false;
-                    this.loginForm = { name: '', email: '' };
-                },
-
-                logout() {
-                    this.currentUser = null;
-                    this.currentView = 'home';
-                    localStorage.removeItem('academia_user');
                 }
             }
         }
