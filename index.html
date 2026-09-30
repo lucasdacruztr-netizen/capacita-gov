@@ -84,7 +84,7 @@
                 </div>
                 <template x-if="!currentUser">
                     <div class="relative z-10 max-w-2xl">
-                        <span class="bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block">Plataforma de Excelência</span>
+                        <span class="bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block">Academia Pro - Excelência em Ensino</span>
                         <h2 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">Bem-vindo à Academia Pro!</h2>
                         <p class="text-blue-100 mb-8 text-base md:text-lg leading-relaxed font-medium">Transforme seu futuro com cursos de alto nível. Faça o seu login usando o seu e-mail cadastrado.</p>
                         <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-8 py-3.5 rounded-2xl font-extrabold text-sm transition shadow-lg flex items-center gap-2">
@@ -95,7 +95,7 @@
                 <template x-if="currentUser">
                     <div class="relative z-10">
                         <h2 class="text-3xl md:text-4xl font-extrabold mb-2" x-text="'Olá, ' + currentUser.name + '!'"></h2>
-                        <p class="text-blue-100 mb-6 text-base md:text-lg">Explore abaixo os cursos liberados para você.</p>
+                        <p class="text-blue-100 mb-6 text-base md:text-lg">Explore abaixo os cursos liberados para você na Academia Pro.</p>
                     </div>
                 </template>
                 
@@ -246,7 +246,7 @@
                             <i :class="finalScore.passed ? 'fa-solid fa-trophy' : 'fa-solid fa-face-frown-open'"></i>
                         </div>
 
-                        <h3 class="text-3xl font-extrabold mb-2" x-text="finalScore.passed ? 'Parabéns! Você Conquistou a Vitória!' : 'Não foi dessa vez... Continue Tentando!'"></h3>
+                        <h3 class="text-3xl font-extrabold mb-2" x-text="finalScore.passed ? 'Parabéns! Você Conquistou a Vitória na Academia Pro!' : 'Não foi dessa vez... Continue Tentando!'"></h3>
                         <p class="text-gray-300 text-sm mb-8 font-medium" x-text="finalScore.passed ? 'Excelente desempenho! Você dominou o conteúdo deste módulo.' : 'Você não atingiu a pontuação mínima. Reveja o material e tente novamente.'"></p>
                         
                         <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-10 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10">
@@ -282,7 +282,7 @@
         <div x-show="currentView === 'admin'" class="space-y-6">
             <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border flex justify-between items-center">
                 <div>
-                    <h2 class="text-2xl font-extrabold text-gray-900">Área do Administrador Supremo</h2>
+                    <h2 class="text-2xl font-extrabold text-gray-900">Área do Administrador - Academia Pro</h2>
                     <p class="text-sm text-gray-500 font-medium">Controle total sincronizado em tempo real com a nuvem Firebase.</p>
                 </div>
                 <button @click="currentView = 'home'" class="bg-blue-50 hover:bg-blue-100 text-blue-700 px-5 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-2">
@@ -312,7 +312,7 @@
                     <h3 class="font-bold text-lg mb-4 text-gray-900">Adicionar Novo Curso</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <input type="text" x-model="newCourse.title" placeholder="Nome do Curso" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
-                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Administração)" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
+                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Treinamento)" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
                     </div>
                     <textarea x-model="newCourse.description" placeholder="Descrição detalhada do curso..." class="border p-3.5 rounded-2xl text-sm w-full mb-4 outline-none focus:border-blue-500"></textarea>
                     
@@ -396,8 +396,8 @@
             <!-- ABA 2: CADASTRAR ALUNOS -->
             <div x-show="adminTab === 'students'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8 space-y-6">
                 <div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Adicionar Novo E-mail Permitido</h3>
-                    <p class="text-xs text-gray-500 mb-5 leading-relaxed">Insira o e-mail do aluno. A <strong>Academia Pro</strong> enviará automaticamente o aviso de boas-vindas informando que o login é o próprio e-mail.</p>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">Adicionar Novo Aluno na Academia Pro</h3>
+                    <p class="text-xs text-gray-500 mb-5 leading-relaxed">Insira o e-mail do aluno. O sistema enviará automaticamente um e-mail de boas-vindas com o layout profissional informando que o login é o próprio e-mail.</p>
                     <div class="flex flex-col sm:flex-row gap-3 mb-4">
                         <input type="email" x-model="newStudentEmail" placeholder="E-mail do Aluno (ex: aluno@gmail.com)" class="border p-3.5 rounded-2xl text-sm flex-1 outline-none focus:border-blue-500">
                         <button @click="registerStudent()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
@@ -501,8 +501,8 @@
             <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl font-bold mb-4">
                 <i class="fa-solid fa-user-shield"></i>
             </div>
-            <h3 class="text-xl font-extrabold mb-1 text-gray-900">Entrar na Plataforma</h3>
-            <p class="text-xs text-gray-500 mb-6">Insira o seu e-mail cadastrado para acessar.</p>
+            <h3 class="text-xl font-extrabold mb-1 text-gray-900">Entrar na Academia Pro</h3>
+            <p class="text-xs text-gray-500 mb-6">Insira o seu e-mail cadastrado para acessar a plataforma.</p>
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1">Seu E-mail</label>
@@ -614,24 +614,16 @@
                 courses: [
                     {
                         id: 1,
-                        title: 'Administração Direta e Indireta',
-                        category: 'Administração',
-                        description: 'Compreenda os conceitos fundamentais da organização da administração pública brasileira.',
+                        title: 'Gestão e Práticas na Academia Pro',
+                        category: 'Treinamento',
+                        description: 'Compreenda os conceitos fundamentais da organização e atendimento de excelência da Academia Pro.',
                         icon: 'fa-solid fa-building-columns',
                         urls: [
-                            { title: 'Introdução à Administração Pública', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }
+                            { title: 'Introdução à Academia Pro', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }
                         ],
                         questions: [
-                            { question: 'O que caracteriza a Administração Direta?', options: ['Órgãos integrados à estrutura administrativa da Presidência e Ministérios.', 'Entidades com personalidade jurídica própria.', 'Empresas puramente privadas.', 'Nenhuma das anteriores.'], correct: 0 },
-                            { question: 'Qual o principal objetivo da Administração Pública?', options: ['Buscar o lucro financeiro imediato.', 'Atender ao interesse público e coletivo.', 'Gerir empresas multinacionais.', 'Cobrar impostos sem fim regulatório.'], correct: 1 },
-                            { question: 'As autarquias fazem parte de qual esfera administrativa?', options: ['Administração Direta', 'Administração Indireta', 'Setor privado estrito', 'Organizações não governamentais'], correct: 1 },
-                            { question: 'O princípio da legalidade significa que:', options: ['O administrador pode fazer tudo que a lei não proíbe.', 'O administrador só pode fazer o que a lei autoriza.', 'A lei é opcional para cargos de chefia.', 'A lei aplica-se apenas aos cidadãos comuns.'], correct: 1 },
-                            { question: 'A impessoalidade na administração pública visa:', options: ['Tratar todos os cidadãos sem privilégios ou perseguições.', 'Proibir o uso de nomes em repartições.', 'Garantir que ninguém seja atendido.', 'Tornar os processos burocráticos.'], correct: 0 },
-                            { question: 'O princípio da moralidade administrativa exige:', options: ['Atuação ética, honesta e de boa-fé.', 'Seguir estritamente a moral religiosa local.', 'Respeitar apenas acordos verbais.', 'Velocidade acima da honestidade.'], correct: 0 },
-                            { question: 'A publicidade dos atos administrativos tem como exceção:', options: ['Casos de segurança nacional e sigilo legal.', 'Atos assinados no período da tarde.', 'Decisões tomadas por prefeitos.', 'Contratos de pequenas compras.'], correct: 0 },
-                            { question: 'A eficiência na administração pública busca:', options: ['Resultados com qualidade, rapidez e economia.', 'Gastar todo o orçamento anual disponível.', 'Aumentar a quantidade de papel impresso.', 'Contratar o dobro de servidores.'], correct: 0 },
-                            { question: 'São entidades da Administração Indireta, EXCETO:', options: ['Ministérios de Estado', 'Fundações Públicas', 'Empresas Públicas', 'Sociedades de Economia Mista'], correct: 0 },
-                            { question: 'O controle exercido pelo Poder Legislativo sobre a administração é chamado de:', options: ['Controle interno', 'Controle externo e parlamentar', 'Controle discricionário absoluto', 'Auto-tutela privada'], correct: 1 }
+                            { question: 'Qual o principal foco da Academia Pro?', options: ['Excelência em ensino e atendimento ao aluno.', 'Apenas faturamento financeiro.', 'Gestão exclusiva de estoque.', 'Nenhuma das anteriores.'], correct: 0 },
+                            { question: 'Como o aluno realiza o login na plataforma?', options: ['Usando o próprio e-mail cadastrado.', 'Com senha de 20 dígitos.', 'Apenas por biometria facial.', 'Não é necessário login.'], correct: 0 }
                         ]
                     }
                 ],
@@ -682,7 +674,7 @@
                         const docSnap = await window.firebaseGetDoc(docRef);
                         if (docSnap.exists()) {
                             const data = docSnap.data();
-                            if(data.courses) this.courses = data.courses;
+                            if(data.courses && data.courses.length > 0) this.courses = data.courses;
                             if(data.studentsList) this.studentsList = data.studentsList;
                             if(data.accessMatrix) this.accessMatrix = data.accessMatrix;
                             if(data.juniorAdmins) this.juniorAdmins = data.juniorAdmins;
@@ -702,7 +694,7 @@
                             studentsList: this.studentsList,
                             accessMatrix: this.accessMatrix,
                             juniorAdmins: this.juniorAdmins
-                        });
+                        }, { merge: true });
                     } catch(e) {
                         this.showNotification('Erro', 'Falha ao sincronizar com a nuvem.', false);
                     }
@@ -721,10 +713,15 @@
                     }
                     
                     this.studentsList.push({ email: email });
+                    // Garante a atualização imediata da tela pelo Alpine
+                    this.studentsList = [...this.studentsList];
+                    
                     await this.saveDataToFirebase();
 
+                    // Disparo do EmailJS com o modelo profissional ajustado para a Academia Pro
                     const templateParams = {
                         to_email: email,
+                        to_name: email.split('@')[0],
                         message: `Olá! Seja bem-vindo à Academia Pro. O seu acesso à plataforma foi liberado com sucesso. Para entrar, utilize o seu e-mail (${email}) diretamente na nossa página de login.`
                     };
 
@@ -739,6 +736,7 @@
                 async removeStudent(index) {
                     if(confirm('Tem certeza que deseja remover este e-mail?')) {
                         this.studentsList.splice(index, 1);
+                        this.studentsList = [...this.studentsList];
                         await this.saveDataToFirebase();
                     }
                 },
@@ -784,7 +782,7 @@
                     this.openLoginModal = false;
                     this.loginEmail = '';
                     sessionStorage.setItem('academia_current_user', JSON.stringify(this.currentUser));
-                    this.showNotification('Login Realizado!', 'Bem-vindo de volta!', true);
+                    this.showNotification('Login Realizado!', 'Bem-vindo de volta à Academia Pro!', true);
                 },
 
                 logout() {
@@ -816,6 +814,7 @@
                     } else {
                         this.accessMatrix[email].push(courseId);
                     }
+                    this.accessMatrix = {...this.accessMatrix};
                     await this.saveDataToFirebase();
                 },
 
@@ -917,6 +916,7 @@
                         questions: []
                     };
                     this.courses.push(courseObj);
+                    this.courses = [...this.courses];
                     this.newCourse = { title: '', category: '', description: '', urls: [], questions: [] };
                     await this.saveDataToFirebase();
                     this.showNotification('Sucesso!', 'Curso criado e salvo na nuvem!', true);
@@ -934,6 +934,7 @@
                         this.courses[idx].title = this.editingCourse.title;
                         this.courses[idx].category = this.editingCourse.category;
                         this.courses[idx].description = this.editingCourse.description;
+                        this.courses = [...this.courses];
                         await this.saveDataToFirebase();
                     }
                     this.openEditModal = false;
@@ -944,6 +945,7 @@
                 async deleteCourse(courseId) {
                     if(confirm('Tem certeza que deseja excluir este curso?')) {
                         this.courses = this.courses.filter(c => c.id !== courseId);
+                        this.courses = [...this.courses];
                         await this.saveDataToFirebase();
                     }
                 },
@@ -1003,14 +1005,17 @@
                     const email = this.newAdminEmail.toLowerCase().trim();
                     if(!this.juniorAdmins.includes(email)) {
                         this.juniorAdmins.push(email);
+                        // Garante a atualização imediata da tela pelo Alpine
+                        this.juniorAdmins = [...this.juniorAdmins];
                         this.newAdminEmail = '';
                         await this.saveDataToFirebase();
-                        this.showNotification('Admin Promovido!', 'O usuário agora é um Administrador Júnior.', true);
+                        this.showNotification('Admin Promovido!', 'O usuário agora é um Administrador Júnior da Academia Pro.', true);
                     }
                 },
 
                 async removeJuniorAdmin(email) {
                     this.juniorAdmins = this.juniorAdmins.filter(e => e !== email);
+                    this.juniorAdmins = [...this.juniorAdmins];
                     await this.saveDataToFirebase();
                 }
             }
