@@ -49,7 +49,7 @@
                                         <span class="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold" title="Administrador Supremo">AA</span>
                                     </template>
                                 </div>
-                                <span class="text-xs text-gray-500 capitalize" x-text="currentUser.role === 'admin' ? 'Administrador Supremo (Clique para Painel)' : (currentUser.role === 'admin_junior' ? 'Admin Júnior' : 'Aluno')"></span>
+                                <span class="text-xs text-gray-500 capitalize" x-text="currentUser.role === 'admin' ? 'Administrador Supremo' : (currentUser.role === 'admin_junior' ? 'Admin Júnior' : 'Aluno')"></span>
                             </div>
                         </div>
 
@@ -86,8 +86,8 @@
                     <div class="relative z-10 max-w-2xl">
                         <span class="bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block">Plataforma de Excelência</span>
                         <h2 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">Bem-vindo à Academia Pro!</h2>
-                        <p class="text-blue-100 mb-8 text-base md:text-lg leading-relaxed font-medium">Transforme seu futuro com cursos de alto nível. Um espaço exclusivo para alunos dedicados. Faça seu login e comece agora mesmo.</p>
-                        <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-8 py-3.5 rounded-2xl font-extrabold text-sm transition shadow-lg shadow-black/10 flex items-center gap-2">
+                        <p class="text-blue-100 mb-8 text-base md:text-lg leading-relaxed font-medium">Transforme seu futuro com cursos de alto nível. Faça o seu login usando o seu e-mail cadastrado.</p>
+                        <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-8 py-3.5 rounded-2xl font-extrabold text-sm transition shadow-lg flex items-center gap-2">
                             <i class="fa-solid fa-arrow-right-to-bracket"></i> Acessar com meu E-mail
                         </button>
                     </div>
@@ -95,7 +95,7 @@
                 <template x-if="currentUser">
                     <div class="relative z-10">
                         <h2 class="text-3xl md:text-4xl font-extrabold mb-2" x-text="'Olá, ' + currentUser.name + '!'"></h2>
-                        <p class="text-blue-100 mb-6 text-base md:text-lg">Seu acesso está liberado. Explore os cursos disponíveis abaixo.</p>
+                        <p class="text-blue-100 mb-6 text-base md:text-lg">Explore abaixo os cursos liberados para você.</p>
                     </div>
                 </template>
                 
@@ -658,7 +658,6 @@
                 },
 
                 async initApp() {
-                    // Carrega dados diretamente do Firestore do Firebase
                     try {
                         const docRef = window.firebaseDoc(window.db, "academia_pro", "dados_gerais");
                         const docSnap = await window.firebaseGetDoc(docRef);
@@ -703,7 +702,7 @@
                     }
                     
                     this.studentsList.push({ email: email });
-                    this.studentsList = [...this.studentsList]; // Garante atualização visual imediata
+                    this.studentsList = [...this.studentsList]; // <--- CORREÇÃO APLICADA: Atualiza a tela imediatamente
                     await this.saveDataToFirebase();
 
                     const templateParams = {
@@ -722,7 +721,7 @@
                 async removeStudent(index) {
                     if(confirm('Tem certeza que deseja remover este e-mail?')) {
                         this.studentsList.splice(index, 1);
-                        this.studentsList = [...this.studentsList]; // Garante atualização visual imediata
+                        this.studentsList = [...this.studentsList]; // <--- CORREÇÃO APLICADA
                         await this.saveDataToFirebase();
                     }
                 },
@@ -873,7 +872,7 @@
                         questions: []
                     };
                     this.courses.push(courseObj);
-                    this.courses = [...this.courses]; // Garante atualização visual imediata
+                    this.courses = [...this.courses]; // <--- CORREÇÃO APLICADA
                     this.newCourse = { title: '', category: '', description: '', urls: [], questions: [] };
                     await this.saveDataToFirebase();
                     this.showNotification('Sucesso!', 'Curso criado e salvo na nuvem!', true);
@@ -962,7 +961,7 @@
                     const email = this.newAdminEmail.toLowerCase().trim();
                     if(!this.juniorAdmins.includes(email)) {
                         this.juniorAdmins.push(email);
-                        this.juniorAdmins = [...this.juniorAdmins]; // Garante atualização visual imediata
+                        this.juniorAdmins = [...this.juniorAdmins]; // <--- CORREÇÃO APLICADA: Atualiza a lista de admins imediatamente
                         this.newAdminEmail = '';
                         await this.saveDataToFirebase();
                         this.showNotification('Admin Promovido!', 'O usuário agora é um Administrador Júnior.', true);
@@ -971,7 +970,7 @@
 
                 async removeJuniorAdmin(email) {
                     this.juniorAdmins = this.juniorAdmins.filter(e => e !== email);
-                    this.juniorAdmins = [...this.juniorAdmins]; // Garante atualização visual imediata
+                    this.juniorAdmins = [...this.juniorAdmins]; // <--- CORREÇÃO APLICADA
                     await this.saveDataToFirebase();
                 }
             }
