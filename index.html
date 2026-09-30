@@ -230,27 +230,22 @@
             margin-bottom: 24px;
         }
 
-        .section-view { display: none; }
-        .section-view.active { display: block; }
-
-        /* Estilo Avatares Netflix */
+        /* Estilo Netflix para Avatares */
         .avatar-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-top: 12px;
-            max-width: 400px;
+            grid-template-columns: repeat(4, 70px);
+            gap: 12px;
+            margin-top: 10px;
         }
 
         .avatar-option {
             width: 70px;
             height: 70px;
-            border-radius: 12px;
+            border-radius: 8px;
             cursor: pointer;
             border: 3px solid transparent;
             object-fit: cover;
             transition: transform 0.2s, border-color 0.2s;
-            background: #334155;
         }
 
         .avatar-option:hover {
@@ -261,6 +256,10 @@
             border-color: var(--focuz-green);
             box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
         }
+
+        /* Secções */
+        .section-view { display: none; }
+        .section-view.active { display: block; }
     </style>
 </head>
 <body>
@@ -281,7 +280,7 @@
         </div>
         <div class="login-banner">
             <span style="color: var(--focuz-green); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; margin-bottom: 12px;">Ambiente de Alta Performance</span>
-            <h2 style="font-size: 34px; margin: 0 0 16px 0; line-height: 1.2;">Estudo focado com aulas e testes interativos.</h2>
+            <h2 style="font-size: 34px; margin: 0 0 16px 0; line-height: 1.2;">Estudo focado com aulas e questões interativas.</h2>
             <p style="color: var(--focuz-text-muted); font-size: 15px; line-height: 1.5; margin: 0;">Plataforma completa para o seu desenvolvimento profissional.</p>
         </div>
     </div>
@@ -310,7 +309,7 @@
                     <p id="user-email-display"></p>
                 </div>
                 <div style="display: flex; align-items: center; gap: 16px;">
-                    <img id="topbar-avatar" src="https://i.imgur.com/8Km9tLL.png" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--focuz-green);">
+                    <img id="topbar-avatar" src="https://i.imgur.com/2Y0qPZl.png" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--focuz-green);">
                     <button id="logout-btn" class="btn-danger">Sair</button>
                 </div>
             </div>
@@ -318,19 +317,19 @@
             <!-- PAINEL ADMINISTRATIVO -->
             <div id="admin-panel" class="hidden">
                 <div class="admin-box">
-                    <h3 style="margin-top: 0; color: var(--focuz-green); font-size: 17px;">📚 Publicar Aula com Sequência Pós-Vídeo</h3>
+                    <h3 style="margin-top: 0; color: var(--focuz-green); font-size: 17px;">📚 Publicar Aula (Vídeo + Questão Automática Pós-Vídeo)</h3>
                     <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <input type="text" id="aula-titulo" class="form-input" placeholder="Título da Aula (ex: Módulo de Formatação)...">
-                        <textarea id="aula-texto" class="form-input" placeholder="Descrição ou notas da aula..." style="height: 70px;"></textarea>
+                        <input type="text" id="aula-titulo" class="form-input" placeholder="Título da Aula...">
+                        <textarea id="aula-texto" class="form-input" placeholder="Descrição ou apontamentos da aula..." style="height: 70px;"></textarea>
                         <input type="text" id="aula-video" class="form-input" placeholder="Link do YouTube (ex: https://www.youtube.com/watch?v=...)">
                         
                         <div style="background: #1e293b; padding: 14px; border-radius: 8px; border: 1px solid var(--focuz-card-border);">
-                            <label style="font-size: 13px; font-weight: 600; color: var(--focuz-green); margin-bottom: 8px; display: block;">Questão Automática Pós-Vídeo (aparece após o aluno ver o vídeo):</label>
-                            <input type="text" id="q-pergunta" class="form-input" placeholder="Pergunta relacionada (ex: Qual o procedimento correto na formatação?)" style="margin-bottom: 6px;">
+                            <label style="font-size: 13px; font-weight: 600; color: var(--focuz-green); margin-bottom: 8px; display: block;">Questão Pós-Vídeo (Opcional - se deixar em branco, o sistema cria uma automática sobre formatação):</label>
+                            <input type="text" id="q-pergunta" class="form-input" placeholder="Pergunta..." style="margin-bottom: 6px;">
                             <input type="text" id="q-op1" class="form-input" placeholder="Opção A" style="margin-bottom: 6px;">
                             <input type="text" id="q-op2" class="form-input" placeholder="Opção B" style="margin-bottom: 6px;">
                             <input type="text" id="q-op3" class="form-input" placeholder="Opção C" style="margin-bottom: 6px;">
-                            <label style="font-size: 12px; color: var(--focuz-text-muted); margin-top: 4px; display: block;">Índice da Correta (0 para Opção A, 1 para B, 2 para C):</label>
+                            <label style="font-size: 12px; color: var(--focuz-text-muted); margin-top: 4px; display: block;">Número da Opção Correta (0 para Opção A, 1 para B, 2 para C):</label>
                             <input type="number" id="q-correta" class="form-input" placeholder="0" min="0" max="2" value="0">
                         </div>
 
@@ -346,7 +345,7 @@
                     </div>
                     <div style="display: flex; gap: 12px;">
                         <input type="email" id="aluno-tarefa-email" class="form-input" placeholder="Gmail do aluno...">
-                        <input type="text" id="aluno-tarefa-instrucao" class="form-input" placeholder="Atribuir tarefa específica...">
+                        <input type="text" id="aluno-tarefa-instrucao" class="form-input" placeholder="Atribuir tarefa...">
                         <button type="button" id="atribuir-tarefa-btn" class="btn-submit" style="margin-top: 0; width: 180px; background: #3b82f6;">Enviar Tarefa</button>
                     </div>
                 </div>
@@ -357,7 +356,7 @@
                 <div class="card">
                     <span style="color: var(--focuz-green); font-size: 12px; font-weight: 600;">ORIENTAÇÃO DO ADMINISTRADOR</span>
                     <h3 id="tarefa-aluno-titulo" style="font-size: 20px; margin: 8px 0 12px 0;">A carregar diretrizes...</h3>
-                    <p style="color: var(--focuz-text-muted); font-size: 14px; margin: 0;">Aceda ao menu **Aulas** para assistir aos vídeos e responder aos questionários integrados automaticamente.</p>
+                    <p style="color: var(--focuz-text-muted); font-size: 14px; margin: 0;">Utilize o menu lateral para aceder às **Aulas** e responder aos questionários integrados automaticamente após os vídeos.</p>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="card">
@@ -371,9 +370,9 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO 2: AULAS (Com transição automática para o questionário pós-vídeo) -->
+            <!-- SEÇÃO 2: AULAS -->
             <div id="aulas-view" class="section-view">
-                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">📚 Módulos de Aulas e Testes Integrados</h3>
+                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">📚 Módulos de Aulas e Questionários Pós-Vídeo</h3>
                 <div id="lista-aulas"></div>
             </div>
 
@@ -396,18 +395,18 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO 5: PERFIL (Estilo Netflix com escolha de avatares) -->
+            <!-- SEÇÃO 5: PERFIL (Netflix) -->
             <div id="perfil-view" class="section-view">
-                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">👤 Escolha o seu Avatar de Perfil</h3>
+                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">👤 Escolha o seu Avatar (Estilo Netflix)</h3>
                 <div class="card">
-                    <p style="color: var(--focuz-text-muted); font-size: 14px; margin-bottom: 12px;">Selecione abaixo a imagem que deseja utilizar no seu perfil:</p>
-                    <div class="avatar-grid" id="avatar-container">
-                        <img src="https://i.imgur.com/8Km9tLL.png" class="avatar-option" data-url="https://i.imgur.com/8Km9tLL.png">
-                        <img src="https://i.imgur.com/G5Qz2hT.png" class="avatar-option" data-url="https://i.imgur.com/G5Qz2hT.png">
-                        <img src="https://i.imgur.com/J1x0x1B.png" class="avatar-option" data-url="https://i.imgur.com/J1x0x1B.png">
-                        <img src="https://i.imgur.com/2Y0qY3l.png" class="avatar-option" data-url="https://i.imgur.com/2Y0qY3l.png">
+                    <p style="font-size: 14px; color: var(--focuz-text-muted); margin-bottom: 12px;">Clique na imagem que deseja usar como o seu avatar oficial:</p>
+                    <div class="avatar-grid" id="netflix-avatars">
+                        <img src="https://i.imgur.com/2Y0qPZl.png" class="avatar-option" data-url="https://i.imgur.com/2Y0qPZl.png">
+                        <img src="https://i.imgur.com/1Zp5w7C.png" class="avatar-option" data-url="https://i.imgur.com/1Zp5w7C.png">
+                        <img src="https://i.imgur.com/6VBx3io.png" class="avatar-option" data-url="https://i.imgur.com/6VBx3io.png">
+                        <img src="https://i.imgur.com/8Q85n5u.png" class="avatar-option" data-url="https://i.imgur.com/8Q85n5u.png">
                     </div>
-                    <button type="button" id="salvar-perfil-btn" class="btn-submit" style="width: 200px; margin-top: 20px;">Salvar Avatar</button>
+                    <button type="button" id="salvar-avatar-btn" class="btn-submit" style="width: 200px; margin-top: 20px;">Guardar Avatar</button>
                 </div>
             </div>
 
@@ -434,7 +433,7 @@
 
         const MASTER_ADMIN = "lucasdaacruztr@gmail.com";
         let currentUserEmail = "";
-        let selectedAvatarUrl = "https://i.imgur.com/8Km9tLL.png";
+        let selectedAvatarUrl = "https://i.imgur.com/2Y0qPZl.png";
 
         // CONTROLO DE ABAS
         const menuItems = document.querySelectorAll(".sidebar-item");
@@ -449,6 +448,22 @@
                 const targetId = item.getAttribute("data-target");
                 document.getElementById(targetId).classList.add("active");
             });
+        });
+
+        // SELEÇÃO DE AVATARES
+        const avatarOptions = document.querySelectorAll(".avatar-option");
+        avatarOptions.forEach(img => {
+            img.addEventListener("click", () => {
+                avatarOptions.forEach(i => i.classList.remove("selected"));
+                img.classList.add("selected");
+                selectedAvatarUrl = img.getAttribute("data-url");
+            });
+        });
+
+        document.getElementById("salvar-avatar-btn").addEventListener("click", async () => {
+            await setDoc(doc(db, "perfis", currentUserEmail), { foto: selectedAvatarUrl }, { merge: true });
+            topbarAvatar.src = selectedAvatarUrl;
+            alert("Avatar de perfil atualizado com sucesso!");
         });
 
         // AUTENTICAÇÃO
@@ -511,23 +526,7 @@
             location.reload();
         });
 
-        // SELEÇÃO DE AVATARS ESTILO NETFLIX
-        const avatarOptions = document.querySelectorAll(".avatar-option");
-        avatarOptions.forEach(img => {
-            img.addEventListener("click", () => {
-                avatarOptions.forEach(i => i.classList.remove("selected"));
-                img.classList.add("selected");
-                selectedAvatarUrl = img.getAttribute("data-url");
-            });
-        });
-
-        document.getElementById("salvar-perfil-btn").addEventListener("click", async () => {
-            await setDoc(doc(db, "perfis", currentUserEmail), { foto: selectedAvatarUrl }, { merge: true });
-            topbarAvatar.src = selectedAvatarUrl;
-            alert("Avatar de perfil atualizado com sucesso!");
-        });
-
-        // ADMIN: AUTORIZAR ALUNOS E ENVIAR TAREFAS
+        // ADMIN
         document.getElementById("adicionar-aluno-btn").addEventListener("click", async () => {
             const email = document.getElementById("novo-aluno-email").value.trim().toLowerCase();
             if (!email) return;
@@ -546,7 +545,6 @@
             document.getElementById("aluno-tarefa-instrucao").value = "";
         });
 
-        // ADMIN: PUBLICAR AULA + QUESTÃO AUTOMÁTICA PÓS-VÍDEO
         document.getElementById("publicar-aula-btn").addEventListener("click", async () => {
             const titulo = document.getElementById("aula-titulo").value.trim();
             const texto = document.getElementById("aula-texto").value.trim();
@@ -560,6 +558,7 @@
 
             if (!titulo) { alert("Insira o título da aula."); return; }
 
+            // Se o admin preencheu a pergunta, usa. Caso contrário, deixa null para gerar automaticamente a padrão
             let questaoObj = null;
             if (qPergunta && qOp1) {
                 questaoObj = {
@@ -591,14 +590,14 @@
             if (confirm("Deseja apagar esta aula?")) await deleteDoc(doc(db, "aulas", id));
         }
 
-        // RENDERIZAR AULAS E TRANSIÇÃO AUTOMÁTICA PARA QUESTÃO PÓS-VÍDEO
+        // RENDERIZAR AULAS (Com questão automática de formatação garantida)
         function carregarConteudoAulas(isAdmin) {
             onSnapshot(collection(db, "aulas"), (snapshot) => {
                 const listaAulasDiv = document.getElementById("lista-aulas");
                 listaAulasDiv.innerHTML = "";
 
                 if (snapshot.empty) {
-                    listaAulasDiv.innerHTML = `<div class="card" style="color: var(--focuz-text-muted);">Nenhuma aula disponível.</div>`;
+                    listaAulasDiv.innerHTML = `<div class="card" style="color: var(--focuz-text-muted);">Nenhuma aula disponível no momento.</div>`;
                     return;
                 }
 
@@ -612,47 +611,49 @@
                     let htmlAula = `<h4 style="margin-top: 0; font-size: 18px; color: #fff;">📚 ${aula.titulo}</h4>`;
                     if (aula.texto) htmlAula += `<p style="font-size: 14px; color: var(--focuz-text-muted); line-height: 1.5;">${aula.texto}</p>`;
                     
-                    let videoUrl = aula.video || "";
-                    if (videoUrl.includes("watch?v=")) videoUrl = videoUrl.replace("watch?v=", "embed/");
-                    else if (videoUrl.includes("youtu.be/")) {
-                        const vId = videoUrl.split("youtu.be/")[1].split("?")[0];
-                        videoUrl = `https://www.youtube.com/embed/${vId}`;
-                    }
-                    if (videoUrl.includes("&")) videoUrl = videoUrl.split("&")[0];
+                    if (aula.video) {
+                        let videoUrl = aula.video;
+                        if (videoUrl.includes("watch?v=")) videoUrl = videoUrl.replace("watch?v=", "embed/");
+                        else if (videoUrl.includes("youtu.be/")) {
+                            const vId = videoUrl.split("youtu.be/")[1].split("?")[0];
+                            videoUrl = `https://www.youtube.com/embed/${vId}`;
+                        }
+                        if (videoUrl.includes("&")) videoUrl = videoUrl.split("&")[0];
 
-                    if (videoUrl) {
-                        htmlAula += `
-                            <div id="video-container-${id}" style="margin: 14px 0; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                                <iframe src="${videoUrl}" style="position: absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius: 8px;" allowfullscreen></iframe>
-                            </div>
-                            <div style="text-align: right; margin-bottom: 10px;">
-                                <button onclick="concluirVideo('${id}')" class="btn-submit" style="width: auto; padding: 8px 16px; font-size: 13px; background: #3b82f6;">Já assisti ao vídeo / Ir para Questão</button>
-                            </div>
-                        `;
+                        htmlAula += `<div style="margin: 14px 0; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"><iframe src="${videoUrl}" style="position: absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius: 8px;" allowfullscreen></iframe></div>`;
+                        
+                        htmlAula += `<button onclick="mostrarQuestionario('${id}')" class="btn-submit" style="background: #3b82f6; margin-top: 8px;">Concluir Vídeo e Ir para o Questionário ➔</button>`;
                     }
 
-                    // Bloco do questionário pós-vídeo (inicialmente oculto, aparece ao concluir o vídeo)
-                    if (aula.questao) {
-                        const q = aula.questao;
-                        htmlAula += `
-                            <div id="bloco-questao-${id}" class="hidden" style="background: #111827; border: 1px solid var(--focuz-green); padding: 16px; border-radius: 8px; margin-top: 16px;">
-                                <span style="color: var(--focuz-green); font-size: 12px; font-weight: 600; text-transform: uppercase;">Questionário Pós-Vídeo Relacionado</span>
-                                <p style="font-size: 15px; font-weight: 500; margin: 8px 0 12px 0;">${q.pergunta}</p>
-                                <div id="opcoes-${id}" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
-                                    ${q.opcoes.map((op, idx) => `
-                                        <label style="font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                                            <input type="radio" name="resp-${id}" value="${idx}"> ${op}
-                                        </label>
-                                    `).join('')}
-                                </div>
-                                <button onclick="responderQuestao('${id}', ${q.correta})" class="btn-submit" style="width: 180px; margin-top:0;">Enviar Resposta</button>
-                                <p id="feedback-${id}" style="font-size: 13px; margin-top: 8px; font-weight: 600;"></p>
+                    // GARANTIR QUE SEMPRE EXISTE UMA QUESTÃO (Se o admin não cadastrou, usa a padrão sobre formatação/educação)
+                    const q = aula.questao || {
+                        pergunta: "Qual é o principal objetivo da formatação correta de documentos e vídeos educacionais abordada?",
+                        opcoes: [
+                            "Garantir a padronização, clareza e facilidade de compreensão para o espectador.",
+                            "Tornar o arquivo o mais pesado possível para armazenamento em nuvem.",
+                            "Omitir as diretrizes principais de apresentação."
+                        ],
+                        correta: 0
+                    };
+
+                    htmlAula += `
+                        <div id="quest-box-${id}" style="display: none; background: #111827; border: 1px solid var(--focuz-card-border); padding: 18px; border-radius: 8px; margin-top: 16px;">
+                            <span style="color: var(--focuz-green); font-size: 12px; font-weight: 600; text-transform: uppercase;">Questionário Pós-Vídeo</span>
+                            <p style="font-size: 15px; font-weight: 500; margin: 8px 0 12px 0;">${q.pergunta}</p>
+                            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                                ${q.opcoes.map((op, idx) => `
+                                    <label style="font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="resp-${id}" value="${idx}"> ${op}
+                                    </label>
+                                `).join('')}
                             </div>
-                        `;
-                    }
+                            <button onclick="responderQuestao('${id}', ${q.correta})" class="btn-submit" style="width: 180px; margin-top:0;">Enviar Resposta</button>
+                            <p id="feedback-${id}" style="font-size: 13px; margin-top: 8px; font-weight: 600;"></p>
+                        </div>
+                    `;
 
                     if (isAdmin) {
-                        htmlAula += `<div style="margin-top: 16px; border-top: 1px solid var(--focuz-card-border); paddingTop: 12px;"><button onclick="apagarAula('${id}')" class="btn-danger">Eliminar Aula</button></div>`;
+                        htmlAula += `<div style="margin-top: 16px; border-top: 1px solid var(--focuz-card-border); padding-top: 12px;"><button onclick="apagarAula('${id}')" class="btn-danger">Eliminar Aula</button></div>`;
                     }
 
                     cardAula.innerHTML = htmlAula;
@@ -661,14 +662,11 @@
             });
         }
 
-        // FUNÇÃO PARA TRANSIÇÃO AUTOMÁTICA APÓS O VÍDEO
-        window.concluirVideo = function(id) {
-            const qBloco = document.getElementById(`bloco-questao-${id}`);
-            if (qBloco) {
-                qBloco.classList.remove("hidden");
-                qBloco.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                alert("Esta aula não possui questões associadas.");
+        window.mostrarQuestionario = function(id) {
+            const qBox = document.getElementById(`quest-box-${id}`);
+            if (qBox) {
+                qBox.style.display = "block";
+                qBox.scrollIntoView({ behavior: 'smooth' });
             }
         }
 
@@ -685,10 +683,10 @@
 
             if (acertou) {
                 feedback.style.color = "var(--focuz-green)";
-                feedback.innerText = "✔ Resposta Correta! Pode refazer se quiser praticar mais.";
+                feedback.innerText = "✔ Resposta Correta! Parabéns!";
             } else {
                 feedback.style.color = "#ef4444";
-                feedback.innerText = "✖ Resposta incorreta. Pode rever o vídeo acima e tentar novamente!";
+                feedback.innerText = "✖ Resposta incorreta. Reveja o vídeo e tente novamente!";
             }
 
             const userRef = doc(db, "desempenho", currentUserEmail);
@@ -708,7 +706,7 @@
             if (tarefaDoc.exists()) {
                 document.getElementById("tarefa-aluno-titulo").innerText = tarefaDoc.data().instrucao;
             } else {
-                document.getElementById("tarefa-aluno-titulo").innerText = "Sem orientações pendentes. Explore as aulas livremente!";
+                document.getElementById("tarefa-aluno-titulo").innerText = "Explore as aulas e responda aos questionários pós-vídeo!";
             }
 
             const perfDoc = await getDoc(doc(db, "desempenho", email));
@@ -729,6 +727,10 @@
             if (perfilDoc.exists() && perfilDoc.data().foto) {
                 const fotoUrl = perfilDoc.data().foto;
                 topbarAvatar.src = fotoUrl;
+                selectedAvatarUrl = fotoUrl;
+                avatarOptions.forEach(img => {
+                    if (img.getAttribute("data-url") === fotoUrl) img.classList.add("selected");
+                });
             }
         }
     </script>
