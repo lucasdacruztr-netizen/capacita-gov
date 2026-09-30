@@ -14,7 +14,6 @@
             --focuz-green-hover: #059669;
             --focuz-text: #f8fafc;
             --focuz-text-muted: #94a3b8;
-            --focuz-orange: #f38020;
         }
 
         * { box-sizing: border-box; }
@@ -33,7 +32,7 @@
 
         .hidden { display: none !important; }
 
-        /* Layout de Login */
+        /* Login */
         .login-layout {
             display: flex;
             width: 100%;
@@ -55,7 +54,6 @@
             font-weight: 700;
             margin-bottom: 8px;
             color: #fff;
-            letter-spacing: -0.5px;
         }
 
         .login-pane p.subtitle {
@@ -108,9 +106,7 @@
             transition: background-color 0.2s;
         }
 
-        .btn-submit:hover {
-            background-color: var(--focuz-green-hover);
-        }
+        .btn-submit:hover { background-color: var(--focuz-green-hover); }
 
         .error-msg {
             color: #ef4444;
@@ -130,7 +126,7 @@
             border-left: 1px solid var(--focuz-card-border);
         }
 
-        /* Layout Interno Moderno (Estilo FOCUZ) */
+        /* App Layout */
         .app-layout {
             display: flex;
             width: 100%;
@@ -201,17 +197,8 @@
             margin-bottom: 32px;
         }
 
-        .greeting-box h2 {
-            margin: 0;
-            font-size: 26px;
-            font-weight: 700;
-        }
-
-        .greeting-box p {
-            margin: 6px 0 0 0;
-            color: var(--focuz-text-muted);
-            font-size: 14px;
-        }
+        .greeting-box h2 { margin: 0; font-size: 24px; font-weight: 700; }
+        .greeting-box p { margin: 4px 0 0 0; color: var(--focuz-text-muted); font-size: 13px; }
 
         .btn-danger {
             background-color: #ef4444;
@@ -225,21 +212,7 @@
         }
         .btn-danger:hover { background-color: #dc2626; }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
         .card {
-            background-color: var(--focuz-card);
-            border: 1px solid var(--focuz-card-border);
-            border-radius: 12px;
-            padding: 24px;
-        }
-
-        .lesson-card {
             background-color: var(--focuz-card);
             border: 1px solid var(--focuz-card-border);
             border-radius: 12px;
@@ -250,17 +223,13 @@
         .admin-box {
             background: #111827;
             border: 1px solid var(--focuz-green);
-            padding: 24px;
+            padding: 20px;
             border-radius: 12px;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
-        @media (max-width: 900px) {
-            .login-banner { display: none; }
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .sidebar { width: 80px; padding: 20px 8px; }
-            .sidebar-brand span, .sidebar-item span { display: none; }
-        }
+        .section-view { display: none; }
+        .section-view.active { display: block; }
     </style>
 </head>
 <body>
@@ -269,8 +238,7 @@
     <div id="auth-layout" class="login-layout">
         <div class="login-pane">
             <h1>CAPACITA GOV</h1>
-            <p class="subtitle">Aceda informando o seu Gmail</p>
-            
+            <p class="subtitle">Aceda com o seu Gmail institucional ou pessoal</p>
             <form id="login-form">
                 <div class="form-field">
                     <label>Gmail</label>
@@ -281,26 +249,26 @@
             </form>
         </div>
         <div class="login-banner">
-            <span style="color: var(--focuz-green); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; margin-bottom: 12px;">Plataforma de Alta Performance</span>
-            <h2 style="font-size: 36px; margin: 0 0 16px 0; line-height: 1.2;">Disciplina gera resultado e inovação na gestão pública.</h2>
-            <p style="color: var(--focuz-text-muted); font-size: 16px; line-height: 1.5; margin: 0;">Ambiente moderno de estudos, videoaulas e controlo administrativo integrado.</p>
+            <span style="color: var(--focuz-green); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; margin-bottom: 12px;">Ambiente de Alta Performance</span>
+            <h2 style="font-size: 34px; margin: 0 0 16px 0; line-height: 1.2;">Gestão inteligente de aulas, questões e desempenho.</h2>
+            <p style="color: var(--focuz-text-muted); font-size: 15px; line-height: 1.5; margin: 0;">Plataforma completa para capacitação e acompanhamento de alunos.</p>
         </div>
     </div>
 
-    <!-- TELA PRINCIPAL (APÓS LOGIN) -->
+    <!-- TELA PRINCIPAL -->
     <div id="app-layout" class="app-layout hidden">
-        <!-- Menu Lateral Moderno -->
+        <!-- Menu Lateral -->
         <div class="sidebar">
             <div class="sidebar-brand">
                 <span>⚡ CAPACITA GOV</span>
             </div>
             <ul class="sidebar-menu">
-                <li class="sidebar-item active">🏠 <span>Início</span></li>
-                <li class="sidebar-item">📚 <span>Aulas</span></li>
-                <li class="sidebar-item">❓ <span>Questões</span></li>
-                <li class="sidebar-item">🃏 <span>Flashcards</span></li>
-                <li class="sidebar-item">📊 <span>Desempenho</span></li>
-                <li class="sidebar-item">👤 <span>Perfil</span></li>
+                <li class="sidebar-item active" data-target="inicio-view">🏠 <span>Início</span></li>
+                <li class="sidebar-item" data-target="aulas-view">📚 <span>Aulas</span></li>
+                <li class="sidebar-item" data-target="questoes-view">❓ <span>Questões</span></li>
+                <li class="sidebar-item" data-target="flashcards-view">🃏 <span>Flashcards</span></li>
+                <li class="sidebar-item" data-target="desempenho-view">📊 <span>Desempenho</span></li>
+                <li class="sidebar-item" data-target="perfil-view">👤 <span>Perfil</span></li>
             </ul>
         </div>
 
@@ -308,66 +276,120 @@
         <div class="main-content">
             <div class="topbar">
                 <div class="greeting-box">
-                    <h2 id="user-greeting">Boa tarde</h2>
+                    <h2 id="user-greeting">Olá</h2>
                     <p id="user-email-display"></p>
                 </div>
-                <button id="logout-btn" class="btn-danger">Sair</button>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <img id="topbar-avatar" src="https://via.placeholder.com/40" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--focuz-green);">
+                    <button id="logout-btn" class="btn-danger">Sair</button>
+                </div>
             </div>
 
-            <!-- Painel Administrativo -->
+            <!-- PAINEL ADMINISTRATIVO (Exclusivo Admin) -->
             <div id="admin-panel" class="hidden">
                 <div class="admin-box">
-                    <h3 style="margin-top: 0; color: var(--focuz-green); font-size: 18px;">📚 Publicar Nova Aula / Assunto</h3>
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <input type="text" id="aula-titulo" class="form-input" placeholder="Título do Assunto / Aula...">
-                        <textarea id="aula-texto" class="form-input" placeholder="Texto explicativo..." style="height: 90px; resize: vertical;"></textarea>
-                        <input type="text" id="aula-imagem" class="form-input" placeholder="Link da Imagem (URL opcional)">
+                    <h3 style="margin-top: 0; color: var(--focuz-green); font-size: 17px;">📚 Publicar Aula com Questões e Tarefa Exclusiva</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <input type="text" id="aula-titulo" class="form-input" placeholder="Título da Aula...">
+                        <textarea id="aula-texto" class="form-input" placeholder="Descrição ou conteúdo da aula..." style="height: 70px;"></textarea>
                         <input type="text" id="aula-video" class="form-input" placeholder="Link do YouTube (ex: https://www.youtube.com/watch?v=...)">
-                        <button type="button" id="publicar-aula-btn" class="btn-submit" style="margin-top: 0;">Publicar Conteúdo</button>
+                        
+                        <div style="background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid var(--focuz-card-border);">
+                            <label style="font-size: 13px; font-weight: 600; color: var(--focuz-green); margin-bottom: 6px; display: block;">Adicionar Questão Pós-Aula:</label>
+                            <input type="text" id="q-pergunta" class="form-input" placeholder="Pergunta (ex: Qual o principal objetivo...)" style="margin-bottom: 6px;">
+                            <input type="text" id="q-op1" class="form-input" placeholder="Opção A" style="margin-bottom: 6px;">
+                            <input type="text" id="q-op2" class="form-input" placeholder="Opção B" style="margin-bottom: 6px;">
+                            <input type="text" id="q-op3" class="form-input" placeholder="Opção C" style="margin-bottom: 6px;">
+                            <input type="number" id="q-correta" class="form-input" placeholder="Índice da Correta (0 para Opção A, 1 para B, 2 para C)" min="0" max="2">
+                        </div>
+
+                        <button type="button" id="publicar-aula-btn" class="btn-submit" style="margin-top: 0;">Publicar Aula Completa</button>
                     </div>
                 </div>
 
                 <div class="admin-box" style="border-color: #3b82f6;">
-                    <h3 style="margin-top: 0; color: #3b82f6; font-size: 18px;">⚙ Gestão de Acessos</h3>
-                    <div style="display: flex; gap: 12px; margin-bottom: 12px;">
-                        <input type="email" id="novo-admin-email" class="form-input" placeholder="Gmail do novo Administrador...">
-                        <button type="button" id="adicionar-admin-btn" class="btn-submit" style="margin-top: 0; width: 180px; background: #3b82f6;">Tornar Admin</button>
+                    <h3 style="margin-top: 0; color: #3b82f6; font-size: 17px;">⚙ Controlo e Direcionamento de Alunos</h3>
+                    <div style="display: flex; gap: 12px; margin-bottom: 10px;">
+                        <input type="email" id="novo-aluno-email" class="form-input" placeholder="Gmail do aluno para autorizar...">
+                        <button type="button" id="adicionar-aluno-btn" class="btn-submit" style="margin-top: 0; width: 160px;">Autorizar</button>
                     </div>
                     <div style="display: flex; gap: 12px;">
-                        <input type="email" id="novo-aluno-email" class="form-input" placeholder="Gmail do Aluno para autorizar...">
-                        <button type="button" id="adicionar-aluno-btn" class="btn-submit" style="margin-top: 0; width: 180px;">Autorizar Aluno</button>
+                        <input type="email" id="aluno-tarefa-email" class="form-input" placeholder="Gmail do aluno...">
+                        <input type="text" id="aluno-tarefa-instrucao" class="form-input" placeholder="Instrução exata (ex: Assistir módulo 2 e fazer questões)...">
+                        <button type="button" id="atribuir-tarefa-btn" class="btn-submit" style="margin-top: 0; width: 180px; background: #3b82f6;">Definir Tarefa</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Grid de Estatísticas (Estilo FOCUZ) -->
-            <div class="dashboard-grid">
+            <!-- SEÇÃO 1: INÍCIO -->
+            <div id="inicio-view" class="section-view active">
                 <div class="card">
-                    <span style="color: var(--focuz-green); font-size: 13px; font-weight: 600;">SALA EM DESTAQUE</span>
-                    <h3 style="font-size: 22px; margin: 8px 0 12px 0;">Trilha Oficial de Estudos Públicos</h3>
-                    <p style="color: var(--focuz-text-muted); font-size: 14px; margin: 0 0 20px 0;">Acompanhe as videoaulas e conteúdos publicados pela administração.</p>
+                    <span style="color: var(--focuz-green); font-size: 12px; font-weight: 600;">ORIENTAÇÃO DO ADMINISTRADOR</span>
+                    <h3 id="tarefa-aluno-titulo" style="font-size: 20px; margin: 8px 0 12px 0;">Nenhuma tarefa específica atribuída no momento.</h3>
+                    <p style="color: var(--focuz-text-muted); font-size: 14px; margin: 0;">Aceda ao menu **Aulas** para ver os conteúdos disponíveis ou **Questões** para testar os seus conhecimentos.</p>
                 </div>
-                <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
-                    <span style="color: var(--focuz-text-muted); font-size: 13px;">DESEMPENHO DE HOJE</span>
-                    <h3 style="font-size: 24px; margin: 6px 0 12px 0;">0% de aproveitamento</h3>
-                    <span style="color: var(--focuz-text-muted); font-size: 12px;">0 questões respondidas</span>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="card">
+                        <span style="color: var(--focuz-text-muted); font-size: 12px;">MÉDIA GERAL DE ACERTOS</span>
+                        <h3 id="stat-media" style="font-size: 26px; margin: 6px 0 0 0;">0%</h3>
+                    </div>
+                    <div class="card">
+                        <span style="color: var(--focuz-text-muted); font-size: 12px;">AULAS ASSISTIDAS</span>
+                        <h3 id="stat-assistidas" style="font-size: 26px; margin: 6px 0 0 0;">0</h3>
+                    </div>
                 </div>
             </div>
 
-            <!-- Listagem de Aulas -->
-            <div>
-                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">Aulas e Assuntos Disponíveis</h3>
-                <div id="lista-aulas">
-                    <!-- Conteúdo dinâmico -->
+            <!-- SEÇÃO 2: AULAS -->
+            <div id="aulas-view" class="section-view">
+                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">📚 Aulas Disponíveis</h3>
+                <div id="lista-aulas"></div>
+            </div>
+
+            <!-- SEÇÃO 3: QUESTÕES -->
+            <div id="questoes-view" class="section-view">
+                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">❓ Questões e Simulados Pós-Vídeo</h3>
+                <div id="lista-questoes"></div>
+            </div>
+
+            <!-- SEÇÃO 4: FLASHCARDS -->
+            <div id="flashcards-view" class="section-view">
+                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">🃏 Flashcards de Fixação</h3>
+                <div class="card" style="text-align: center; padding: 40px;">
+                    <p style="font-size: 18px; margin-bottom: 20px;">O que é governança pública orientada a resultados?</p>
+                    <button onclick="alert('Resposta: Foco na entrega de valor efetivo para a sociedade e eficiência administrativa.')" class="btn-submit" style="max-width: 200px; margin: 0 auto;">Mostrar Resposta</button>
                 </div>
             </div>
+
+            <!-- SEÇÃO 5: DESEMPENHO -->
+            <div id="desempenho-view" class="section-view">
+                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">📊 O seu Desempenho Detalhado</h3>
+                <div class="card">
+                    <p><strong>Total de Simulados Realizados:</strong> <span id="perf-total">0</span></p>
+                    <p><strong>Respostas Corretas:</strong> <span id="perf-acertos">0</span></p>
+                    <p><strong>Percentual de Aproveitamento:</strong> <span id="perf-porcentagem">0%</span></p>
+                </div>
+            </div>
+
+            <!-- SEÇÃO 6: PERFIL -->
+            <div id="perfil-view" class="section-view">
+                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">👤 Definições do Perfil</h3>
+                <div class="card">
+                    <div class="form-field">
+                        <label>Link da sua Foto de Perfil (URL da imagem)</label>
+                        <input type="text" id="perfil-foto-input" class="form-input" placeholder="Cole aqui o link da imagem...">
+                    </div>
+                    <button type="button" id="salvar-perfil-btn" class="btn-submit" style="width: 200px;">Atualizar Foto</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Script Firebase -->
+    <!-- Firebase Scripts -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAjStzMeS40DpIgFEH2Bi4Y80oy8Eel5tE",
@@ -382,51 +404,48 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        const MASTER_ADMIN = "lucasdaacruztr@gmail.com";
+        let currentUserEmail = "";
+
+        // Navegação entre abas
+        const menuItems = document.querySelectorAll(".sidebar-item");
+        const views = document.querySelectorAll(".section-view");
+
+        menuItems.forEach(item => {
+            item.addEventListener("click", () => {
+                menuItems.forEach(i => i.classList.remove("active"));
+                views.forEach(v => v.classList.remove("active"));
+                item.classList.add("active");
+                const target = item.getAttribute("data-target");
+                document.getElementById(target).classList.add("active");
+            });
+        });
+
+        // Login & Autenticação
         const loginForm = document.getElementById("login-form");
         const loginEmail = document.getElementById("login-email");
         const loginError = document.getElementById("login-error");
-        const logoutBtn = document.getElementById("logout-btn");
-
         const authLayout = document.getElementById("auth-layout");
         const appLayout = document.getElementById("app-layout");
         const userGreeting = document.getElementById("user-greeting");
         const userEmailDisplay = document.getElementById("user-email-display");
         const adminPanel = document.getElementById("admin-panel");
-        
-        const publicarAulaBtn = document.getElementById("publicar-aula-btn");
-        const aulaTitulo = document.getElementById("aula-titulo");
-        const aulaTexto = document.getElementById("aula-texto");
-        const aulaImagem = document.getElementById("aula-imagem");
-        const aulaVideo = document.getElementById("aula-video");
-        const listaAulasDiv = document.getElementById("lista-aulas");
-
-        const adicionarAdminBtn = document.getElementById("adicionar-admin-btn");
-        const novoAdminEmail = document.getElementById("novo-admin-email");
-        const adicionarAlunoBtn = document.getElementById("adicionar-aluno-btn");
-        const novoAlunoEmail = document.getElementById("novo-aluno-email");
-
-        const MASTER_ADMIN = "lucasdaacruztr@gmail.com";
+        const topbarAvatar = document.getElementById("topbar-avatar");
 
         window.addEventListener("DOMContentLoaded", () => {
             const savedEmail = localStorage.getItem("capacita_user");
-            if (savedEmail) {
-                verificarEEntrar(savedEmail);
-            }
+            if (savedEmail) verificarEEntrar(savedEmail);
         });
 
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             loginError.classList.add("hidden");
-            const email = loginEmail.value.trim().toLowerCase();
-            await verificarEEntrar(email);
+            await verificarEEntrar(loginEmail.value.trim().toLowerCase());
         });
 
         async function verificarEEntrar(email) {
             const isMaster = (email === MASTER_ADMIN);
-            
-            if (isMaster) {
-                await setDoc(doc(db, "admins", email), { email: email }, { merge: true });
-            }
+            if (isMaster) await setDoc(doc(db, "admins", email), { email: email }, { merge: true });
 
             const adminDoc = await getDoc(doc(db, "admins", email));
             const isAdmin = isMaster || adminDoc.exists();
@@ -442,89 +461,99 @@
                 return;
             }
 
+            currentUserEmail = email;
             localStorage.setItem("capacita_user", email);
             userEmailDisplay.innerText = email;
+            userGreeting.innerText = isAdmin ? "Olá, Administrador" : "Olá, Aluno(a)";
 
-            const hora = new Date().getHours();
-            let saudacao = "Bom dia";
-            if (hora >= 12 && hora < 18) saudacao = "Boa tarde";
-            else if (hora >= 18) saudacao = "Boa noite";
-
-            if (isAdmin) {
-                userGreeting.innerText = `${saudacao}, Administrador`;
-                adminPanel.classList.remove("hidden");
-            } else {
-                userGreeting.innerText = `${saudacao}, Aluno(a)`;
-                adminPanel.classList.add("hidden");
-            }
+            if (isAdmin) adminPanel.classList.remove("hidden");
+            else adminPanel.classList.add("hidden");
 
             authLayout.classList.add("hidden");
             appLayout.classList.remove("hidden");
+
+            carregarDadosUtilizador(email);
             carregarAulas(isAdmin);
+            carregarQuestoes();
         }
 
-        logoutBtn.addEventListener("click", () => {
+        document.getElementById("logout-btn").addEventListener("click", () => {
             localStorage.removeItem("capacita_user");
             location.reload();
         });
 
-        adicionarAdminBtn.addEventListener("click", async () => {
-            const email = novoAdminEmail.value.trim().toLowerCase();
-            if (!email) return;
-            await setDoc(doc(db, "admins", email), { email: email });
-            alert(`O Gmail ${email} foi promovido a Administrador!`);
-            novoAdminEmail.value = "";
-        });
-
-        adicionarAlunoBtn.addEventListener("click", async () => {
-            const email = novoAlunoEmail.value.trim().toLowerCase();
+        // Administração de Alunos e Tarefas
+        document.getElementById("adicionar-aluno-btn").addEventListener("click", async () => {
+            const email = document.getElementById("novo-aluno-email").value.trim().toLowerCase();
             if (!email) return;
             await setDoc(doc(db, "alunos", email), { email: email });
-            alert(`O aluno ${email} foi autorizado com sucesso!`);
-            novoAlunoEmail.value = "";
+            alert(`Aluno ${email} autorizado com sucesso!`);
+            document.getElementById("novo-aluno-email").value = "";
         });
 
-        publicarAulaBtn.addEventListener("click", async () => {
-            const titulo = aulaTitulo.value.trim();
-            const texto = aulaTexto.value.trim();
-            const imagem = aulaImagem.value.trim();
-            const video = aulaVideo.value.trim();
+        document.getElementById("atribuir-tarefa-btn").addEventListener("click", async () => {
+            const email = document.getElementById("aluno-tarefa-email").value.trim().toLowerCase();
+            const instrucao = document.getElementById("aluno-tarefa-instrucao").value.trim();
+            if (!email || !instrucao) return;
+            await setDoc(doc(db, "tarefas", email), { instrucao: instrucao }, { merge: true });
+            alert(`Tarefa atribuída ao aluno ${email} com sucesso!`);
+            document.getElementById("aluno-tarefa-email").value = "";
+            document.getElementById("aluno-tarefa-instrucao").value = "";
+        });
 
-            if (!titulo) {
-                alert("Insira pelo menos o título da aula.");
-                return;
+        // Publicar Aula com Questões
+        document.getElementById("publicar-aula-btn").addEventListener("click", async () => {
+            const titulo = document.getElementById("aula-titulo").value.trim();
+            const texto = document.getElementById("aula-texto").value.trim();
+            const video = document.getElementById("aula-video").value.trim();
+            
+            const qPergunta = document.getElementById("q-pergunta").value.trim();
+            const qOp1 = document.getElementById("q-op1").value.trim();
+            const qOp2 = document.getElementById("q-op2").value.trim();
+            const qOp3 = document.getElementById("q-op3").value.trim();
+            const qCorreta = parseInt(document.getElementById("q-correta").value);
+
+            if (!titulo) { alert("Insira o título da aula."); return; }
+
+            let questaoObj = null;
+            if (qPergunta && qOp1 && qOp2) {
+                questaoObj = {
+                    pergunta: qPergunta,
+                    opcoes: [qOp1, qOp2, qOp3].filter(Boolean),
+                    correta: isNaN(qCorreta) ? 0 : qCorreta
+                };
             }
 
             try {
                 await addDoc(collection(db, "aulas"), {
-                    titulo,
-                    texto,
-                    imagem,
-                    video,
-                    criadoEm: new Date()
+                    titulo, texto, video, questao: questaoObj, criadoEm: new Date()
                 });
-                aulaTitulo.value = "";
-                aulaTexto.value = "";
-                aulaImagem.value = "";
-                aulaVideo.value = "";
-                alert("Conteúdo publicado com sucesso!");
+                alert("Aula e questões publicadas com sucesso!");
+                document.getElementById("aula-titulo").value = "";
+                document.getElementById("aula-texto").value = "";
+                document.getElementById("aula-video").value = "";
+                document.getElementById("q-pergunta").value = "";
+                document.getElementById("q-op1").value = "";
+                document.getElementById("q-op2").value = "";
+                document.getElementById("q-op3").value = "";
+                document.getElementById("q-correta").value = "";
             } catch (err) {
                 console.error(err);
-                alert("Erro ao publicar conteúdo.");
+                alert("Erro ao publicar.");
             }
         });
 
         window.apagarAula = async function(id) {
-            if (confirm("Deseja remover esta aula permanentemente?")) {
-                await deleteDoc(doc(db, "aulas", id));
-            }
+            if (confirm("Deseja eliminar esta aula?")) await deleteDoc(doc(db, "aulas", id));
         }
 
+        // Carregar Aulas e Tratar Vídeos do YouTube
         function carregarAulas(isAdmin) {
             onSnapshot(collection(db, "aulas"), (snapshot) => {
+                const listaAulasDiv = document.getElementById("lista-aulas");
                 listaAulasDiv.innerHTML = "";
                 if (snapshot.empty) {
-                    listaAulasDiv.innerHTML = `<div style="background: var(--focuz-card); border: 1px solid var(--focuz-card-border); padding: 16px; border-radius: 8px; color: var(--focuz-text-muted);">Nenhuma aula publicada no momento.</div>`;
+                    listaAulasDiv.innerHTML = `<div class="card" style="color: var(--focuz-text-muted);">Nenhuma aula publicada.</div>`;
                     return;
                 }
 
@@ -532,36 +561,25 @@
                     const aula = docSnap.data();
                     const id = docSnap.id;
                     const card = document.createElement("div");
-                    card.className = "lesson-card";
+                    card.className = "card";
 
                     let html = `<h4 style="margin-top: 0; font-size: 18px; color: #fff;">📚 ${aula.titulo}</h4>`;
+                    if (aula.texto) html += `<p style="font-size: 14px; color: var(--focuz-text-muted); line-height: 1.5;">${aula.texto}</p>`;
                     
-                    if (aula.texto) {
-                        html += `<p style="font-size: 14px; color: var(--focuz-text-muted); line-height: 1.6; white-space: pre-line;">${aula.texto}</p>`;
-                    }
-                    
-                    if (aula.imagem) {
-                        html += `<div style="margin: 14px 0;"><img src="${aula.imagem}" alt="Imagem" style="max-width: 100%; max-height: 320px; border-radius: 8px; border: 1px solid var(--focuz-card-border);"></div>`;
-                    }
-
                     if (aula.video) {
                         let videoUrl = aula.video;
-                        // Tratamento robusto para links do YouTube (watch, youtu.be, embed)
-                        if (videoUrl.includes("watch?v=")) {
-                            videoUrl = videoUrl.replace("watch?v=", "embed/");
-                        } else if (videoUrl.includes("youtu.be/")) {
-                            const videoId = videoUrl.split("youtu.be/")[1].split("?")[0];
-                            videoUrl = `https://www.youtube.com/embed/${videoId}`;
+                        if (videoUrl.includes("watch?v=")) videoUrl = videoUrl.replace("watch?v=", "embed/");
+                        else if (videoUrl.includes("youtu.be/")) {
+                            const vId = videoUrl.split("youtu.be/")[1].split("?")[0];
+                            videoUrl = `https://www.youtube.com/embed/${vId}`;
                         }
-                        // Limpa parâmetros extras se houver
-                        if (videoUrl.includes("&")) {
-                            videoUrl = videoUrl.split("&")[0];
-                        }
+                        if (videoUrl.includes("&")) videoUrl = videoUrl.split("&")[0];
+
                         html += `<div style="margin: 14px 0; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"><iframe src="${videoUrl}" style="position: absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius: 8px;" allowfullscreen></iframe></div>`;
                     }
 
                     if (isAdmin) {
-                        html += `<div style="margin-top: 16px; border-top: 1px solid var(--focuz-card-border); padding-top: 12px;"><button onclick="apagarAula('${id}')" class="btn-danger">Eliminar Aula</button></div>`;
+                        html += `<div style="margin-top: 12px;"><button onclick="apagarAula('${id}')" class="btn-danger">Eliminar Aula</button></div>`;
                     }
 
                     card.innerHTML = html;
@@ -569,6 +587,116 @@
                 });
             });
         }
+
+        // Questões Interativas Pós-Aula (com repetição e cálculo de média)
+        function carregarQuestoes() {
+            onSnapshot(collection(db, "aulas"), (snapshot) => {
+                const listaQDiv = document.getElementById("lista-questoes");
+                listaQDiv.innerHTML = "";
+                let count = 0;
+
+                snapshot.forEach((docSnap) => {
+                    const aula = docSnap.data();
+                    if (!aula.questao) return;
+                    count++;
+                    const q = aula.questao;
+                    const qId = docSnap.id;
+
+                    const card = document.createElement("div");
+                    card.className = "card";
+                    card.innerHTML = `
+                        <h4 style="margin-top:0; color: var(--focuz-green);">Questão referente à aula: ${aula.titulo}</h4>
+                        <p style="font-size: 15px; font-weight: 500;">${q.pergunta}</p>
+                        <div id="opcoes-${qId}" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                            ${q.opcoes.map((op, idx) => `
+                                <label style="font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="resp-${qId}" value="${idx}"> ${op}
+                                </label>
+                            `).join('')}
+                        </div>
+                        <button onclick="responderQuestao('${qId}', ${q.correta})" class="btn-submit" style="width: 180px; margin-top:0;">Enviar Resposta</button>
+                        <p id="feedback-${qId}" style="font-size: 13px; margin-top: 8px; font-weight: 600;"></p>
+                    `;
+                    listaQDiv.appendChild(card);
+                });
+
+                if (count === 0) {
+                    listaQDiv.innerHTML = `<div class="card" style="color: var(--focuz-text-muted);">Nenhuma questão associada às aulas no momento.</div>`;
+                }
+            });
+        }
+
+        window.responderQuestao = async function(qId, corretaIdx) {
+            const selecionado = document.querySelector(`input[name="resp-${qId}"]:checked`);
+            const feedback = document.getElementById(`feedback-${qId}`);
+            if (!selecionado) {
+                feedback.style.color = "#ef4444";
+                feedback.innerText = "Selecione uma opção antes de enviar.";
+                return;
+            }
+
+            const respostaUser = parseInt(selecionado.value);
+            const acertou = (respostaUser === corretaIdx);
+
+            if (acertou) {
+                feedback.style.color = "var(--focuz-green)";
+                feedback.innerText = "✔ Resposta Correta! Pode refazer a qualquer momento se desejar praticar mais.";
+            } else {
+                feedback.style.color = "#ef4444";
+                feedback.innerText = "✖ Resposta incorreta. Pode rever o vídeo da aula e tentar novamente!";
+            }
+
+            // Registar tentativa no perfil/desempenho
+            const userRef = doc(db, "desempenho", currentUserEmail);
+            const userSnap = await getDoc(userRef);
+            let total = 1, acertos = acertou ? 1 : 0;
+            if (userSnap.exists()) {
+                const data = userSnap.data();
+                total = (data.total || 0) + 1;
+                acertos = (data.acertos || 0) + (acertou ? 1 : 0);
+            }
+            await setDoc(userRef, { total, acertos }, { merge: true });
+            carregarDadosUtilizador(currentUserEmail);
+        }
+
+        // Perfil e Estatísticas
+        async function carregarDadosUtilizador(email) {
+            // Tarefa
+            const tarefaDoc = await getDoc(doc(db, "tarefas", email));
+            if (tarefaDoc.exists()) {
+                document.getElementById("tarefa-aluno-titulo").innerText = tarefaDoc.data().instrucao;
+            }
+
+            // Desempenho
+            const perfDoc = await getDoc(doc(db, "desempenho", email));
+            if (perfDoc.exists()) {
+                const d = perfDoc.data();
+                const total = d.total || 0;
+                const acertos = d.acertos || 0;
+                const porc = total > 0 ? Math.round((acertos / total) * 100) : 0;
+
+                document.getElementById("stat-media").innerText = `${porc}%`;
+                document.getElementById("perf-total").innerText = total;
+                document.getElementById("perf-acertos").innerText = acertos;
+                document.getElementById("perf-porcentagem").innerText = `${porc}%`;
+            }
+
+            // Foto Perfil
+            const perfilDoc = await getDoc(doc(db, "perfis", email));
+            if (perfilDoc.exists() && perfilDoc.data().foto) {
+                const fotoUrl = perfilDoc.data().foto;
+                topbarAvatar.src = fotoUrl;
+                document.getElementById("perfil-foto-input").value = fotoUrl;
+            }
+        }
+
+        document.getElementById("salvar-perfil-btn").addEventListener("click", async () => {
+            const foto = document.getElementById("perfil-foto-input").value.trim();
+            if (!foto) return;
+            await setDoc(doc(db, "perfis", currentUserEmail), { foto: foto }, { merge: true });
+            topbarAvatar.src = foto;
+            alert("Foto de perfil atualizada com sucesso!");
+        });
     </script>
 </body>
 </html>
