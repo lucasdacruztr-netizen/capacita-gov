@@ -49,7 +49,7 @@
                                         <span class="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold" title="Administrador Supremo">AA</span>
                                     </template>
                                 </div>
-                                <span class="text-xs text-gray-500 capitalize" x-text="currentUser.role === 'admin' ? 'Administrador Supremo' : (currentUser.role === 'admin_junior' ? 'Admin Júnior' : 'Aluno')"></span>
+                                <span class="text-xs text-gray-500 capitalize" x-text="currentUser.role === 'admin' ? 'Administrador Supremo (Clique para Painel)' : (currentUser.role === 'admin_junior' ? 'Admin Júnior' : 'Aluno')"></span>
                             </div>
                         </div>
 
@@ -84,10 +84,10 @@
                 </div>
                 <template x-if="!currentUser">
                     <div class="relative z-10 max-w-2xl">
-                        <span class="bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block">Academia Pro - Excelência em Ensino</span>
+                        <span class="bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block">Plataforma de Excelência</span>
                         <h2 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">Bem-vindo à Academia Pro!</h2>
-                        <p class="text-blue-100 mb-8 text-base md:text-lg leading-relaxed font-medium">Transforme seu futuro com cursos de alto nível. Faça o seu login usando o seu e-mail cadastrado.</p>
-                        <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-8 py-3.5 rounded-2xl font-extrabold text-sm transition shadow-lg flex items-center gap-2">
+                        <p class="text-blue-100 mb-8 text-base md:text-lg leading-relaxed font-medium">Transforme seu futuro com cursos de alto nível. Um espaço exclusivo para alunos dedicados. Faça seu login e comece agora mesmo.</p>
+                        <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-8 py-3.5 rounded-2xl font-extrabold text-sm transition shadow-lg shadow-black/10 flex items-center gap-2">
                             <i class="fa-solid fa-arrow-right-to-bracket"></i> Acessar com meu E-mail
                         </button>
                     </div>
@@ -95,7 +95,7 @@
                 <template x-if="currentUser">
                     <div class="relative z-10">
                         <h2 class="text-3xl md:text-4xl font-extrabold mb-2" x-text="'Olá, ' + currentUser.name + '!'"></h2>
-                        <p class="text-blue-100 mb-6 text-base md:text-lg">Explore abaixo os cursos liberados para você na Academia Pro.</p>
+                        <p class="text-blue-100 mb-6 text-base md:text-lg">Seu acesso está liberado. Explore os cursos disponíveis abaixo.</p>
                     </div>
                 </template>
                 
@@ -191,15 +191,8 @@
 
                     <!-- QUIZ -->
                     <div x-show="!quizFinished">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2"><i class="fa-solid fa-clipboard-question text-blue-600"></i> Quiz de Avaliação</h3>
-                            <template x-if="lockTimer > 0">
-                                <span class="bg-red-100 text-red-700 font-bold text-xs px-3 py-1.5 rounded-xl animate-pulse">
-                                    <i class="fa-solid fa-clock"></i> Bloqueado por tempo: <span x-text="formatTime(lockTimer)"></span>
-                                </span>
-                            </template>
-                        </div>
-                        <p class="text-xs text-gray-500 mb-6 font-medium">Responda todas as questões com atenção.</p>
+                        <h3 class="text-xl font-bold mb-2 text-gray-900 flex items-center gap-2"><i class="fa-solid fa-clipboard-question text-blue-600"></i> Quiz de Avaliação</h3>
+                        <p class="text-xs text-gray-500 mb-6 font-medium">Responda com atenção. Cada alternativa é fixada permanentemente após o clique.</p>
                         
                         <div class="space-y-6">
                             <template x-for="(q, qIndex) in activeCourse.questions" :key="qIndex">
@@ -208,7 +201,7 @@
                                     <div class="space-y-3">
                                         <template x-for="(opt, oIndex) in q.options" :key="oIndex">
                                             <button @click="answerQuiz(qIndex, oIndex)"
-                                                    :disabled="userAnswers[qIndex] !== undefined || lockTimer > 0"
+                                                    :disabled="userAnswers[qIndex] !== undefined"
                                                     :class="{
                                                         'bg-green-100 border-green-500 text-green-900 font-bold': userAnswers[qIndex] === oIndex && oIndex === q.correct,
                                                         'bg-red-100 border-red-500 text-red-900 font-bold': userAnswers[qIndex] === oIndex && oIndex !== q.correct,
@@ -230,24 +223,20 @@
                         </div>
 
                         <div class="mt-8 flex items-center justify-between bg-gray-50 p-5 rounded-2xl border">
-                            <span class="text-xs text-gray-600 font-medium">Certifique-se de responder tudo antes de enviar.</span>
-                            <button @click="submitQuiz()" :disabled="lockTimer > 0" class="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
+                            <span class="text-xs text-gray-600 font-medium">Responda todas as questões antes de enviar.</span>
+                            <button @click="submitQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
                                 Enviar Respostas & Ver Placar
                             </button>
                         </div>
                     </div>
 
-                    <!-- PLACAR DINÂMICO (VITÓRIA OU DERROTA) -->
-                    <div x-show="quizFinished" class="rounded-3xl p-8 md:p-12 text-center shadow-2xl transition-all duration-500"
-                         :class="finalScore.passed ? 'bg-gradient-to-br from-gray-900 via-emerald-950 to-blue-950 text-white' : 'bg-gradient-to-br from-gray-900 via-rose-950 to-red-950 text-white'">
-                        
-                        <div class="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-xl"
-                             :class="finalScore.passed ? 'bg-emerald-600 text-yellow-300 animate-bounce' : 'bg-red-600 text-white'">
-                            <i :class="finalScore.passed ? 'fa-solid fa-trophy' : 'fa-solid fa-face-frown-open'"></i>
+                    <!-- PLACAR -->
+                    <div x-show="quizFinished" class="bg-gradient-to-br from-gray-900 to-indigo-950 text-white rounded-3xl p-8 md:p-12 text-center shadow-2xl">
+                        <div class="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-xl">
+                            <i class="fa-solid fa-trophy text-yellow-300"></i>
                         </div>
-
-                        <h3 class="text-3xl font-extrabold mb-2" x-text="finalScore.passed ? 'Parabéns! Você Conquistou a Vitória na Academia Pro!' : 'Não foi dessa vez... Continue Tentando!'"></h3>
-                        <p class="text-gray-300 text-sm mb-8 font-medium" x-text="finalScore.passed ? 'Excelente desempenho! Você dominou o conteúdo deste módulo.' : 'Você não atingiu a pontuação mínima. Reveja o material e tente novamente.'"></p>
+                        <h3 class="text-3xl font-extrabold mb-2">Resultado Final do Quiz</h3>
+                        <p class="text-gray-300 text-sm mb-8 font-medium">Parabéns por concluir a avaliação deste módulo!</p>
                         
                         <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-10 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10">
                             <div>
@@ -264,15 +253,9 @@
                             </div>
                         </div>
 
-                        <!-- OPÇÕES FLUÍDAS -->
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                            <button @click="resetQuizTryAgain()" class="bg-white/20 hover:bg-white/30 text-white px-8 py-3.5 rounded-2xl font-extrabold text-sm transition border border-white/20 flex items-center gap-2">
-                                <i class="fa-solid fa-rotate-right"></i> Voltar ao Curso / Refazer Quiz
-                            </button>
-                            <button @click="currentView = 'home'; quizFinished = false;" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-extrabold text-sm transition shadow-lg flex items-center gap-2">
-                                <i class="fa-solid fa-house"></i> Voltar para a Página Inicial
-                            </button>
-                        </div>
+                        <button @click="currentView = 'home'; quizFinished = false;" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-extrabold text-sm transition shadow-lg shadow-blue-500/30">
+                            Voltar para a Lista de Cursos
+                        </button>
                     </div>
                 </div>
             </template>
@@ -282,8 +265,8 @@
         <div x-show="currentView === 'admin'" class="space-y-6">
             <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border flex justify-between items-center">
                 <div>
-                    <h2 class="text-2xl font-extrabold text-gray-900">Área do Administrador - Academia Pro</h2>
-                    <p class="text-sm text-gray-500 font-medium">Controle total sincronizado em tempo real com a nuvem Firebase.</p>
+                    <h2 class="text-2xl font-extrabold text-gray-900">Área do Administrador Supremo</h2>
+                    <p class="text-sm text-gray-500 font-medium">Gerenciamento completo sincronizado direto na nuvem Firebase.</p>
                 </div>
                 <button @click="currentView = 'home'" class="bg-blue-50 hover:bg-blue-100 text-blue-700 px-5 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-2">
                     <i class="fa-solid fa-house"></i> Ir para Área do Aluno
@@ -293,13 +276,13 @@
             <!-- Abas Admin -->
             <div class="flex gap-2 border-b pb-2 overflow-x-auto">
                 <button @click="adminTab = 'courses'" :class="adminTab === 'courses' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition whitespace-nowrap px-2">
-                    Cursos & Questões
+                    Gerenciar Cursos & Questões
                 </button>
                 <button @click="adminTab = 'students'" :class="adminTab === 'students' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition whitespace-nowrap px-2">
-                    Cadastrar Alunos
+                    Cadastrar Alunos Autorizados
                 </button>
                 <button @click="adminTab = 'permissions'" :class="adminTab === 'permissions' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition whitespace-nowrap px-2">
-                    Permissões de Acesso
+                    Permissões de Acesso por Aluno
                 </button>
                 <button @click="adminTab = 'admins'" :class="adminTab === 'admins' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition whitespace-nowrap px-2">
                     Administradores Júnior
@@ -312,7 +295,7 @@
                     <h3 class="font-bold text-lg mb-4 text-gray-900">Adicionar Novo Curso</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <input type="text" x-model="newCourse.title" placeholder="Nome do Curso" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
-                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Treinamento)" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
+                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Administração)" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
                     </div>
                     <textarea x-model="newCourse.description" placeholder="Descrição detalhada do curso..." class="border p-3.5 rounded-2xl text-sm w-full mb-4 outline-none focus:border-blue-500"></textarea>
                     
@@ -396,8 +379,8 @@
             <!-- ABA 2: CADASTRAR ALUNOS -->
             <div x-show="adminTab === 'students'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8 space-y-6">
                 <div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Adicionar Novo Aluno na Academia Pro</h3>
-                    <p class="text-xs text-gray-500 mb-5 leading-relaxed">Insira o e-mail do aluno. O sistema enviará automaticamente um e-mail de boas-vindas com o layout profissional informando que o login é o próprio e-mail.</p>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">Adicionar Novo E-mail Permitido</h3>
+                    <p class="text-xs text-gray-500 mb-5 leading-relaxed">Insira apenas o e-mail do aluno. A <strong>Academia Pro</strong> enviará automaticamente o aviso de liberação.</p>
                     <div class="flex flex-col sm:flex-row gap-3 mb-4">
                         <input type="email" x-model="newStudentEmail" placeholder="E-mail do Aluno (ex: aluno@gmail.com)" class="border p-3.5 rounded-2xl text-sm flex-1 outline-none focus:border-blue-500">
                         <button @click="registerStudent()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
@@ -501,8 +484,8 @@
             <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl font-bold mb-4">
                 <i class="fa-solid fa-user-shield"></i>
             </div>
-            <h3 class="text-xl font-extrabold mb-1 text-gray-900">Entrar na Academia Pro</h3>
-            <p class="text-xs text-gray-500 mb-6">Insira o seu e-mail cadastrado para acessar a plataforma.</p>
+            <h3 class="text-xl font-extrabold mb-1 text-gray-900">Entrar na Plataforma</h3>
+            <p class="text-xs text-gray-500 mb-6">Insira o seu e-mail cadastrado para acessar.</p>
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1">Seu E-mail</label>
@@ -594,8 +577,6 @@
                 openEditModal: false,
                 editingCourse: null,
                 loginEmail: '',
-                lockTimer: 0,
-                timerInterval: null,
 
                 notificationModal: {
                     open: false,
@@ -614,16 +595,24 @@
                 courses: [
                     {
                         id: 1,
-                        title: 'Gestão e Práticas na Academia Pro',
-                        category: 'Treinamento',
-                        description: 'Compreenda os conceitos fundamentais da organização e atendimento de excelência da Academia Pro.',
+                        title: 'Administração Direta e Indireta',
+                        category: 'Administração',
+                        description: 'Compreenda os conceitos fundamentais da organização da administração pública brasileira.',
                         icon: 'fa-solid fa-building-columns',
                         urls: [
-                            { title: 'Introdução à Academia Pro', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }
+                            { title: 'Introdução à Administração Pública', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }
                         ],
                         questions: [
-                            { question: 'Qual o principal foco da Academia Pro?', options: ['Excelência em ensino e atendimento ao aluno.', 'Apenas faturamento financeiro.', 'Gestão exclusiva de estoque.', 'Nenhuma das anteriores.'], correct: 0 },
-                            { question: 'Como o aluno realiza o login na plataforma?', options: ['Usando o próprio e-mail cadastrado.', 'Com senha de 20 dígitos.', 'Apenas por biometria facial.', 'Não é necessário login.'], correct: 0 }
+                            {
+                                question: 'O que caracteriza a Administração Direta?',
+                                options: [
+                                    'Órgãos integrados à estrutura administrativa da Presidência e Ministérios.',
+                                    'Entidades com personalidade jurídica própria.',
+                                    'Empresas puramente privadas.',
+                                    'Nenhuma das anteriores.'
+                                ],
+                                correct: 0
+                            }
                         ]
                     }
                 ],
@@ -643,7 +632,7 @@
                 activeCourse: null,
                 userAnswers: {},
                 quizFinished: false,
-                finalScore: { correct: 0, wrong: 0, percentage: 0, passed: false },
+                finalScore: { correct: 0, wrong: 0, percentage: 0 },
 
                 editLinkTitle: {},
                 editLinkUrl: {},
@@ -669,18 +658,19 @@
                 },
 
                 async initApp() {
+                    // Carrega dados diretamente do Firestore do Firebase
                     try {
                         const docRef = window.firebaseDoc(window.db, "academia_pro", "dados_gerais");
                         const docSnap = await window.firebaseGetDoc(docRef);
                         if (docSnap.exists()) {
                             const data = docSnap.data();
-                            if(data.courses && data.courses.length > 0) this.courses = data.courses;
+                            if(data.courses) this.courses = data.courses;
                             if(data.studentsList) this.studentsList = data.studentsList;
                             if(data.accessMatrix) this.accessMatrix = data.accessMatrix;
                             if(data.juniorAdmins) this.juniorAdmins = data.juniorAdmins;
                         }
                     } catch(e) {
-                        console.log("Erro ao carregar dados do Firebase:", e);
+                        console.log("Erro ao carregar do Firebase, usando padrão:", e);
                     }
                     
                     const sessionCurr = sessionStorage.getItem('academia_current_user');
@@ -713,16 +703,12 @@
                     }
                     
                     this.studentsList.push({ email: email });
-                    // Garante a atualização imediata da tela pelo Alpine
-                    this.studentsList = [...this.studentsList];
-                    
+                    this.studentsList = [...this.studentsList]; // Garante atualização visual imediata
                     await this.saveDataToFirebase();
 
-                    // Disparo do EmailJS com o modelo profissional ajustado para a Academia Pro
                     const templateParams = {
                         to_email: email,
-                        to_name: email.split('@')[0],
-                        message: `Olá! Seja bem-vindo à Academia Pro. O seu acesso à plataforma foi liberado com sucesso. Para entrar, utilize o seu e-mail (${email}) diretamente na nossa página de login.`
+                        message: `Olá, a Academia Pro liberou o seu acesso à plataforma! Utilize o seu e-mail (${email}) para entrar e começar seus estudos.`
                     };
 
                     if(typeof emailjs !== 'undefined') {
@@ -730,13 +716,13 @@
                     }
 
                     this.newStudentEmail = '';
-                    this.showNotification('Aluno Cadastrado com Sucesso!', `O acesso foi liberado para ${email} e o e-mail de boas-vindas foi disparado.`, true);
+                    this.showNotification('E-mail Cadastrado na Nuvem!', `O acesso foi liberado para ${email}.`, true);
                 },
 
                 async removeStudent(index) {
                     if(confirm('Tem certeza que deseja remover este e-mail?')) {
                         this.studentsList.splice(index, 1);
-                        this.studentsList = [...this.studentsList];
+                        this.studentsList = [...this.studentsList]; // Garante atualização visual imediata
                         await this.saveDataToFirebase();
                     }
                 },
@@ -782,7 +768,7 @@
                     this.openLoginModal = false;
                     this.loginEmail = '';
                     sessionStorage.setItem('academia_current_user', JSON.stringify(this.currentUser));
-                    this.showNotification('Login Realizado!', 'Bem-vindo de volta à Academia Pro!', true);
+                    this.showNotification('Login Realizado!', 'Bem-vindo de volta!', true);
                 },
 
                 logout() {
@@ -840,7 +826,7 @@
                 },
 
                 answerQuiz(qIndex, oIndex) {
-                    if(this.userAnswers[qIndex] !== undefined || this.lockTimer > 0) return;
+                    if(this.userAnswers[qIndex] !== undefined) return;
                     this.userAnswers[qIndex] = oIndex;
                 },
 
@@ -860,37 +846,8 @@
                     }
 
                     const percentage = Math.round((correctCount / totalQ) * 100);
-                    const passed = percentage >= 60; // Mínimo de 60% para passar
-
-                    this.finalScore = { correct: correctCount, wrong: wrongCount, percentage: percentage, passed: passed };
+                    this.finalScore = { correct: correctCount, wrong: wrongCount, percentage: percentage };
                     this.quizFinished = true;
-
-                    if (!passed) {
-                        this.startLockTimer();
-                    }
-                },
-
-                startLockTimer() {
-                    this.lockTimer = 300; // 5 minutos em segundos
-                    if(this.timerInterval) clearInterval(this.timerInterval);
-                    this.timerInterval = setInterval(() => {
-                        if(this.lockTimer > 0) {
-                            this.lockTimer--;
-                        } else {
-                            clearInterval(this.timerInterval);
-                        }
-                    }, 1000);
-                },
-
-                formatTime(seconds) {
-                    const mins = Math.floor(seconds / 60);
-                    const secs = seconds % 60;
-                    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-                },
-
-                resetQuizTryAgain() {
-                    this.userAnswers = {};
-                    this.quizFinished = false;
                 },
 
                 addLinkToNewCourse() {
@@ -916,7 +873,7 @@
                         questions: []
                     };
                     this.courses.push(courseObj);
-                    this.courses = [...this.courses];
+                    this.courses = [...this.courses]; // Garante atualização visual imediata
                     this.newCourse = { title: '', category: '', description: '', urls: [], questions: [] };
                     await this.saveDataToFirebase();
                     this.showNotification('Sucesso!', 'Curso criado e salvo na nuvem!', true);
@@ -1005,17 +962,16 @@
                     const email = this.newAdminEmail.toLowerCase().trim();
                     if(!this.juniorAdmins.includes(email)) {
                         this.juniorAdmins.push(email);
-                        // Garante a atualização imediata da tela pelo Alpine
-                        this.juniorAdmins = [...this.juniorAdmins];
+                        this.juniorAdmins = [...this.juniorAdmins]; // Garante atualização visual imediata
                         this.newAdminEmail = '';
                         await this.saveDataToFirebase();
-                        this.showNotification('Admin Promovido!', 'O usuário agora é um Administrador Júnior da Academia Pro.', true);
+                        this.showNotification('Admin Promovido!', 'O usuário agora é um Administrador Júnior.', true);
                     }
                 },
 
                 async removeJuniorAdmin(email) {
                     this.juniorAdmins = this.juniorAdmins.filter(e => e !== email);
-                    this.juniorAdmins = [...this.juniorAdmins];
+                    this.juniorAdmins = [...this.juniorAdmins]; // Garante atualização visual imediata
                     await this.saveDataToFirebase();
                 }
             }
