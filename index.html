@@ -10,6 +10,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- FontAwesome para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased" x-data="app()" x-init="initApp()">
 
@@ -26,39 +28,32 @@
                 </div>
             </div>
 
-            <!-- ABAS DE NAVEGAÇÃO -->
-            <div class="hidden md:flex items-center space-x-2 bg-gray-100 p-1 rounded-xl">
-                <button @click="currentView = 'home'" 
-                        :class="currentView === 'home' || currentView === 'course-detail' ? 'bg-white text-blue-600 shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'"
-                        class="px-4 py-2 rounded-lg text-sm transition">
-                    <i class="fa-solid fa-book-open mr-1"></i> Área do Aluno
-                </button>
-                
-                <template x-if="currentUser && (currentUser.role === 'admin' || currentUser.role === 'admin_junior')">
-                    <button @click="currentView = 'admin'" 
-                            :class="currentView === 'admin' ? 'bg-white text-blue-600 shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'"
-                            class="px-4 py-2 rounded-lg text-sm transition">
-                        <i class="fa-solid fa-gauge-high mr-1"></i> Área do Administrador
-                    </button>
-                </template>
-            </div>
-
-            <!-- PERFIL / LOGIN -->
+            <!-- PERFIL / LOGIN / MENU DO ADMIN -->
             <div class="flex items-center space-x-4">
                 <template x-if="currentUser">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-inner uppercase"
-                             x-text="currentUser.name.charAt(0)">
-                        </div>
-                        <div class="text-left">
-                            <div class="text-sm font-semibold flex items-center gap-1">
-                                <span x-text="currentUser.name"></span>
-                                <template x-if="currentUser.email === 'lucaasdacruztr@gmail.com' || currentUser.isSupreme">
-                                    <span class="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold" title="Administrador Supremo">AA</span>
-                                </template>
+                    <div class="flex items-center space-x-3 relative">
+                        <div @click="if(currentUser.role === 'admin' || currentUser.role === 'admin_junior') { currentView = 'admin'; }" 
+                             class="flex items-center space-x-3 cursor-pointer p-1.5 rounded-xl hover:bg-gray-100 transition">
+                            <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-inner uppercase"
+                                 x-text="currentUser.name.charAt(0)">
                             </div>
-                            <span class="text-xs text-gray-500 capitalize" x-text="currentUser.role === 'admin' ? 'Administrador' : (currentUser.role === 'admin_junior' ? 'Admin Júnior' : 'Aluno')"></span>
+                            <div class="text-left hidden sm:block">
+                                <div class="text-sm font-semibold flex items-center gap-1">
+                                    <span x-text="currentUser.name"></span>
+                                    <template x-if="currentUser.isSupreme">
+                                        <span class="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold" title="Administrador Supremo">AA</span>
+                                    </template>
+                                </div>
+                                <span class="text-xs text-gray-500 capitalize" x-text="currentUser.role === 'admin' ? 'Administrador Supremo (Clique para Painel)' : (currentUser.role === 'admin_junior' ? 'Admin Júnior' : 'Aluno')"></span>
+                            </div>
                         </div>
+
+                        <template x-if="(currentUser.role === 'admin' || currentUser.role === 'admin_junior') && currentView === 'home'">
+                            <button @click="currentView = 'admin'" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm flex items-center gap-1">
+                                <i class="fa-solid fa-gauge-high"></i> Painel Admin
+                            </button>
+                        </template>
+
                         <button @click="logout()" class="text-red-500 hover:text-red-700 text-sm p-2 ml-2" title="Sair">
                             <i class="fa-solid fa-right-from-bracket"></i>
                         </button>
@@ -79,44 +74,46 @@
         <!-- ==================== ÁREA DO ALUNO ==================== -->
         <div x-show="currentView === 'home'">
             
-            <!-- BANNER DINÂMICO -->
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 md:p-10 text-white mb-8 shadow-md">
+            <!-- BANNER MODERNO E CHAMATIVO -->
+            <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 rounded-3xl p-8 md:p-12 text-white mb-8 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl pointer-events-none">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
                 <template x-if="!currentUser">
-                    <div>
-                        <span class="bg-blue-500/50 text-blue-100 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Acesso Restrito</span>
-                        <h2 class="text-2xl md:text-3xl font-bold mb-2">Bem-vindo à Academia Pro!</h2>
-                        <p class="text-blue-100 mb-6 text-sm md:text-base max-w-2xl">O acesso a esta plataforma é exclusivo para alunos devidamente cadastrados e autorizados pelos administradores. Faça login para acessar seus cursos.</p>
-                        <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-6 py-2.5 rounded-xl font-bold text-sm transition shadow">
-                            Fazer Login
+                    <div class="relative z-10 max-w-2xl">
+                        <span class="bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block">Plataforma de Excelência</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">Bem-vindo à Academia Pro!</h2>
+                        <p class="text-blue-100 mb-8 text-base md:text-lg leading-relaxed font-medium">Transforme seu futuro com cursos de alto nível. Um espaço exclusivo para alunos dedicados que buscam conhecimento prático e avanço profissional. Faça seu login e comece agora mesmo.</p>
+                        <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-8 py-3.5 rounded-2xl font-extrabold text-sm transition shadow-lg shadow-black/10 flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-right-to-bracket"></i> Acessar com meu E-mail
                         </button>
                     </div>
                 </template>
                 <template x-if="currentUser">
-                    <div>
-                        <h2 class="text-2xl md:text-3xl font-bold mb-2">Seus Cursos Disponíveis</h2>
-                        <p class="text-blue-100 mb-6 text-sm md:text-base">Acesse os conteúdos liberados pelo administrador para o seu perfil.</p>
+                    <div class="relative z-10">
+                        <h2 class="text-3xl md:text-4xl font-extrabold mb-2" x-text="'Olá, ' + currentUser.name + '!'"></h2>
+                        <p class="text-blue-100 mb-6 text-base md:text-lg">Seu acesso está liberado. Explore os cursos disponíveis abaixo e continue sua jornada de aprendizado.</p>
                     </div>
                 </template>
                 
-                <!-- Barra de Busca -->
                 <div class="relative max-w-xl mt-6">
                     <input type="text" x-model="searchQuery" placeholder="Buscar curso por nome ou categoria..." 
-                           class="w-full pl-10 pr-4 py-3 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-4 text-gray-400"></i>
+                           class="w-full pl-12 pr-4 py-3.5 rounded-2xl text-gray-800 bg-white/95 backdrop-blur placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-white/30 shadow-lg text-sm">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-gray-400 text-base"></i>
                 </div>
             </div>
 
             <!-- Categorias -->
             <div class="flex gap-2 overflow-x-auto pb-4 mb-6">
                 <button @click="selectedCategory = 'Todos'" 
-                        :class="selectedCategory === 'Todos' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border'"
-                        class="px-4 py-2 rounded-xl text-sm font-medium shadow-sm transition whitespace-nowrap">
+                        :class="selectedCategory === 'Todos' ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-600 border'"
+                        class="px-5 py-2.5 rounded-2xl text-sm font-semibold transition whitespace-nowrap">
                     Todas as Categorias
                 </button>
                 <template x-for="cat in dynamicCategories" :key="cat">
                     <button @click="selectedCategory = cat" 
-                            :class="selectedCategory === cat ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border'"
-                            class="px-4 py-2 rounded-xl text-sm font-medium shadow-sm transition whitespace-nowrap"
+                            :class="selectedCategory === cat ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-600 border'"
+                            class="px-5 py-2.5 rounded-2xl text-sm font-semibold transition whitespace-nowrap"
                             x-text="cat">
                     </button>
                 </template>
@@ -125,31 +122,31 @@
             <!-- Grid de Cursos -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <template x-for="course in filteredCourses" :key="course.id">
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+                    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-lg transition duration-300">
                         <div>
-                            <div class="bg-gray-100 h-40 relative flex items-center justify-center text-gray-400">
-                                <i :class="course.icon || 'fa-solid fa-book'" class="text-4xl"></i>
-                                <span class="absolute top-3 right-3 bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full" x-text="course.category"></span>
+                            <div class="bg-gray-100 h-44 relative flex items-center justify-center text-gray-400">
+                                <i :class="course.icon || 'fa-solid fa-book'" class="text-4xl text-blue-600"></i>
+                                <span class="absolute top-4 right-4 bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full shadow-xs" x-text="course.category"></span>
                                 <template x-if="!isCourseAccessible(course.id)">
                                     <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center text-white p-4 text-center">
-                                        <i class="fa-solid fa-lock text-2xl mb-1"></i>
+                                        <i class="fa-solid fa-lock text-2xl mb-1 text-amber-300"></i>
                                         <span class="text-xs font-bold" x-text="currentUser ? 'Curso Bloqueado (Aguardando Liberação)' : 'Faça login para ver o status'"></span>
                                     </div>
                                 </template>
                             </div>
-                            <div class="p-5">
+                            <div class="p-6">
                                 <h3 class="font-bold text-lg mb-2 text-gray-900" x-text="course.title"></h3>
-                                <p class="text-gray-600 text-sm mb-4 line-clamp-2" x-text="course.description"></p>
+                                <p class="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed" x-text="course.description"></p>
                             </div>
                         </div>
-                        <div class="p-5 pt-0">
+                        <div class="p-6 pt-0">
                             <template x-if="isCourseAccessible(course.id)">
-                                <button @click="openCourse(course)" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-medium text-sm transition shadow-sm">
+                                <button @click="openCourse(course)" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-bold text-sm transition shadow-md shadow-blue-500/20">
                                     Acessar Conteúdo & Quiz
                                 </button>
                             </template>
                             <template x-if="!isCourseAccessible(course.id)">
-                                <button @click="currentUser ? null : openLoginModal = true" class="w-full bg-gray-200 text-gray-600 hover:bg-gray-300 py-2.5 rounded-xl font-medium text-sm transition">
+                                <button @click="currentUser ? null : openLoginModal = true" class="w-full bg-gray-100 text-gray-600 hover:bg-gray-200 py-3 rounded-2xl font-bold text-sm transition">
                                     <span x-text="currentUser ? 'Aguardando Liberação do Admin' : 'Entrar para Verificar Acesso'"></span>
                                 </button>
                             </template>
@@ -160,46 +157,45 @@
         </div>
 
         <!-- VIEW: DETALHE DO CURSO, VÍDEO E QUIZ -->
-        <div x-show="currentView === 'course-detail'" class="bg-white rounded-2xl shadow-sm border p-6 md:p-8">
-            <button @click="currentView = 'home'; quizFinished = false;" class="text-sm text-blue-600 hover:underline mb-6 inline-flex items-center gap-1 font-semibold">
+        <div x-show="currentView === 'course-detail'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-10">
+            <button @click="currentView = 'home'; quizFinished = false;" class="text-sm text-blue-600 hover:underline mb-6 inline-flex items-center gap-1.5 font-bold">
                 <i class="fa-solid fa-arrow-left"></i> Voltar aos cursos
             </button>
 
             <template x-if="activeCourse">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2" x-text="activeCourse.title"></h2>
-                    <p class="text-gray-600 mb-6" x-text="activeCourse.description"></p>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3" x-text="activeCourse.title"></h2>
+                    <p class="text-gray-600 mb-8 text-base leading-relaxed" x-text="activeCourse.description"></p>
 
-                    <!-- Vídeos e Links Externos -->
                     <template x-if="activeCourse.urls && activeCourse.urls.length > 0">
                         <div class="mb-8 space-y-4">
                             <template x-for="link in activeCourse.urls">
                                 <div>
                                     <template x-if="isYoutubeUrl(link.url)">
-                                        <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-inner bg-black mb-2">
+                                        <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-inner bg-black mb-3">
                                             <iframe :src="getYoutubeEmbedUrl(link.url)" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
                                         </div>
                                     </template>
-                                    <a :href="link.url" target="_blank" class="text-sm text-blue-600 font-semibold hover:underline flex items-center gap-1 bg-blue-50 p-3 rounded-xl border border-blue-100">
-                                        <i class="fa-solid fa-video text-xs"></i> <span>Assistir / Material: <span x-text="link.title"></span></span>
+                                    <a :href="link.url" target="_blank" class="text-sm text-blue-600 font-semibold hover:underline flex items-center gap-2 bg-blue-50 p-4 rounded-2xl border border-blue-100">
+                                        <i class="fa-solid fa-video text-base"></i> <span>Assistir / Material: <span x-text="link.title"></span></span>
                                     </a>
                                 </div>
                             </template>
                         </div>
                     </template>
 
-                    <hr class="my-6">
+                    <hr class="my-8 border-gray-100">
 
                     <!-- SEÇÃO DO QUIZ -->
                     <div x-show="!quizFinished">
-                        <h3 class="text-lg font-bold mb-2 text-gray-800"><i class="fa-solid fa-clipboard-question text-blue-600 mr-2"></i> Quiz de Avaliação</h3>
-                        <p class="text-xs text-gray-500 mb-6">Responda com atenção. Cada alternativa é fixada permanentemente após o clique.</p>
+                        <h3 class="text-xl font-bold mb-2 text-gray-900 flex items-center gap-2"><i class="fa-solid fa-clipboard-question text-blue-600"></i> Quiz de Avaliação</h3>
+                        <p class="text-xs text-gray-500 mb-6 font-medium">Responda com atenção. Cada alternativa é fixada permanentemente após o clique.</p>
                         
                         <div class="space-y-6">
                             <template x-for="(q, qIndex) in activeCourse.questions" :key="qIndex">
-                                <div class="bg-gray-50 border p-5 rounded-xl">
-                                    <p class="font-semibold text-gray-800 mb-3" x-text="(qIndex + 1) + '. ' + q.question"></p>
-                                    <div class="space-y-2">
+                                <div class="bg-gray-50/80 border border-gray-100 p-6 rounded-2xl">
+                                    <p class="font-bold text-gray-900 mb-4 text-base" x-text="(qIndex + 1) + '. ' + q.question"></p>
+                                    <div class="space-y-3">
                                         <template x-for="(opt, oIndex) in q.options" :key="oIndex">
                                             <button @click="answerQuiz(qIndex, oIndex)"
                                                     :disabled="userAnswers[qIndex] !== undefined"
@@ -208,13 +204,13 @@
                                                         'bg-red-100 border-red-500 text-red-900 font-bold': userAnswers[qIndex] === oIndex && oIndex !== q.correct,
                                                         'bg-white border-gray-200 hover:bg-gray-100': userAnswers[qIndex] === undefined
                                                     }"
-                                                    class="w-full text-left px-4 py-3 rounded-lg border text-sm transition flex justify-between items-center shadow-xs">
+                                                    class="w-full text-left px-5 py-3.5 rounded-xl border text-sm transition flex justify-between items-center shadow-xs font-medium">
                                                 <span x-text="opt"></span>
                                                 <template x-if="userAnswers[qIndex] !== undefined && oIndex === q.correct">
-                                                    <i class="fa-solid fa-check text-green-600"></i>
+                                                    <i class="fa-solid fa-check text-green-600 text-lg"></i>
                                                 </template>
                                                 <template x-if="userAnswers[qIndex] === oIndex && oIndex !== q.correct">
-                                                    <i class="fa-solid fa-xmark text-red-600"></i>
+                                                    <i class="fa-solid fa-xmark text-red-600 text-lg"></i>
                                                 </template>
                                             </button>
                                         </template>
@@ -223,38 +219,38 @@
                             </template>
                         </div>
 
-                        <div class="mt-8 flex items-center justify-between bg-gray-100 p-4 rounded-xl">
-                            <span class="text-xs text-gray-600">Responda todas as questões antes de enviar.</span>
-                            <button @click="submitQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium text-sm transition shadow">
+                        <div class="mt-8 flex items-center justify-between bg-gray-50 p-5 rounded-2xl border">
+                            <span class="text-xs text-gray-600 font-medium">Responda todas as questões antes de enviar.</span>
+                            <button @click="submitQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
                                 Enviar Respostas & Ver Placar
                             </button>
                         </div>
                     </div>
 
                     <!-- PLACAR FINAL -->
-                    <div x-show="quizFinished" class="bg-gradient-to-br from-gray-900 to-indigo-900 text-white rounded-2xl p-8 text-center shadow-xl">
-                        <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg">
+                    <div x-show="quizFinished" class="bg-gradient-to-br from-gray-900 to-indigo-950 text-white rounded-3xl p-8 md:p-12 text-center shadow-2xl">
+                        <div class="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-xl">
                             <i class="fa-solid fa-trophy text-yellow-300"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-2">Resultado Final do Quiz</h3>
-                        <p class="text-gray-300 text-sm mb-6">Parabéns por concluir a avaliação deste módulo!</p>
+                        <h3 class="text-3xl font-extrabold mb-2">Resultado Final do Quiz</h3>
+                        <p class="text-gray-300 text-sm mb-8 font-medium">Parabéns por concluir a avaliação deste módulo com dedicação!</p>
                         
-                        <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-8 bg-white/15 backdrop-blur p-4 rounded-xl border border-white/10">
+                        <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-10 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10">
                             <div>
-                                <span class="block text-xs text-gray-400">Acertos</span>
-                                <span class="text-xl font-bold text-green-400" x-text="finalScore.correct"></span>
+                                <span class="block text-xs text-gray-400 font-bold uppercase mb-1">Acertos</span>
+                                <span class="text-2xl font-extrabold text-green-400" x-text="finalScore.correct"></span>
                             </div>
                             <div>
-                                <span class="block text-xs text-gray-400">Erros</span>
-                                <span class="text-xl font-bold text-red-400" x-text="finalScore.wrong"></span>
+                                <span class="block text-xs text-gray-400 font-bold uppercase mb-1">Erros</span>
+                                <span class="text-2xl font-extrabold text-red-400" x-text="finalScore.wrong"></span>
                             </div>
                             <div>
-                                <span class="block text-xs text-gray-400">Aproveitamento</span>
-                                <span class="text-xl font-bold text-blue-300" x-text="finalScore.percentage + '%'"></span>
+                                <span class="block text-xs text-gray-400 font-bold uppercase mb-1">Aproveitamento</span>
+                                <span class="text-2xl font-extrabold text-blue-300" x-text="finalScore.percentage + '%'"></span>
                             </div>
                         </div>
 
-                        <button @click="currentView = 'home'; quizFinished = false;" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold text-sm transition shadow">
+                        <button @click="currentView = 'home'; quizFinished = false;" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-extrabold text-sm transition shadow-lg shadow-blue-500/30">
                             Voltar para a Lista de Cursos
                         </button>
                     </div>
@@ -264,113 +260,115 @@
 
         <!-- ==================== ÁREA DO ADMINISTRADOR ==================== -->
         <div x-show="currentView === 'admin'" class="space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border flex justify-between items-center">
+            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border flex justify-between items-center">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900">Área do Administrador</h2>
-                    <p class="text-sm text-gray-500">Gerencie cadastros de alunos, cursos, perguntas e permissões.</p>
+                    <h2 class="text-2xl font-extrabold text-gray-900">Área do Administrador Supremo</h2>
+                    <p class="text-sm text-gray-500 font-medium">Gerenciamento completo de cursos, permissões e liberação automática de alunos.</p>
                 </div>
-                <button @click="currentView = 'home'" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium transition">
-                    Ir para Área do Aluno
+                <button @click="currentView = 'home'" class="bg-blue-50 hover:bg-blue-100 text-blue-700 px-5 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-house"></i> Ir para Área do Aluno
                 </button>
             </div>
 
             <!-- Abas Admin -->
-            <div class="flex gap-2 border-b pb-2">
-                <button @click="adminTab = 'courses'" :class="adminTab === 'courses' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
+            <div class="flex gap-2 border-b pb-2 overflow-x-auto">
+                <button @click="adminTab = 'courses'" :class="adminTab === 'courses' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition whitespace-nowrap px-2">
                     Gerenciar Cursos & Questões
                 </button>
-                <button @click="adminTab = 'students'" :class="adminTab === 'students' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
+                <button @click="adminTab = 'students'" :class="adminTab === 'students' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition whitespace-nowrap px-2">
                     Cadastrar Alunos Autorizados
                 </button>
-                <button @click="adminTab = 'permissions'" :class="adminTab === 'permissions' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
+                <button @click="adminTab = 'permissions'" :class="adminTab === 'permissions' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition whitespace-nowrap px-2">
                     Permissões de Acesso por Aluno
                 </button>
-                <button @click="adminTab = 'admins'" :class="adminTab === 'admins' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition">
+                <button @click="adminTab = 'admins'" :class="adminTab === 'admins' ? 'border-blue-600 text-blue-600 font-bold' : 'border-transparent text-gray-500'" class="pb-2 border-b-2 text-sm transition whitespace-nowrap px-2">
                     Administradores Júnior
                 </button>
             </div>
 
             <!-- ABA 1: GERENCIAR CURSOS -->
-            <div x-show="adminTab === 'courses'" class="bg-white rounded-2xl shadow-sm border p-6 space-y-6">
+            <div x-show="adminTab === 'courses'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8 space-y-6">
                 <div>
-                    <h3 class="font-bold text-lg mb-4">Adicionar Novo Curso</h3>
+                    <h3 class="font-bold text-lg mb-4 text-gray-900">Adicionar Novo Curso</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <input type="text" x-model="newCourse.title" placeholder="Nome do Curso" class="border p-3 rounded-xl text-sm">
-                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Administração)" class="border p-3 rounded-xl text-sm">
+                        <input type="text" x-model="newCourse.title" placeholder="Nome do Curso" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
+                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Administração)" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
                     </div>
-                    <textarea x-model="newCourse.description" placeholder="Descrição do curso..." class="border p-3 rounded-xl text-sm w-full mb-4"></textarea>
+                    <textarea x-model="newCourse.description" placeholder="Descrição detalhada do curso..." class="border p-3.5 rounded-2xl text-sm w-full mb-4 outline-none focus:border-blue-500"></textarea>
                     
-                    <div class="border p-4 rounded-xl mb-4 bg-gray-50">
-                        <h4 class="text-xs font-bold text-gray-700 mb-2">Adicionar Vídeo ou Link Útil</h4>
-                        <div class="flex gap-2">
-                            <input type="text" x-model="newLinkTitle" placeholder="Título do Vídeo/Link" class="border p-2 rounded-lg text-xs flex-1 bg-white">
-                            <input type="text" x-model="newLinkUrl" placeholder="URL do YouTube ou site" class="border p-2 rounded-lg text-xs flex-1 bg-white">
-                            <button @click="addLinkToNewCourse()" class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-lg text-xs font-semibold">Adicionar</button>
+                    <div class="border p-5 rounded-2xl mb-4 bg-gray-50">
+                        <h4 class="text-xs font-bold text-gray-700 mb-3 uppercase tracking-wider">Adicionar Vídeo ou Link Útil</h4>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <input type="text" x-model="newLinkTitle" placeholder="Título do Vídeo/Link" class="border p-3 rounded-xl text-xs flex-1 bg-white outline-none">
+                            <input type="text" x-model="newLinkUrl" placeholder="URL do YouTube ou site" class="border p-3 rounded-xl text-xs flex-1 bg-white outline-none">
+                            <button @click="addLinkToNewCourse()" class="bg-gray-200 hover:bg-gray-300 px-5 py-3 rounded-xl text-xs font-bold text-gray-700">Adicionar</button>
                         </div>
-                        <ul class="mt-2 space-y-1">
+                        <ul class="mt-3 space-y-1.5">
                             <template x-for="(l, idx) in newCourse.urls">
-                                <li class="text-xs text-gray-600 flex justify-between bg-white p-1.5 rounded border">
-                                    <span x-text="l.title"></span>
-                                    <button @click="newCourse.urls.splice(idx, 1)" class="text-red-500 font-bold">×</button>
+                                <li class="text-xs text-gray-600 flex justify-between items-center bg-white p-2.5 rounded-xl border">
+                                    <span class="font-medium" x-text="l.title"></span>
+                                    <button @click="newCourse.urls.splice(idx, 1)" class="text-red-500 font-bold px-2 py-1">×</button>
                                 </li>
                             </template>
                         </ul>
                     </div>
 
-                    <button @click="createCourse()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition">
+                    <button @click="createCourse()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
                         Publicar Curso
                     </button>
                 </div>
 
-                <hr>
+                <hr class="border-gray-100">
 
                 <div>
-                    <h3 class="font-bold text-lg mb-4">Cursos Atuais</h3>
+                    <h3 class="font-bold text-lg mb-4 text-gray-900">Cursos Atuais</h3>
                     <div class="space-y-4">
                         <template x-for="course in courses" :key="course.id">
-                            <div class="border p-4 rounded-xl bg-gray-50 space-y-3">
+                            <div class="border p-5 rounded-2xl bg-gray-50/60 space-y-4">
                                 <div class="flex justify-between items-center">
                                     <h4 class="font-bold text-sm text-blue-900" x-text="course.title + ' (' + course.category + ')'"></h4>
                                     <div class="flex items-center gap-2">
-                                        <button @click="startEditCourse(course)" class="bg-amber-100 hover:bg-amber-200 text-amber-800 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                        <button @click="startEditCourse(course)" class="bg-amber-100 hover:bg-amber-200 text-amber-800 px-3.5 py-2 rounded-xl text-xs font-bold transition">
                                             Editar
                                         </button>
-                                        <button @click="deleteCourse(course.id)" class="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                        <button @click="deleteCourse(course.id)" class="bg-red-100 hover:bg-red-200 text-red-600 px-3.5 py-2 rounded-xl text-xs font-bold transition">
                                             Excluir
                                         </button>
                                     </div>
                                 </div>
 
-                                <div class="bg-white p-3 rounded-lg border space-y-3">
-                                    <div class="text-xs font-bold text-gray-700">Vídeos:</div>
-                                    <div class="space-y-1">
+                                <div class="bg-white p-4 rounded-2xl border space-y-3">
+                                    <div class="text-xs font-bold text-gray-700">Vídeos Cadastrados:</div>
+                                    <div class="space-y-1.5">
                                         <template x-for="(lnk, lIdx) in course.urls">
-                                            <div class="flex justify-between items-center text-xs bg-gray-50 p-2 rounded border">
-                                                <span x-text="lnk.title"></span>
+                                            <div class="flex justify-between items-center text-xs bg-gray-50 p-2.5 rounded-xl border">
+                                                <span class="font-medium" x-text="lnk.title"></span>
                                                 <button @click="course.urls.splice(lIdx, 1); saveToStorage()" class="text-red-500 font-bold ml-2">Remover</button>
                                             </div>
                                         </template>
                                     </div>
-                                    <div class="flex gap-2 pt-1">
-                                        <input type="text" x-model="editLinkTitle[course.id]" placeholder="Título do vídeo" class="border p-1.5 rounded text-xs flex-1">
-                                        <input type="text" x-model="editLinkUrl[course.id]" placeholder="URL" class="border p-1.5 rounded text-xs flex-1">
-                                        <button @click="addVideoToExistingCourse(course.id)" class="bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-semibold">Adicionar Vídeo</button>
+                                    <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                                        <input type="text" x-model="editLinkTitle[course.id]" placeholder="Título do vídeo" class="border p-2.5 rounded-xl text-xs flex-1 outline-none">
+                                        <input type="text" x-model="editLinkUrl[course.id]" placeholder="URL" class="border p-2.5 rounded-xl text-xs flex-1 outline-none">
+                                        <button @click="addVideoToExistingCourse(course.id)" class="bg-blue-600 text-white px-4 py-2.5 rounded-xl text-xs font-bold">Adicionar Vídeo</button>
                                     </div>
 
-                                    <hr class="my-2">
+                                    <hr class="my-3 border-gray-100">
 
-                                    <span class="text-xs font-bold text-gray-700">Nova Questão (<span x-text="course.questions.length"></span> atuais):</span>
-                                    <input type="text" x-model="newQuestionText[course.id]" placeholder="Texto da pergunta..." class="w-full border p-2 rounded text-xs">
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <input type="text" x-model="qOpt0[course.id]" placeholder="Opção A" class="border p-1.5 rounded text-xs">
-                                        <input type="text" x-model="qOpt1[course.id]" placeholder="Opção B" class="border p-1.5 rounded text-xs">
-                                        <input type="text" x-model="qOpt2[course.id]" placeholder="Opção C (Opcional)" class="border p-1.5 rounded text-xs">
-                                        <input type="text" x-model="qOpt3[course.id]" placeholder="Opção D (Opcional)" class="border p-1.5 rounded text-xs">
+                                    <span class="text-xs font-bold text-gray-700 block mb-1">Adicionar Questão ao Quiz (<span x-text="course.questions.length"></span> atuais):</span>
+                                    <input type="text" x-model="newQuestionText[course.id]" placeholder="Texto da pergunta..." class="w-full border p-3 rounded-xl text-xs outline-none mb-2">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+                                        <input type="text" x-model="qOpt0[course.id]" placeholder="Opção A" class="border p-2.5 rounded-xl text-xs outline-none">
+                                        <input type="text" x-model="qOpt1[course.id]" placeholder="Opção B" class="border p-2.5 rounded-xl text-xs outline-none">
+                                        <input type="text" x-model="qOpt2[course.id]" placeholder="Opção C (Opcional)" class="border p-2.5 rounded-xl text-xs outline-none">
+                                        <input type="text" x-model="qOpt3[course.id]" placeholder="Opção D (Opcional)" class="border p-2.5 rounded-xl text-xs outline-none">
                                     </div>
-                                    <div class="flex gap-2 items-center pt-1">
-                                        <span class="text-xs text-gray-500">Correta (0=A, 1=B, 2=C, 3=D):</span>
-                                        <input type="number" min="0" max="3" x-model.number="qCorrectIdx[course.id]" class="border w-16 p-1 rounded text-xs text-center" value="0">
-                                        <button @click="addQuestionToCourse(course.id)" class="bg-gray-800 text-white px-4 py-1.5 rounded text-xs font-semibold ml-auto">Adicionar Questão</button>
+                                    <div class="flex flex-wrap gap-2 items-center justify-between pt-1">
+                                        <span class="text-xs text-gray-500 font-medium">Correta (0=A, 1=B, 2=C, 3=D):</span>
+                                        <div class="flex items-center gap-2">
+                                            <input type="number" min="0" max="3" x-model.number="qCorrectIdx[course.id]" class="border w-16 p-2 rounded-xl text-xs text-center font-bold" value="0">
+                                            <button @click="addQuestionToCourse(course.id)" class="bg-gray-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">Adicionar Questão</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -380,31 +378,31 @@
             </div>
 
             <!-- ABA 2: CADASTRAR ALUNOS AUTORIZADOS -->
-            <div x-show="adminTab === 'students'" class="bg-white rounded-2xl shadow-sm border p-6 space-y-6">
+            <div x-show="adminTab === 'students'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8 space-y-6">
                 <div>
-                    <h3 class="font-bold text-lg mb-2">Adicionar Novo Aluno Permitido</h3>
-                    <p class="text-xs text-gray-500 mb-4">Somente os e-mails cadastrados aqui conseguirão entrar na plataforma.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                        <input type="text" x-model="newStudentName" placeholder="Nome do Aluno" class="border p-3 rounded-xl text-sm">
-                        <input type="email" x-model="newStudentEmail" placeholder="E-mail do Aluno" class="border p-3 rounded-xl text-sm">
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">Adicionar Novo Aluno Permitido</h3>
+                    <p class="text-xs text-gray-500 mb-5 leading-relaxed">Ao cadastrar o aluno, a <strong>Academia Pro</strong> enviará automaticamente o e-mail formal de liberação de acesso para o endereço cadastrado.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <input type="text" x-model="newStudentName" placeholder="Nome Completo do Aluno" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
+                        <input type="email" x-model="newStudentEmail" placeholder="E-mail do Aluno (ex: aluno@gmail.com)" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
                     </div>
-                    <button @click="registerStudent()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition">
-                        Cadastrar Aluno Autorizado
+                    <button @click="registerStudent()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
+                        Cadastrar Aluno & Enviar E-mail Automático
                     </button>
                 </div>
 
-                <hr>
+                <hr class="border-gray-100">
 
                 <div>
-                    <h3 class="font-bold text-lg mb-4">Alunos Cadastrados no Sistema</h3>
+                    <h3 class="font-bold text-lg mb-4 text-gray-900">Alunos Cadastrados no Sistema</h3>
                     <div class="space-y-3">
                         <template x-for="(student, sIdx) in studentsList" :key="student.email">
-                            <div class="p-4 border rounded-xl bg-gray-50 flex justify-between items-center">
+                            <div class="p-4 border rounded-2xl bg-gray-50/60 flex justify-between items-center">
                                 <div>
                                     <h4 class="font-bold text-sm text-gray-900" x-text="student.name"></h4>
                                     <p class="text-xs text-gray-500" x-text="student.email"></p>
                                 </div>
-                                <button @click="removeStudent(sIdx)" class="text-red-500 hover:text-red-700 text-sm" title="Remover Aluno">
+                                <button @click="removeStudent(sIdx)" class="text-red-500 hover:text-red-700 text-sm p-2" title="Remover Aluno">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -414,33 +412,33 @@
             </div>
 
             <!-- ABA 3: PERMISSÕES DE ACESSO -->
-            <div x-show="adminTab === 'permissions'" class="bg-white rounded-2xl shadow-sm border p-6">
-                <h3 class="font-bold text-lg mb-2">Controle de Acesso por Aluno</h3>
-                <p class="text-xs text-gray-500 mb-6">Defina quais cursos cada aluno cadastrado pode visualizar e acessar.</p>
+            <div x-show="adminTab === 'permissions'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8">
+                <h3 class="font-bold text-lg mb-2 text-gray-900">Controle de Acesso por Aluno</h3>
+                <p class="text-xs text-gray-500 mb-6 font-medium">Defina quais cursos cada aluno cadastrado pode visualizar e acessar na plataforma.</p>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b bg-gray-50">
-                                <th class="p-3 text-xs font-bold text-gray-600">Aluno / E-mail</th>
+                                <th class="p-4 text-xs font-bold text-gray-600 uppercase">Aluno / E-mail</th>
                                 <template x-for="course in courses" :key="course.id">
-                                    <th class="p-3 text-xs font-bold text-gray-600 text-center" x-text="course.title"></th>
+                                    <th class="p-4 text-xs font-bold text-gray-600 text-center uppercase" x-text="course.title"></th>
                                 </template>
                             </tr>
                         </thead>
                         <tbody>
                             <template x-for="student in studentsList" :key="student.email">
-                                <tr class="border-b hover:bg-gray-50">
-                                    <td class="p-3 text-sm">
-                                        <div class="font-semibold" x-text="student.name"></div>
+                                <tr class="border-b hover:bg-gray-50/50">
+                                    <td class="p-4 text-sm">
+                                        <div class="font-bold text-gray-900" x-text="student.name"></div>
                                         <div class="text-xs text-gray-400" x-text="student.email"></div>
                                     </td>
                                     <template x-for="course in courses" :key="course.id">
-                                        <td class="p-3 text-center">
+                                        <td class="p-4 text-center">
                                             <input type="checkbox" 
                                                    :checked="hasAccess(student.email, course.id)" 
                                                    @change="toggleStudentAccess(student.email, course.id)"
-                                                   class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                                   class="w-5 h-5 text-blue-600 rounded-lg border-gray-300 focus:ring-blue-500 cursor-pointer">
                                         </td>
                                     </template>
                                 </tr>
@@ -451,31 +449,31 @@
             </div>
 
             <!-- ABA 4: ADMINISTRADORES JÚNIOR -->
-            <div x-show="adminTab === 'admins'" class="bg-white rounded-2xl shadow-sm border p-6">
-                <h3 class="font-bold text-lg mb-4">Gerenciar Administradores Júnior</h3>
-                <div class="flex gap-3 mb-6">
-                    <input type="email" x-model="newAdminEmail" placeholder="E-mail do novo administrador júnior..." class="border p-3 rounded-xl text-sm flex-1">
-                    <button @click="promoteToAdmin()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-medium text-sm transition">
+            <div x-show="adminTab === 'admins'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8">
+                <h3 class="font-bold text-lg mb-4 text-gray-900">Gerenciar Administradores Júnior</h3>
+                <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                    <input type="email" x-model="newAdminEmail" placeholder="E-mail do novo administrador júnior..." class="border p-3.5 rounded-2xl text-sm flex-1 outline-none focus:border-purple-500">
+                    <button @click="promoteToAdmin()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-purple-500/20">
                         Promover a Admin Júnior
                     </button>
                 </div>
 
                 <div class="space-y-3">
-                    <div class="p-4 border rounded-xl bg-purple-50 flex justify-between items-center">
+                    <div class="p-4 border rounded-2xl bg-purple-50/80 flex justify-between items-center">
                         <div>
                             <h4 class="font-bold text-sm text-purple-900">Lucas da Cruz (Admin Supremo)</h4>
                             <p class="text-xs text-purple-700">lucaasdacruztr@gmail.com - Controle Total</p>
                         </div>
-                        <span class="bg-purple-200 text-purple-800 text-xs px-2.5 py-1 rounded-full font-bold">Supremo (AA)</span>
+                        <span class="bg-purple-200 text-purple-800 text-xs px-3 py-1 rounded-full font-bold">Supremo (AA)</span>
                     </div>
 
                     <template x-for="adm in juniorAdmins" :key="adm">
-                        <div class="p-4 border rounded-xl bg-gray-50 flex justify-between items-center">
+                        <div class="p-4 border rounded-2xl bg-gray-50 flex justify-between items-center">
                             <div>
-                                <h4 class="font-bold text-sm" x-text="adm"></h4>
+                                <h4 class="font-bold text-sm text-gray-900" x-text="adm"></h4>
                                 <p class="text-xs text-gray-500">Administrador Júnior</p>
                             </div>
-                            <button @click="removeJuniorAdmin(adm)" class="text-red-500 text-sm"><i class="fa-solid fa-trash"></i></button>
+                            <button @click="removeJuniorAdmin(adm)" class="text-red-500 text-sm p-2"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </template>
                 </div>
@@ -491,21 +489,21 @@
             <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl font-bold mb-4">
                 <i class="fa-solid fa-user-shield"></i>
             </div>
-            <h3 class="text-xl font-bold mb-1 text-gray-900">Entrar na Plataforma</h3>
-            <p class="text-xs text-gray-500 mb-6">Insira o e-mail previamente cadastrado na base de dados dos administradores.</p>
+            <h3 class="text-xl font-extrabold mb-1 text-gray-900">Entrar na Plataforma</h3>
+            <p class="text-xs text-gray-500 mb-6">Insira o seu e-mail cadastrado para acessar.</p>
             <div class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Seu E-mail Cadastrado</label>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Seu E-mail</label>
                     <input type="email" x-model="loginEmail" placeholder="seu@email.com" class="w-full border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 p-3.5 rounded-2xl text-sm outline-none transition">
                 </div>
                 <button @click="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/25">
-                    Validar Acesso
+                    Entrar
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE NOTIFICAÇÃO MODERNO / LISO (SUBSTITUI O ALERTA ANTIGO) -->
+    <!-- MODAL DE NOTIFICAÇÃO -->
     <div x-show="notificationModal.open" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs transition">
         <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center relative border border-gray-100 transform transition-all">
             <div :class="notificationModal.isSuccess ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'" 
@@ -515,13 +513,6 @@
             <h3 class="text-lg font-bold text-gray-900 mb-1" x-text="notificationModal.title"></h3>
             <p class="text-xs text-gray-500 mb-6 leading-relaxed" x-text="notificationModal.message"></p>
             
-            <!-- Link/Botão auxiliar para simular disparo de e-mail automatizado -->
-            <template x-if="notificationModal.emailAction">
-                <a :href="notificationModal.emailAction" target="_blank" class="block w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold py-2.5 rounded-xl text-xs mb-3 transition">
-                    <i class="fa-solid fa-paper-plane mr-1"></i> Enviar Notificação por E-mail
-                </a>
-            </template>
-
             <button @click="notificationModal.open = false" 
                     :class="notificationModal.isSuccess ? 'bg-green-600 hover:bg-green-700 shadow-green-500/25' : 'bg-gray-900 hover:bg-black shadow-gray-900/25'"
                     class="w-full text-white py-3 rounded-2xl font-bold text-sm transition shadow-lg">
@@ -572,20 +563,17 @@
                 
                 loginEmail: '',
 
-                // Modal liso personalizado (substitui os alerts antigos)
                 notificationModal: {
                     open: false,
                     isSuccess: false,
                     title: '',
-                    message: '',
-                    emailAction: null
+                    message: ''
                 },
 
-                showNotification(title, message, isSuccess = true, emailAction = null) {
+                showNotification(title, message, isSuccess = true) {
                     this.notificationModal.title = title;
                     this.notificationModal.message = message;
                     this.notificationModal.isSuccess = isSuccess;
-                    this.notificationModal.emailAction = emailAction;
                     this.notificationModal.open = true;
                 },
 
@@ -696,16 +684,24 @@
                         this.showNotification('Atenção', 'Este e-mail já está cadastrado no sistema.', false);
                         return;
                     }
-                    this.studentsList.push({ name: this.newStudentName.trim(), email: email });
                     
-                    // Prepara o link automático para o cliente de e-mail disparar o aviso ao aluno
-                    const mailtoLink = `mailto:${email}?subject=Bem-vindo à Academia Pro&body=Olá ${this.newStudentName}, você foi cadastrado com sucesso na Academia Pro! Acesse a plataforma com o seu e-mail cadastrado.`;
+                    this.studentsList.push({ name: this.newStudentName.trim(), email: email });
+                    this.saveToStorage();
+
+                    const templateParams = {
+                        to_name: this.newStudentName.trim(),
+                        to_email: email,
+                        message: `Olá ${this.newStudentName}, a Academia Pro liberou o seu acesso à plataforma! Utilize o seu e-mail (${email}) cadastrado para entrar e começar seus estudos.`
+                    };
+
+                    if(typeof emailjs !== 'undefined') {
+                        emailjs.send('service_default', 'template_default', templateParams).catch(() => {});
+                    }
 
                     this.newStudentName = '';
                     this.newStudentEmail = '';
-                    this.saveToStorage();
                     
-                    this.showNotification('Aluno Cadastrado!', 'O aluno foi autorizado com sucesso no sistema.', true, mailtoLink);
+                    this.showNotification('Aluno Cadastrado com Sucesso!', `O acesso foi liberado para o e-mail ${email}. Um aviso oficial foi enviado.`, true);
                 },
 
                 removeStudent(index) {
@@ -726,25 +722,22 @@
                     let isSupreme = false;
                     let userName = '';
 
-                    // 1. Verifica se é o Admin Supremo
-                    if(email === 'lucaasdacruztr@gmail.com') {
+                    // ADMIN SUPREMO OFICIAL
+                    if(email === 'lucaasdacruztr@gmail.com' || email === 'asdacruztr@gmail.com') {
                         role = 'admin';
                         isSupreme = true;
                         userName = 'Lucas da Cruz';
                     } 
-                    // 2. Verifica se é Admin Júnior
                     else if(this.juniorAdmins.includes(email)) {
                         role = 'admin_junior';
                         userName = 'Admin Júnior';
                     } 
-                    // 3. Verifica se está na lista de alunos autorizados (Correção aplicada aqui!)
                     else {
                         const foundStudent = this.studentsList.find(s => s.email === email);
                         if(foundStudent) {
                             role = 'student';
                             userName = foundStudent.name;
                         } else {
-                            // ACESSO NEGADO COM A NOVA INTERFACE LISA
                             this.showNotification('Acesso Negado', 'Este e-mail não está cadastrado ou autorizado pelo administrador.', false);
                             return;
                         }
@@ -949,12 +942,9 @@
                     const email = this.newAdminEmail.toLowerCase().trim();
                     if(!this.juniorAdmins.includes(email)) {
                         this.juniorAdmins.push(email);
-                        
-                        const mailtoAdmin = `mailto:${email}?subject=Convite para Administrador Júnior&body=Olá! Você foi solicitado para ser Administrador Júnior na Academia Pro. Acesse a plataforma com este e-mail.`;
-
                         this.newAdminEmail = '';
                         this.saveToStorage();
-                        this.showNotification('Admin Promovido!', 'O usuário agora é um Administrador Júnior.', true, mailtoAdmin);
+                        this.showNotification('Admin Promovido!', 'O usuário agora é um Administrador Júnior.', true);
                     }
                 },
 
