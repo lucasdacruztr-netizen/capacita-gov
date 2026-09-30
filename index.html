@@ -11,7 +11,7 @@
     <!-- FontAwesome para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased" x-data="app()">
+<body class="bg-gray-50 text-gray-800 font-sans antialiased" x-data="app()" x-init="initApp()">
 
     <!-- HEADER / NAVEGAÇÃO PRINCIPAL -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
@@ -83,7 +83,7 @@
             <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 md:p-10 text-white mb-8 shadow-md">
                 <template x-if="!currentUser">
                     <div>
-                        <span class="bg-blue-500/50 text-blue-100 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Cursos Libres & Profissionais</span>
+                        <span class="bg-blue-500/50 text-blue-100 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Cursos Livres & Profissionais</span>
                         <h2 class="text-2xl md:text-3xl font-bold mb-2">Venha fazer parte da Academia Pro!</h2>
                         <p class="text-blue-100 mb-6 text-sm md:text-base max-w-2xl">Explore nossos cursos disponíveis, adquira conhecimentos práticos e solicite seu acesso ao administrador para iniciar sua jornada de aprendizado.</p>
                         <button @click="openLoginModal = true" class="bg-white text-blue-700 hover:bg-blue-50 px-6 py-2.5 rounded-xl font-bold text-sm transition shadow">
@@ -94,13 +94,13 @@
                 <template x-if="currentUser">
                     <div>
                         <h2 class="text-2xl md:text-3xl font-bold mb-2">Seus Cursos Disponíveis</h2>
-                        <p class="text-blue-100 mb-6 text-sm md:text-base">Acesse os conteúdos liberados pelo administrador para o seu perfil.</p>
+                        <p class="text-blue-100 mb-6 text-sm md:text-base">Acesse os conteúdos liberados pelo administrador para o seu perfil ou explore os cursos da plataforma.</p>
                     </div>
                 </template>
                 
                 <!-- Barra de Busca Inteligente -->
                 <div class="relative max-w-xl mt-6">
-                    <input type="text" x-model="searchQuery" placeholder="Buscar curso por nome ou categoria (ex: Formatação, Administração)..." 
+                    <input type="text" x-model="searchQuery" placeholder="Buscar curso por nome ou categoria (ex: Administração, Tecnologia)..." 
                            class="w-full pl-10 pr-4 py-3 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-4 text-gray-400"></i>
                 </div>
@@ -133,7 +133,7 @@
                                 <template x-if="!isCourseAccessible(course.id)">
                                     <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center text-white p-4 text-center">
                                         <i class="fa-solid fa-lock text-2xl mb-1"></i>
-                                        <span class="text-xs font-bold" x-text="currentUser ? 'Curso Trancado (Aguardando Liberação)' : 'Faça login para solicitar acesso'"></span>
+                                        <span class="text-xs font-bold" x-text="currentUser ? 'Curso Bloqueado (Aguardando Liberação)' : 'Faça login para solicitar acesso'"></span>
                                     </div>
                                 </template>
                             </div>
@@ -150,7 +150,7 @@
                             </template>
                             <template x-if="!isCourseAccessible(course.id)">
                                 <button @click="currentUser ? null : openLoginModal = true" class="w-full bg-gray-200 text-gray-600 hover:bg-gray-300 py-2.5 rounded-xl font-medium text-sm transition">
-                                    <span x-text="currentUser ? 'Aguardando Liberação' : 'Entrar para Liberar Acesso'"></span>
+                                    <span x-text="currentUser ? 'Aguardando Liberação do Admin' : 'Entrar para Visualizar'"></span>
                                 </button>
                             </template>
                         </div>
@@ -159,7 +159,7 @@
             </div>
         </div>
 
-        <!-- VIEW: DETALHE DO CURSO, VÍDEO E QUIZ TRAVADO -->
+        <!-- VIEW: DETALHE DO CURSO, VÍDEO E QUIZ -->
         <div x-show="currentView === 'course-detail'" class="bg-white rounded-2xl shadow-sm border p-6 md:p-8">
             <button @click="currentView = 'home'; quizFinished = false;" class="text-sm text-blue-600 hover:underline mb-6 inline-flex items-center gap-1 font-semibold">
                 <i class="fa-solid fa-arrow-left"></i> Voltar aos cursos
@@ -190,7 +190,7 @@
 
                     <hr class="my-6">
 
-                    <!-- SEÇÃO DO QUIZ COM TELA DE PLACAR FINAL -->
+                    <!-- SEÇÃO DO QUIZ -->
                     <div x-show="!quizFinished">
                         <h3 class="text-lg font-bold mb-2 text-gray-800"><i class="fa-solid fa-clipboard-question text-blue-600 mr-2"></i> Quiz de Avaliação</h3>
                         <p class="text-xs text-gray-500 mb-6">Responda com atenção. Cada alternativa é fixada permanentemente após o clique.</p>
@@ -273,7 +273,7 @@
             <div class="bg-white p-6 rounded-2xl shadow-sm border flex justify-between items-center">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900">Área do Administrador</h2>
-                    <p class="text-sm text-gray-500">Criação de cursos, gerenciamento de perguntas e liberação de permissões.</p>
+                    <p class="text-sm text-gray-500">Criação de cursos, edição de conteúdos, perguntas e permissões.</p>
                 </div>
                 <button @click="currentView = 'home'" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium transition">
                     Ir para Área do Aluno
@@ -293,13 +293,13 @@
                 </button>
             </div>
 
-            <!-- ABA 1: GERENCIAR CURSOS, VÍDEOS E QUESTÕES -->
+            <!-- ABA 1: GERENCIAR E EDITAR CURSOS, VÍDEOS E QUESTÕES -->
             <div x-show="adminTab === 'courses'" class="bg-white rounded-2xl shadow-sm border p-6 space-y-6">
                 <div>
                     <h3 class="font-bold text-lg mb-4">Adicionar Novo Curso</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <input type="text" x-model="newCourse.title" placeholder="Nome do Curso (ex: Técnico em Redes)" class="border p-3 rounded-xl text-sm">
-                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: Tecnologia)" class="border p-3 rounded-xl text-sm">
+                        <input type="text" x-model="newCourse.title" placeholder="Nome do Curso (ex: AD - Administração Direta)" class="border p-3 rounded-xl text-sm">
+                        <input type="text" x-model="newCourse.category" placeholder="Categoria (ex: AD ou Tecnologia)" class="border p-3 rounded-xl text-sm">
                     </div>
                     <textarea x-model="newCourse.description" placeholder="Descrição do curso..." class="border p-3 rounded-xl text-sm w-full mb-4"></textarea>
                     
@@ -321,24 +321,49 @@
                     </div>
 
                     <button @click="createCourse()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition">
-                        Criar Curso Base
+                        Publicar Curso para Alunos
                     </button>
                 </div>
 
                 <hr>
 
                 <div>
-                    <h3 class="font-bold text-lg mb-4">Gerenciar e Editar Questões dos Cursos</h3>
+                    <h3 class="font-bold text-lg mb-4">Editar, Modificar e Gerenciar Cursos Atuais</h3>
                     <div class="space-y-4">
                         <template x-for="course in courses" :key="course.id">
                             <div class="border p-4 rounded-xl bg-gray-50 space-y-3">
                                 <div class="flex justify-between items-center">
-                                    <h4 class="font-bold text-sm text-blue-900" x-text="course.title + ' (' + course.questions.length + ' questões)'"></h4>
-                                    <button @click="deleteCourse(course.id)" class="text-red-500 text-xs font-bold"><i class="fa-solid fa-trash mr-1"></i> Excluir Curso</button>
+                                    <h4 class="font-bold text-sm text-blue-900" x-text="course.title + ' (' + course.category + ')'"></h4>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="startEditCourse(course)" class="bg-amber-100 hover:bg-amber-200 text-amber-800 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                            <i class="fa-solid fa-pen-to-square mr-1"></i> Alterar Dados
+                                        </button>
+                                        <button @click="deleteCourse(course.id)" class="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                            <i class="fa-solid fa-trash mr-1"></i> Excluir
+                                        </button>
+                                    </div>
                                 </div>
 
-                                <div class="bg-white p-3 rounded-lg border space-y-2">
-                                    <span class="text-xs font-bold text-gray-700">Adicionar Nova Questão ao Curso:</span>
+                                <!-- Bloco de Gerenciamento de Questões e Vídeos do Curso -->
+                                <div class="bg-white p-3 rounded-lg border space-y-3">
+                                    <div class="text-xs font-bold text-gray-700">Vídeos Cadastrados:</div>
+                                    <div class="space-y-1">
+                                        <template x-for="(lnk, lIdx) in course.urls">
+                                            <div class="flex justify-between items-center text-xs bg-gray-50 p-2 rounded border">
+                                                <span x-text="lnk.title + ' (' + lnk.url + ')'"></span>
+                                                <button @click="course.urls.splice(lIdx, 1); saveToStorage()" class="text-red-500 font-bold ml-2">Remover Vídeo</button>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div class="flex gap-2 pt-1">
+                                        <input type="text" x-model="editLinkTitle[course.id]" placeholder="Novo título de vídeo" class="border p-1.5 rounded text-xs flex-1">
+                                        <input type="text" x-model="editLinkUrl[course.id]" placeholder="Nova URL" class="border p-1.5 rounded text-xs flex-1">
+                                        <button @click="addVideoToExistingCourse(course.id)" class="bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-semibold">Adicionar Vídeo</button>
+                                    </div>
+
+                                    <hr class="my-2">
+
+                                    <span class="text-xs font-bold text-gray-700">Adicionar Nova Questão ao Curso (<span x-text="course.questions.length"></span> questões atuais):</span>
                                     <input type="text" x-model="newQuestionText[course.id]" placeholder="Texto da pergunta..." class="w-full border p-2 rounded text-xs">
                                     <div class="grid grid-cols-2 gap-2">
                                         <input type="text" x-model="qOpt0[course.id]" placeholder="Opção A" class="border p-1.5 rounded text-xs">
@@ -361,7 +386,7 @@
             <!-- ABA 2: MATRIZ DE PERMISSÕES -->
             <div x-show="adminTab === 'permissions'" class="bg-white rounded-2xl shadow-sm border p-6">
                 <h3 class="font-bold text-lg mb-2">Controle de Acesso por Aluno</h3>
-                <p class="text-xs text-gray-500 mb-6">Defina por checkboxes quais cursos cada aluno pode acessar.</p>
+                <p class="text-xs text-gray-500 mb-6">Defina por checkboxes quais cursos cada aluno pode acessar (novos cursos ficam bloqueados por padrão até você autorizar aqui).</p>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -429,7 +454,34 @@
 
     </main>
 
-    <!-- MODAL DE LOGIN LIMPO -->
+    <!-- MODAL DE EDIÇÃO DE CURSO -->
+    <template x-if="editingCourseModal">
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl relative space-y-4">
+                <button @click="editingCourseModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <h3 class="font-bold text-xl text-gray-900">Alterar Dados do Curso</h3>
+                
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Título do Curso</label>
+                    <input type="text" x-model="tempEditCourse.title" class="w-full border p-3 rounded-xl text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Categoria</label>
+                    <input type="text" x-model="tempEditCourse.category" class="w-full border p-3 rounded-xl text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Descrição</label>
+                    <textarea x-model="tempEditCourse.description" class="w-full border p-3 rounded-xl text-sm"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button @click="editingCourseModal = false" class="bg-gray-200 px-4 py-2 rounded-xl text-sm font-semibold">Cancelar</button>
+                    <button @click="saveEditedCourse()" class="bg-blue-600 text-white px-6 py-2 rounded-xl text-sm font-semibold shadow">Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- MODAL DE LOGIN -->
     <template x-if="openLoginModal">
         <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative">
@@ -460,6 +512,7 @@
                 currentView: 'home',
                 adminTab: 'courses',
                 openLoginModal: false,
+                editingCourseModal: false,
                 searchQuery: '',
                 selectedCategory: 'Todos',
                 
@@ -521,6 +574,10 @@
                 newLinkTitle: '',
                 newLinkUrl: '',
 
+                tempEditCourse: { id: null, title: '', category: '', description: '' },
+                editLinkTitle: {},
+                editLinkUrl: {},
+
                 newQuestionText: {},
                 qOpt0: {}, qOpt1: {}, qOpt2: {}, qOpt3: {}, qCorrectIdx: {},
 
@@ -528,6 +585,32 @@
                 userAnswers: {},
                 quizFinished: false,
                 finalScore: { correct: 0, wrong: 0, percentage: 0 },
+
+                initApp() {
+                    // Carrega dados salvos localmente se existirem, garantindo persistência ao atualizar
+                    let savedUser = localStorage.getItem('academia_user');
+                    if (savedUser) {
+                        try { this.currentUser = JSON.parse(savedUser); } catch(e) {}
+                    }
+                    let savedCourses = localStorage.getItem('academia_courses');
+                    if (savedCourses) {
+                        try { this.courses = JSON.parse(savedCourses); } catch(e) {}
+                    }
+                    let savedPerms = localStorage.getItem('academia_perms');
+                    if (savedPerms) {
+                        try { this.accessPermissions = JSON.parse(savedPerms); } catch(e) {}
+                    }
+                },
+
+                saveToStorage() {
+                    localStorage.setItem('academia_courses', JSON.stringify(this.courses));
+                    localStorage.setItem('academia_perms', JSON.stringify(this.accessPermissions));
+                    if (this.currentUser) {
+                        localStorage.setItem('academia_user', JSON.stringify(this.currentUser));
+                    } else {
+                        localStorage.removeItem('academia_user');
+                    }
+                },
 
                 get dynamicCategories() {
                     let cats = this.courses.map(c => c.category);
@@ -551,7 +634,7 @@
 
                 openCourse(course) {
                     if (!this.isCourseAccessible(course.id)) {
-                        alert('Este curso está trancado. Faça login ou aguarde a liberação do administrador.');
+                        alert('Este curso está bloqueado. Solicite a liberação ao administrador.');
                         return;
                     }
                     this.activeCourse = course;
@@ -585,7 +668,7 @@
                 },
 
                 isYoutubeUrl(url) {
-                    return url.includes('youtube.com') || url.includes('youtu.be');
+                    return url && (url.includes('youtube.com') || url.includes('youtu.be'));
                 },
 
                 getYoutubeEmbedUrl(url) {
@@ -611,20 +694,58 @@
                         alert('Preencha o título e a categoria do curso.');
                         return;
                     }
-                    let newId = this.courses.length + 1;
-                    this.courses.push({
+                    let newId = this.courses.length > 0 ? Math.max(...this.courses.map(c => c.id)) + 1 : 1;
+                    
+                    let created = {
                         id: newId,
                         title: this.newCourse.title,
                         category: this.newCourse.category,
-                        description: this.newCourse.description,
+                        description: this.newCourse.description || 'Sem descrição.',
                         icon: 'fa-solid fa-book-open',
                         urls: [...this.newCourse.urls],
                         questions: [
-                            { question: 'Questão inicial de teste?', options: ['Alternativa A', 'Alternativa B'], correct: 0 }
+                            { question: 'Questão inicial padrão?', options: ['Sim', 'Não'], correct: 0 }
                         ]
-                    });
+                    };
+
+                    this.courses.push(created);
                     this.newCourse = { title: '', category: '', description: '', urls: [], questions: [] };
-                    alert('Curso criado com sucesso e integrado ao sistema!');
+                    this.saveToStorage();
+                    alert('Curso publicado com sucesso! Ele já está disponível visualmente para os alunos (bloqueado até você autorizar o acesso).');
+                },
+
+                startEditCourse(course) {
+                    this.tempEditCourse = { id: course.id, title: course.title, category: course.category, description: course.description };
+                    this.editingCourseModal = true;
+                },
+
+                saveEditedCourse() {
+                    let c = this.courses.find(item => item.id === this.tempEditCourse.id);
+                    if (c) {
+                        c.title = this.tempEditCourse.title;
+                        c.category = this.tempEditCourse.category;
+                        c.description = this.tempEditCourse.description;
+                        this.saveToStorage();
+                        this.editingCourseModal = false;
+                        alert('Curso alterado com sucesso!');
+                    }
+                },
+
+                addVideoToExistingCourse(courseId) {
+                    let title = this.editLinkTitle[courseId];
+                    let url = this.editLinkUrl[courseId];
+                    if (title && url) {
+                        let c = this.courses.find(item => item.id === courseId);
+                        if (c) {
+                            c.urls.push({ title: title, url: url });
+                            this.editLinkTitle[courseId] = '';
+                            this.editLinkUrl[courseId] = '';
+                            this.saveToStorage();
+                            alert('Vídeo adicionado com sucesso!');
+                        }
+                    } else {
+                        alert('Preencha o título e a URL do vídeo.');
+                    }
                 },
 
                 addQuestionToCourse(courseId) {
@@ -653,6 +774,7 @@
                         this.qOpt1[courseId] = '';
                         this.qOpt2[courseId] = '';
                         this.qOpt3[courseId] = '';
+                        this.saveToStorage();
                         alert('Nova questão adicionada com sucesso ao curso!');
                     }
                 },
@@ -660,6 +782,7 @@
                 deleteCourse(id) {
                     if (confirm('Deseja realmente excluir este curso?')) {
                         this.courses = this.courses.filter(c => c.id !== id);
+                        this.saveToStorage();
                     }
                 },
 
@@ -672,6 +795,7 @@
                         this.accessPermissions[email] = {};
                     }
                     this.accessPermissions[email][courseId] = !this.accessPermissions[email][courseId];
+                    this.saveToStorage();
                 },
 
                 promoteToAdmin() {
@@ -709,6 +833,7 @@
                         this.studentsList.push({ name: this.loginForm.name, email: this.loginForm.email });
                     }
 
+                    this.saveToStorage();
                     this.openLoginModal = false;
                     this.loginForm = { name: '', email: '' };
                 },
@@ -716,6 +841,7 @@
                 logout() {
                     this.currentUser = null;
                     this.currentView = 'home';
+                    localStorage.removeItem('academia_user');
                 }
             }
         }
