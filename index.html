@@ -35,7 +35,7 @@
                         <div @click="if(currentUser.role === 'admin' || currentUser.role === 'admin_junior') { currentView = 'admin'; }" 
                              class="flex items-center space-x-3 cursor-pointer p-1.5 rounded-xl hover:bg-gray-100 transition">
                             <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-inner uppercase"
-                                 x-text="currentUser.name.charAt(0)">
+                                 x-text="currentUser.email.charAt(0)">
                             </div>
                             <div class="text-left hidden sm:block">
                                 <div class="text-sm font-semibold flex items-center gap-1">
@@ -377,30 +377,29 @@
                 </div>
             </div>
 
-            <!-- ABA 2: CADASTRAR ALUNOS AUTORIZADOS -->
+            <!-- ABA 2: CADASTRAR ALUNOS AUTORIZADOS (APENAS E-MAIL) -->
             <div x-show="adminTab === 'students'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8 space-y-6">
                 <div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Adicionar Novo Aluno Permitido</h3>
-                    <p class="text-xs text-gray-500 mb-5 leading-relaxed">Ao cadastrar o aluno, a <strong>Academia Pro</strong> enviará automaticamente o e-mail formal de liberação de acesso para o endereço cadastrado.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <input type="text" x-model="newStudentName" placeholder="Nome Completo do Aluno" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
-                        <input type="email" x-model="newStudentEmail" placeholder="E-mail do Aluno (ex: aluno@gmail.com)" class="border p-3.5 rounded-2xl text-sm outline-none focus:border-blue-500">
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">Adicionar Novo E-mail Permitido</h3>
+                    <p class="text-xs text-gray-500 mb-5 leading-relaxed">Insira apenas o e-mail do aluno. A <strong>Academia Pro</strong> enviará automaticamente o aviso de liberação para ele.</p>
+                    <div class="flex flex-col sm:flex-row gap-3 mb-4">
+                        <input type="email" x-model="newStudentEmail" placeholder="E-mail do Aluno (ex: aluno@gmail.com)" class="border p-3.5 rounded-2xl text-sm flex-1 outline-none focus:border-blue-500">
+                        <button @click="registerStudent()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
+                            Liberar Acesso por E-mail
+                        </button>
                     </div>
-                    <button @click="registerStudent()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition shadow-lg shadow-blue-500/20">
-                        Cadastrar Aluno & Enviar E-mail Automático
-                    </button>
                 </div>
 
                 <hr class="border-gray-100">
 
                 <div>
-                    <h3 class="font-bold text-lg mb-4 text-gray-900">Alunos Cadastrados no Sistema</h3>
+                    <h3 class="font-bold text-lg mb-4 text-gray-900">E-mails de Alunos Cadastrados</h3>
                     <div class="space-y-3">
                         <template x-for="(student, sIdx) in studentsList" :key="student.email">
                             <div class="p-4 border rounded-2xl bg-gray-50/60 flex justify-between items-center">
                                 <div>
-                                    <h4 class="font-bold text-sm text-gray-900" x-text="student.name"></h4>
-                                    <p class="text-xs text-gray-500" x-text="student.email"></p>
+                                    <h4 class="font-bold text-sm text-gray-900" x-text="student.email"></h4>
+                                    <p class="text-[11px] text-gray-400">Aluno Autorizado</p>
                                 </div>
                                 <button @click="removeStudent(sIdx)" class="text-red-500 hover:text-red-700 text-sm p-2" title="Remover Aluno">
                                     <i class="fa-solid fa-trash"></i>
@@ -413,14 +412,14 @@
 
             <!-- ABA 3: PERMISSÕES DE ACESSO -->
             <div x-show="adminTab === 'permissions'" class="bg-white rounded-3xl shadow-sm border p-6 md:p-8">
-                <h3 class="font-bold text-lg mb-2 text-gray-900">Controle de Acesso por Aluno</h3>
-                <p class="text-xs text-gray-500 mb-6 font-medium">Defina quais cursos cada aluno cadastrado pode visualizar e acessar na plataforma.</p>
+                <h3 class="font-bold text-lg mb-2 text-gray-900">Controle de Acesso por E-mail</h3>
+                <p class="text-xs text-gray-500 mb-6 font-medium">Defina quais cursos cada e-mail cadastrado pode visualizar e acessar na plataforma.</p>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b bg-gray-50">
-                                <th class="p-4 text-xs font-bold text-gray-600 uppercase">Aluno / E-mail</th>
+                                <th class="p-4 text-xs font-bold text-gray-600 uppercase">E-mail do Aluno</th>
                                 <template x-for="course in courses" :key="course.id">
                                     <th class="p-4 text-xs font-bold text-gray-600 text-center uppercase" x-text="course.title"></th>
                                 </template>
@@ -429,10 +428,7 @@
                         <tbody>
                             <template x-for="student in studentsList" :key="student.email">
                                 <tr class="border-b hover:bg-gray-50/50">
-                                    <td class="p-4 text-sm">
-                                        <div class="font-bold text-gray-900" x-text="student.name"></div>
-                                        <div class="text-xs text-gray-400" x-text="student.email"></div>
-                                    </td>
+                                    <td class="p-4 text-sm font-bold text-gray-900" x-text="student.email"></td>
                                     <template x-for="course in courses" :key="course.id">
                                         <td class="p-4 text-center">
                                             <input type="checkbox" 
@@ -603,13 +599,12 @@
                 ],
 
                 studentsList: [
-                    { name: 'Aluno Exemplo', email: 'aluno@exemplo.com' }
+                    { email: 'aluno@exemplo.com' }
                 ],
                 accessMatrix: {}, 
                 juniorAdmins: [],
                 newAdminEmail: '',
 
-                newStudentName: '',
                 newStudentEmail: '',
 
                 newCourse: { title: '', category: '', description: '', urls: [], questions: [] },
@@ -674,8 +669,8 @@
                 },
 
                 registerStudent() {
-                    if(!this.newStudentName || !this.newStudentEmail) {
-                        this.showNotification('Campos Vazios', 'Preencha o nome e o e-mail do aluno.', false);
+                    if(!this.newStudentEmail) {
+                        this.showNotification('Campo Vazio', 'Preencha o e-mail do aluno.', false);
                         return;
                     }
                     const email = this.newStudentEmail.toLowerCase().trim();
@@ -685,27 +680,24 @@
                         return;
                     }
                     
-                    this.studentsList.push({ name: this.newStudentName.trim(), email: email });
+                    this.studentsList.push({ email: email });
                     this.saveToStorage();
 
                     const templateParams = {
-                        to_name: this.newStudentName.trim(),
                         to_email: email,
-                        message: `Olá ${this.newStudentName}, a Academia Pro liberou o seu acesso à plataforma! Utilize o seu e-mail (${email}) cadastrado para entrar e começar seus estudos.`
+                        message: `Olá, a Academia Pro liberou o seu acesso à plataforma! Utilize o seu e-mail (${email}) para entrar e começar seus estudos.`
                     };
 
                     if(typeof emailjs !== 'undefined') {
                         emailjs.send('service_default', 'template_default', templateParams).catch(() => {});
                     }
 
-                    this.newStudentName = '';
                     this.newStudentEmail = '';
-                    
-                    this.showNotification('Aluno Cadastrado com Sucesso!', `O acesso foi liberado para o e-mail ${email}. Um aviso oficial foi enviado.`, true);
+                    this.showNotification('E-mail Cadastrado!', `O acesso foi liberado para ${email}.`, true);
                 },
 
                 removeStudent(index) {
-                    if(confirm('Tem certeza que deseja remover este aluno?')) {
+                    if(confirm('Tem certeza que deseja remover este e-mail?')) {
                         this.studentsList.splice(index, 1);
                         this.saveToStorage();
                     }
@@ -720,9 +712,8 @@
                     const email = this.loginEmail.toLowerCase().trim();
                     let role = 'student';
                     let isSupreme = false;
-                    let userName = '';
+                    let userName = email.split('@')[0];
 
-                    // ADMIN SUPREMO OFICIAL
                     if(email === 'lucaasdacruztr@gmail.com' || email === 'asdacruztr@gmail.com') {
                         role = 'admin';
                         isSupreme = true;
@@ -736,7 +727,7 @@
                         const foundStudent = this.studentsList.find(s => s.email === email);
                         if(foundStudent) {
                             role = 'student';
-                            userName = foundStudent.name;
+                            userName = email.split('@')[0];
                         } else {
                             this.showNotification('Acesso Negado', 'Este e-mail não está cadastrado ou autorizado pelo administrador.', false);
                             return;
@@ -744,7 +735,7 @@
                     }
 
                     this.currentUser = {
-                        name: userName,
+                        name: userName.charAt(0).toUpperCase() + userName.slice(1),
                         email: email,
                         role: role,
                         isSupreme: isSupreme
@@ -753,7 +744,7 @@
                     this.openLoginModal = false;
                     this.loginEmail = '';
                     this.saveToStorage();
-                    this.showNotification('Login Realizado!', 'Bem-vindo de volta, ' + this.currentUser.name + '!', true);
+                    this.showNotification('Login Realizado!', 'Bem-vindo de volta!', true);
                 },
 
                 logout() {
